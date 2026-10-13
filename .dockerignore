@@ -1,0 +1,10 @@
+.git
+.venv
+.env
+.env.*
+data
+node_modules
+**/__pycache__
+miniprogram
+backend/tests
+exports

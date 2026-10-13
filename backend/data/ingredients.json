@@ -1,0 +1,548 @@
+[
+  {
+    "id": "chicken_breast",
+    "name": "鸡胸肉",
+    "name_en": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+    "category": "meat",
+    "allergens": [],
+    "aliases": [
+      "chicken"
+    ],
+    "vegetarian": false,
+    "halal_compatible": false,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 120.0,
+      "protein": 22.5,
+      "fat": 2.62,
+      "carbs": 0.0,
+      "calcium_mg": 5.0,
+      "iron_mg": 0.37,
+      "sodium_mg": 45.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 171077,
+    "source_url": "https://fdc.nal.usda.gov/food-details/171077/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "mango",
+    "name": "芒果",
+    "name_en": "Mangos, raw",
+    "category": "fruit",
+    "allergens": [
+      "mango"
+    ],
+    "aliases": [
+      "mango"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 60.0,
+      "protein": 0.82,
+      "fat": 0.38,
+      "carbs": 14.98,
+      "calcium_mg": 11.0,
+      "iron_mg": 0.16,
+      "sodium_mg": 1.0,
+      "vitamin_c_mg": 36.4
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 169910,
+    "source_url": "https://fdc.nal.usda.gov/food-details/169910/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "egg",
+    "name": "鸡蛋",
+    "name_en": "Egg, whole, raw, fresh",
+    "category": "eggs",
+    "allergens": [
+      "egg"
+    ],
+    "aliases": [
+      "egg"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 5,
+    "per_100g": {
+      "kcal": 143.0,
+      "protein": 12.56,
+      "fat": 9.51,
+      "carbs": 0.72,
+      "calcium_mg": 56.0,
+      "iron_mg": 1.75,
+      "sodium_mg": 142.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 171287,
+    "source_url": "https://fdc.nal.usda.gov/food-details/171287/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "rice",
+    "name": "大米",
+    "name_en": "Rice, white, long-grain, regular, raw, enriched",
+    "category": "staples",
+    "allergens": [],
+    "aliases": [
+      "rice"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 7,
+    "per_100g": {
+      "kcal": 365.0,
+      "protein": 7.13,
+      "fat": 0.66,
+      "carbs": 79.95,
+      "calcium_mg": 28.0,
+      "iron_mg": 4.31,
+      "sodium_mg": 5.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 168877,
+    "source_url": "https://fdc.nal.usda.gov/food-details/168877/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "broccoli",
+    "name": "西兰花",
+    "name_en": "Broccoli, raw",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "broccoli"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 34.0,
+      "protein": 2.82,
+      "fat": 0.37,
+      "carbs": 6.64,
+      "calcium_mg": 47.0,
+      "iron_mg": 0.73,
+      "sodium_mg": 33.0,
+      "vitamin_c_mg": 89.2
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 170379,
+    "source_url": "https://fdc.nal.usda.gov/food-details/170379/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "potato",
+    "name": "土豆",
+    "name_en": "Potatoes, flesh and skin, raw",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "potato"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 5,
+    "per_100g": {
+      "kcal": 77.0,
+      "protein": 2.05,
+      "fat": 0.09,
+      "carbs": 17.49,
+      "calcium_mg": 12.0,
+      "iron_mg": 0.81,
+      "sodium_mg": 6.0,
+      "vitamin_c_mg": 19.7
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 170026,
+    "source_url": "https://fdc.nal.usda.gov/food-details/170026/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "carrot",
+    "name": "胡萝卜",
+    "name_en": "Carrots, raw",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "carrot"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 5,
+    "per_100g": {
+      "kcal": 41.0,
+      "protein": 0.93,
+      "fat": 0.24,
+      "carbs": 9.58,
+      "calcium_mg": 33.0,
+      "iron_mg": 0.3,
+      "sodium_mg": 69.0,
+      "vitamin_c_mg": 5.9
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 170393,
+    "source_url": "https://fdc.nal.usda.gov/food-details/170393/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "tofu",
+    "name": "硬豆腐",
+    "name_en": "Tofu, raw, firm, prepared with calcium sulfate",
+    "category": "soy",
+    "allergens": [
+      "soy"
+    ],
+    "aliases": [
+      "tofu"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 144.0,
+      "protein": 17.27,
+      "fat": 8.72,
+      "carbs": 2.78,
+      "calcium_mg": 683.0,
+      "iron_mg": 2.66,
+      "sodium_mg": 14.0,
+      "vitamin_c_mg": 0.2
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 172475,
+    "source_url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "olive_oil",
+    "name": "橄榄油",
+    "name_en": "Oil, olive, salad or cooking",
+    "category": "seasonings",
+    "allergens": [],
+    "aliases": [
+      "olive oil"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 7,
+    "per_100g": {
+      "kcal": 884.0,
+      "protein": 0.0,
+      "fat": 100.0,
+      "carbs": 0.0,
+      "calcium_mg": 1.0,
+      "iron_mg": 0.56,
+      "sodium_mg": 2.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 171413,
+    "source_url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "oats",
+    "name": "燕麦",
+    "name_en": "Oats (Includes foods for USDA's Food Distribution Program)",
+    "category": "staples",
+    "allergens": [],
+    "aliases": [
+      "oats"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 7,
+    "per_100g": {
+      "kcal": 389.0,
+      "protein": 16.89,
+      "fat": 6.9,
+      "carbs": 66.27,
+      "calcium_mg": 54.0,
+      "iron_mg": 4.72,
+      "sodium_mg": 2.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 169705,
+    "source_url": "https://fdc.nal.usda.gov/food-details/169705/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "banana",
+    "name": "香蕉",
+    "name_en": "Bananas, raw",
+    "category": "fruit",
+    "allergens": [],
+    "aliases": [
+      "banana"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 89.0,
+      "protein": 1.09,
+      "fat": 0.33,
+      "carbs": 22.84,
+      "calcium_mg": 5.0,
+      "iron_mg": 0.26,
+      "sodium_mg": 1.0,
+      "vitamin_c_mg": 8.7
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 173944,
+    "source_url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "apple",
+    "name": "苹果",
+    "name_en": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+    "category": "fruit",
+    "allergens": [],
+    "aliases": [
+      "apple"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 5,
+    "per_100g": {
+      "kcal": 52.0,
+      "protein": 0.26,
+      "fat": 0.17,
+      "carbs": 13.81,
+      "calcium_mg": 6.0,
+      "iron_mg": 0.12,
+      "sodium_mg": 1.0,
+      "vitamin_c_mg": 4.6
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 171688,
+    "source_url": "https://fdc.nal.usda.gov/food-details/171688/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "milk",
+    "name": "全脂牛奶",
+    "name_en": "Milk, whole, 3.25% milkfat, with added vitamin D",
+    "category": "dairy",
+    "allergens": [
+      "milk"
+    ],
+    "aliases": [
+      "milk"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 3,
+    "per_100g": {
+      "kcal": 61.0,
+      "protein": 3.15,
+      "fat": 3.25,
+      "carbs": 4.8,
+      "calcium_mg": 113.0,
+      "iron_mg": 0.03,
+      "sodium_mg": 43.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 171265,
+    "source_url": "https://fdc.nal.usda.gov/food-details/171265/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "cabbage",
+    "name": "卷心菜",
+    "name_en": "Cabbage, raw",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "cabbage"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 25.0,
+      "protein": 1.28,
+      "fat": 0.1,
+      "carbs": 5.8,
+      "calcium_mg": 40.0,
+      "iron_mg": 0.47,
+      "sodium_mg": 18.0,
+      "vitamin_c_mg": 36.6
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 169975,
+    "source_url": "https://fdc.nal.usda.gov/food-details/169975/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "peanut",
+    "name": "花生",
+    "name_en": "Peanuts, all types, raw",
+    "category": "nuts",
+    "allergens": [
+      "peanut"
+    ],
+    "aliases": [
+      "peanut"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 7,
+    "per_100g": {
+      "kcal": 567.0,
+      "protein": 25.8,
+      "fat": 49.24,
+      "carbs": 16.13,
+      "calcium_mg": 92.0,
+      "iron_mg": 4.58,
+      "sodium_mg": 18.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 172430,
+    "source_url": "https://fdc.nal.usda.gov/food-details/172430/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "tomato",
+    "name": "番茄",
+    "name_en": "Tomatoes, red, ripe, raw, year round average",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "tomato",
+      "西红柿"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 18.0,
+      "protein": 0.88,
+      "fat": 0.2,
+      "carbs": 3.89,
+      "calcium_mg": 10.0,
+      "iron_mg": 0.27,
+      "sodium_mg": 5.0,
+      "vitamin_c_mg": 13.7
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 170457,
+    "source_url": "https://fdc.nal.usda.gov/food-details/170457/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "spinach",
+    "name": "菠菜",
+    "name_en": "Spinach, raw",
+    "category": "vegetables",
+    "allergens": [],
+    "aliases": [
+      "spinach"
+    ],
+    "vegetarian": true,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 23.0,
+      "protein": 2.86,
+      "fat": 0.39,
+      "carbs": 3.63,
+      "calcium_mg": 99.0,
+      "iron_mg": 2.71,
+      "sodium_mg": 79.0,
+      "vitamin_c_mg": 28.1
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 168462,
+    "source_url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "salmon",
+    "name": "三文鱼",
+    "name_en": "Fish, salmon, Atlantic, farmed, raw",
+    "category": "seafood",
+    "allergens": [
+      "fish"
+    ],
+    "aliases": [
+      "salmon"
+    ],
+    "vegetarian": false,
+    "halal_compatible": true,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 208.0,
+      "protein": 20.42,
+      "fat": 13.42,
+      "carbs": 0.0,
+      "calcium_mg": 9.0,
+      "iron_mg": 0.34,
+      "sodium_mg": 59.0,
+      "vitamin_c_mg": 3.9
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 175167,
+    "source_url": "https://fdc.nal.usda.gov/food-details/175167/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  },
+  {
+    "id": "pork",
+    "name": "猪里脊",
+    "name_en": "Pork, fresh, loin, tenderloin, separable lean only, raw",
+    "category": "meat",
+    "allergens": [],
+    "aliases": [
+      "pork",
+      "猪肉"
+    ],
+    "vegetarian": false,
+    "halal_compatible": false,
+    "near_expiry_days": 1,
+    "per_100g": {
+      "kcal": 109.0,
+      "protein": 20.95,
+      "fat": 2.17,
+      "carbs": 0.0,
+      "calcium_mg": 5.0,
+      "iron_mg": 0.98,
+      "sodium_mg": 53.0,
+      "vitamin_c_mg": 0.0
+    },
+    "source": "USDA FoodData Central SR Legacy",
+    "fdc_id": 168249,
+    "source_url": "https://fdc.nal.usda.gov/food-details/168249/nutrients",
+    "retrieved_on": "2026-10-13",
+    "notes": "Raw edible portion; not a lab measurement of your food. Allergen/certification metadata is conservative and must be checked against packaging."
+  }
+]

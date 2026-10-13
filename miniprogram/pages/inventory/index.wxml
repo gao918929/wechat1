@@ -1,0 +1,91 @@
+<view class="page">
+  <view class="row">
+    <view>
+      <view class="eyebrow">YOUR FRIDGE</view>
+      <view class="title">食材，不浪费。</view>
+    </view>
+    <button class="mini" bindtap="photo">拍照 / 对话</button>
+  </view>
+  <view wx:if="{{!items.length}}" class="empty">
+    冰箱还没有记录。 添加一份食材，开始这一周。
+  </view>
+  <view wx:for="{{items}}" wx:key="id" class="card">
+    <view class="row">
+      <view class="grow">
+        <view class="heading">{{item.food.name}}</view>
+        <text class="muted">{{item.grams}} g · 到期 {{item.expires_on}}</text>
+      </view>
+      <text
+        class="badge {{item.alert==='normal'?'':(item.alert==='near_expiry'?'warn':'error')}}"
+      >
+        {{item.alert==='normal'?'在库':(item.alert==='near_expiry'?'临期':(item.alert==='expired'?'已过期':'视觉不新鲜'))}}
+      </text>
+    </view>
+    <text wx:if="{{item.estimated}}" class="badge warn">
+      重量为估算，点击编辑可修正
+    </text>
+    <view class="row">
+      <button class="mini secondary" data-id="{{item.id}}" bindtap="edit">
+        编辑
+      </button>
+      <button class="mini secondary" data-id="{{item.id}}" bindtap="consume">
+        记录消耗
+      </button>
+      <button class="mini danger" data-id="{{item.id}}" bindtap="discard">
+        丢弃
+      </button>
+    </view>
+  </view>
+  <view class="card">
+    <view class="heading">{{editing?'修改食材':'手动入库'}}</view>
+    <picker
+      range="{{catalog}}"
+      range-key="name"
+      value="{{foodIndex}}"
+      data-key="foodIndex"
+      bindchange="field"
+    >
+      {{catalog[foodIndex].name || '选择食材'}} ▾
+    </picker>
+    <view class="label">可食用重量（克）</view>
+    <input type="digit" data-key="grams" value="{{grams}}" bindinput="field" />
+    <view class="label">确认食用期限（以包装 / 储存条件为准）</view>
+    <picker
+      mode="date"
+      value="{{expires}}"
+      data-key="expires"
+      bindchange="field"
+    >
+      {{expires}}
+    </picker>
+    <view class="row label">
+      <text>重量为估算</text>
+      <switch checked="{{estimated}}" data-key="estimated" bindchange="field" />
+    </view>
+    <button loading="{{busy}}" disabled="{{busy}}" bindtap="add">
+      {{editing?'保存修改':'确认入库'}}
+    </button>
+    <button wx:if="{{editing}}" class="secondary" bindtap="cancel">
+      取消编辑
+    </button>
+    <view class="divider" />
+    <view class="heading">该食材的采购参考价</view>
+    <input
+      type="digit"
+      data-key="price"
+      value="{{price}}"
+      bindinput="field"
+      placeholder="元 / 千克"
+    />
+    <input
+      data-key="source"
+      value="{{source}}"
+      bindinput="field"
+      placeholder="城市 / 市场 / 报价来源"
+    />
+    <button class="secondary" bindtap="price">保存为估算参考价</button>
+  </view>
+  <view class="notice">
+    历史精确实付价优先于参考价；未经确认的照片不会自动更改库存。只有管理员可录入、改价和编辑，成员可记录消耗。
+  </view>
+</view>

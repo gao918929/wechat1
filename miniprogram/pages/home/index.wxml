@@ -1,0 +1,61 @@
+<view class="page">
+  <view class="hero">
+    <view class="eyebrow">MEALAGENT / EVERYDAY, BETTER</view>
+    <view class="title">好好吃饭， 从容生活。</view>
+    <view class="subtitle">AI 提建议，你来做决定。</view>
+  </view>
+  <picker
+    wx:if="{{groups.length}}"
+    range="{{groups}}"
+    range-key="name"
+    bindchange="switchGroup"
+  >
+    <view class="row">
+      <text>{{group.name}}</text>
+      <text class="small">切换 ▾</text>
+    </view>
+  </picker>
+  <view class="grid">
+    <view class="metric" data-page="inventory" bindtap="open">
+      <view class="number">{{stock}}</view>
+      <view class="muted">在库食材 · {{alerts}} 项提醒</view>
+    </view>
+    <view class="metric" data-page="journal" bindtap="open">
+      <view class="number">¥{{spent}}</view>
+      <view class="muted">近 7 天实际支出</view>
+    </view>
+  </view>
+  <view class="card">
+    <view class="heading">今天，从哪里开始？</view>
+    <button data-page="plan" bindtap="open">规划接下来的一周 →</button>
+    <view class="row">
+      <button class="secondary grow" data-kind="inventory" bindtap="recognize">
+        拍照入库
+      </button>
+      <button class="secondary grow" data-kind="receipt" bindtap="recognize">
+        小票记账
+      </button>
+    </view>
+    <button class="secondary" data-kind="meal" bindtap="recognize">
+      记录一餐 · 更新饮食记忆
+    </button>
+  </view>
+  <view
+    wx:for="{{notes}}"
+    wx:key="id"
+    class="card"
+    data-id="{{item.id}}"
+    bindtap="note"
+  >
+    <text class="badge">通知</text>
+    <view class="heading">{{item.text}}</view>
+    <text class="link">查看结果 →</text>
+  </view>
+  <view class="row">
+    <button class="secondary grow" bindtap="create">创建群组</button>
+    <button class="secondary grow" bindtap="join">邀请码加入</button>
+  </view>
+  <view class="notice">
+    真实账单、可解释估算、可随时修正。没有库存时，请先创建群组并添加食材。
+  </view>
+</view>

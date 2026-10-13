@@ -1,0 +1,72 @@
+<view class="page">
+  <view class="eyebrow">SMALL HABITS, REAL PROGRESS</view>
+  <view class="title">每一餐，都有记录。</view>
+  <view class="row">
+    <picker
+      class="grow"
+      range="{{periods}}"
+      value="{{period}}"
+      data-key="period"
+      bindchange="change"
+    >
+      {{periods[period]}}
+    </picker>
+    <text class="small">集体视角</text>
+    <switch
+      checked="{{collective}}"
+      data-key="collective"
+      bindchange="change"
+    />
+  </view>
+  <view class="grid">
+    <view class="metric">
+      <view class="number">¥{{report.paid||'0.00'}}</view>
+      <text class="muted">实际支出</text>
+    </view>
+    <view class="metric">
+      <view class="number">¥{{report.share||'0.00'}}</view>
+      <text class="muted">按当前人数分摊</text>
+    </view>
+  </view>
+  <view class="card">
+    <view class="heading">热量与三大营养素</view>
+    <text class="muted">仅统计已记录餐次，不代表全天完整摄入。</text>
+    <view wx:if="{{!rows.length}}" class="empty">
+      记录一餐后，这里会出现你的趋势。
+    </view>
+    <view wx:for="{{rows}}" wx:key="date">
+      <view class="row label">
+        <text>{{item.date}}</text>
+        <text>{{item.kcal}} kcal</text>
+      </view>
+      <view class="chartbar" style="width:{{item.width}}%" />
+      <view class="muted">
+        蛋白 {{item.protein}}g · 碳水 {{item.carbs}}g · 脂肪 {{item.fat}}g · 钙
+        {{item.calcium}} · 铁 {{item.iron}} · 钠 {{item.sodium}} · 维C
+        {{item.vitaminC}}
+      </view>
+    </view>
+    <view wx:if="{{report.score!=null}}" class="heading">
+      已记录餐次目标匹配度：{{report.score}} / 100
+    </view>
+    <view class="notice">{{report.score_note}}</view>
+  </view>
+  <view class="row">
+    <button class="grow" data-kind="meal" bindtap="photo">记录一餐</button>
+    <button class="grow secondary" data-kind="receipt" bindtap="photo">
+      小票识别
+    </button>
+  </view>
+  <button class="secondary" bindtap="totalOnly">仅记录实际支付金额</button>
+  <view class="heading">不可改写的实付账单</view>
+  <view wx:for="{{receipts}}" wx:key="id" class="card row">
+    <view>
+      <view>{{item.purchased_on}}</view>
+      <view class="muted">{{item.items.length}} 项食材 · 实付金额</view>
+    </view>
+    <view class="heading">¥{{item.paid}}</view>
+  </view>
+  <view class="notice">
+    {{report.source}}。所有营养数值为食材数据库估算，不是实验室检测。
+  </view>
+</view>

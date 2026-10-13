@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="eyebrow">A MEMORY THAT BELONGS TO YOU</view>
+  <view class="title">越用，越懂你。</view>
+  <view class="card">
+    <view class="heading">个人孪生 · 仅自己可见</view>
+    <view>已学习 {{personal.feedback_count}} 条反馈</view>
+    <view class="muted">
+      采购记录 {{personal.purchase_count}} 笔 · 每周更新一次
+    </view>
+    <view wx:for="{{personal.substitutions}}" wx:key="index" class="notice">
+      {{item}}
+    </view>
+    <view class="muted">下次更新：{{personal.next_refresh}}</view>
+  </view>
+  <view class="card">
+    <view class="heading">告诉系统你的选择</view>
+    <textarea
+      value="{{text}}"
+      data-key="text"
+      bindinput="field"
+      placeholder="例如：我把胡萝卜换成了番茄，希望下次多安排蒸菜。"
+    />
+    <view class="row label">
+      <text>允许进入集体记忆</text>
+      <switch checked="{{shared}}" data-key="shared" bindchange="field" />
+    </view>
+    <button bindtap="save">记录偏好反馈</button>
+  </view>
+  <view class="card">
+    <view class="heading">集体孪生</view>
+    <view wx:if="{{error}}" class="muted">{{error}}</view>
+    <block wx:else>
+      <view>共享反馈 {{groupTwin.feedback_count}} 条</view>
+      <view wx:for="{{groupTwin.substitutions}}" wx:key="index" class="notice">
+        {{item}}
+      </view>
+    </block>
+  </view>
+  <view wx:if="{{group.role==='admin'}}" class="card">
+    <view class="heading">群组预算与隐私</view>
+    <view class="label">每周预算（元）</view>
+    <input
+      type="digit"
+      value="{{budget}}"
+      data-key="budget"
+      bindinput="field"
+    />
+    <picker
+      range="{{modes}}"
+      value="{{modeIndex}}"
+      data-key="modeIndex"
+      bindchange="field"
+    >
+      {{modes[modeIndex]}}
+    </picker>
+    <view class="label">集体孪生可见范围</view>
+    <picker
+      range="{{visibility}}"
+      value="{{visibilityIndex}}"
+      data-key="visibilityIndex"
+      bindchange="field"
+    >
+      {{visibility[visibilityIndex]}}
+    </picker>
+    <checkbox-group
+      wx:if="{{visibilityIndex==1}}"
+      data-key="selectedMembers"
+      bindchange="field"
+    >
+      <label wx:for="{{members}}" wx:key="id" class="choice">
+        <checkbox checked="{{item.checked}}" value="{{item.id}}" />
+        {{item.name}}
+      </label>
+    </checkbox-group>
+    <button bindtap="settings">保存群组设置</button>
+  </view>
+  <view class="card">
+    <view class="heading">我贡献的反馈</view>
+    <view wx:for="{{feedback}}" wx:key="id">
+      <view class="muted">{{item.action}} · {{item.text}}</view>
+      <button class="mini danger" data-id="{{item.id}}" bindtap="remove">
+        撤回此条记忆
+      </button>
+    </view>
+  </view>
+  <view class="notice">
+    只有明确共享的偏好进入集体记忆。撤回反馈会立即清除派生孪生缓存。
+  </view>
+</view>

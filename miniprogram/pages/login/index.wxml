@@ -1,0 +1,51 @@
+<view class="page">
+  <view class="hero">
+    <view class="eyebrow">MEALAGENT / WELCOME</view>
+    <view class="title">把每一餐，安排好。</view>
+    <view class="subtitle">库存、预算、营养与偏好，在这里相遇。</view>
+  </view>
+  <view class="card">
+    <view class="label">显示名称</view>
+    <input
+      value="{{name}}"
+      data-key="name"
+      bindinput="field"
+      placeholder="你希望大家如何称呼你"
+    />
+    <view class="label">后端地址</view>
+    <input value="{{base}}" data-key="base" bindinput="field" />
+    <view class="row label">
+      <text>本地开发登录</text>
+      <switch
+        checked="{{dev}}"
+        data-key="dev"
+        bindchange="toggle"
+        color="#205c3d"
+      />
+    </view>
+    <input
+      wx:if="{{dev}}"
+      password
+      value="{{key}}"
+      data-key="key"
+      bindinput="field"
+      placeholder="DEV_LOGIN_KEY（不保存）"
+    />
+    <view class="notice">
+      图片与膳食信息将发送到你配置的后端与 AI
+      服务商进行处理。个人体征只用于自身规划，群体计划会使用你的饮食约束；原始图片不持久保存。膳食建议不是医疗建议。
+    </view>
+    <view class="row">
+      <text class="small">我了解并同意上述数据使用方式</text>
+      <switch
+        checked="{{consent}}"
+        data-key="consent"
+        bindchange="toggle"
+        color="#205c3d"
+      />
+    </view>
+    <button loading="{{busy}}" disabled="{{busy}}" bindtap="login">
+      登录并开始
+    </button>
+  </view>
+</view>

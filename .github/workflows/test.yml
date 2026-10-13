@@ -1,0 +1,20 @@
+name: Validate MealAgent
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install -r backend/requirements.txt
+      - run: python -m unittest discover -s backend/tests -v
+      - run: node backend/tests/test_sse.cjs
+      - run: node scripts/check-miniprogram.cjs
+      - run: node --check web/app.js

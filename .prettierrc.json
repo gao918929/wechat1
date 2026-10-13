@@ -1,0 +1,17 @@
+{
+  "overrides": [
+    {
+      "files": "*.wxml",
+      "options": {
+        "parser": "html",
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    },
+    {
+      "files": "*.wxss",
+      "options": {
+        "parser": "css"
+      }
+    }
+  ]
+}

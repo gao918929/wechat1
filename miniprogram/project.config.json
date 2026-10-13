@@ -1,0 +1,13 @@
+{
+  "appid": "touristappid",
+  "projectname": "MealAgent",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "minified": true,
+    "urlCheck": true
+  },
+  "libVersion": "3.4.0"
+}

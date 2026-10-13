@@ -1,0 +1,183 @@
+<view class="page">
+  <view class="eyebrow">A WEEK, WELL PLANNED</view>
+  <view class="title">把选择权，留给你。</view>
+  <view class="card">
+    <textarea
+      value="{{prompt}}"
+      data-key="prompt"
+      bindinput="field"
+      maxlength="3000"
+    />
+    <view class="row">
+      <view class="grow">
+        <view class="label">预算（元）</view>
+        <input
+          type="digit"
+          value="{{budget}}"
+          data-key="budget"
+          bindinput="field"
+        />
+      </view>
+      <view class="grow">
+        <view class="label">计算方式</view>
+        <picker
+          range="{{modes}}"
+          value="{{modeIndex}}"
+          data-key="modeIndex"
+          bindchange="field"
+        >
+          {{modes[modeIndex]}}
+        </picker>
+      </view>
+    </view>
+    <view class="row">
+      <view class="grow">
+        <view class="label">开始日期</view>
+        <picker
+          mode="date"
+          value="{{start}}"
+          data-key="start"
+          bindchange="field"
+        >
+          {{start}}
+        </picker>
+      </view>
+      <view class="grow">
+        <view class="label">天数（1—7）</view>
+        <input
+          type="number"
+          value="{{days}}"
+          data-key="days"
+          bindinput="field"
+        />
+      </view>
+    </view>
+    <view class="label">本次共餐成员（每个人需完成自己的画像）</view>
+    <checkbox-group bindchange="chooseDiners">
+      <label wx:for="{{members}}" wx:key="id" class="choice">
+        <checkbox
+          value="{{item.id}}"
+          checked="{{item.checked}}"
+          color="#205c3d"
+        />
+        {{item.name}}
+      </label>
+    </checkbox-group>
+    <view class="row label">
+      <text>允许覆盖普通口味偏好</text>
+      <switch checked="{{override}}" data-key="override" bindchange="field" />
+    </view>
+    <text class="notice">过敏原与慢病禁忌永远不能被覆盖。</text>
+    <button
+      loading="{{busy}}"
+      disabled="{{busy || job.status==='running' || job.status==='queued'}}"
+      bindtap="generate"
+    >
+      四 Agent 协作生成
+    </button>
+  </view>
+  <view wx:if="{{job}}" class="card">
+    <view class="row">
+      <text class="heading">{{job.status}}</text>
+      <text class="badge">
+        {{job.cache_hit?'命中已验证缓存':'独立模型调用'}}
+      </text>
+    </view>
+    <view class="muted">{{stage}} · {{job.message}}</view>
+    <view wx:for="{{job.errors}}" wx:key="index" class="notice">
+      {{item.layer}}：{{item.message}}
+    </view>
+  </view>
+  <view wx:if="{{variants.length}}">
+    <view class="navtabs">
+      <view
+        wx:for="{{variants}}"
+        wx:key="mode"
+        class="tab {{index===variantIndex?'active':''}}"
+        data-index="{{index}}"
+        bindtap="variant"
+      >
+        {{item.mode==='balanced'?'均衡优先':(item.mode==='health'?'健康优先':'预算优先')}}
+      </view>
+    </view>
+    <view class="card">
+      <view class="heading">{{selected.title}}</view>
+      <view>采购 ¥{{selected.cost}} · 人均 ¥{{selected.share}}</view>
+      <view wx:for="{{selected.tradeoffs}}" wx:key="index" class="muted">
+        {{item}}
+      </view>
+      <view wx:for="{{selected.warnings}}" wx:key="index" class="notice">
+        {{item}}
+      </view>
+      <button wx:if="{{!isShared}}" bindtap="select">
+        选用此方案 · 同步给成员
+      </button>
+    </view>
+    <view
+      wx:for="{{selected.days}}"
+      wx:for-item="day"
+      wx:key="date"
+      class="card"
+    >
+      <view class="eyebrow">{{day.date}}</view>
+      <view wx:if="{{day.mine}}" class="muted">
+        我的本餐：{{day.mine.kcal}} kcal · 蛋白 {{day.mine.protein}}g · 碳水
+        {{day.mine.carbs}}g · 脂肪 {{day.mine.fat}}g（估算）
+      </view>
+      <view wx:for="{{day.dishes}}" wx:for-item="dish" wx:key="name">
+        <view class="heading">{{dish.name}}</view>
+        <text wx:if="{{selected.split_mode}}" class="badge">
+          适合：{{dish.recipientNames}}
+        </text>
+        <view
+          class="muted"
+          wx:for="{{dish.ingredients}}"
+          wx:for-item="portion"
+          wx:key="ingredient_id"
+        >
+          {{portion.displayName}} · {{portion.grams}}g（整道菜）
+        </view>
+        <view
+          class="steps"
+          wx:for="{{dish.steps}}"
+          wx:for-item="step"
+          wx:key="index"
+        >
+          {{index+1}}. {{step}}
+        </view>
+        <view class="divider" />
+      </view>
+    </view>
+    <view class="card">
+      <view class="heading">只买缺少的食材</view>
+      <view
+        wx:for="{{selected.shopping}}"
+        wx:key="ingredient_id"
+        class="row label"
+      >
+        <text>{{item.name}} · {{item.grams}}g</text>
+        <text>{{item.estimated?'估算':'历史实价'}}</text>
+      </view>
+      <button class="secondary" bindtap="copy">复制采购清单</button>
+      <button class="secondary" bindtap="image">生成清单图片</button>
+    </view>
+    <view class="notice">{{selected.disclaimer}}</view>
+  </view>
+  <view wx:if="{{shared.length}}" class="card">
+    <view class="heading">群组已选方案</view>
+    <view
+      wx:for="{{shared}}"
+      wx:key="id"
+      class="muted"
+      data-id="{{item.id}}"
+      bindtap="showShared"
+    >
+      {{item.plan.title}} · {{item.plan.days[0].date}}
+    </view>
+  </view>
+  <canvas
+    canvas-id="shopping"
+    class="copycanvas"
+    style="height:{{canvasHeight}}px"
+  />
+</view>

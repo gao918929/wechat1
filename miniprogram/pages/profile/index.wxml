@@ -1,0 +1,120 @@
+<view class="page">
+  <view class="eyebrow">YOUR PREFERENCES, YOUR RULES</view>
+  <view class="title">{{name}} 的膳食画像</view>
+  <view class="notice">
+    个人体征仅本人可查看。群体规划使用成员的饮食约束，不展示体重或个人孪生。
+  </view>
+  <view class="card">
+    <view class="row">
+      <view class="grow">
+        <view class="label">身高 cm</view>
+        <input
+          type="digit"
+          value="{{profile.height_cm}}"
+          data-key="profile.height_cm"
+          bindinput="field"
+        />
+      </view>
+      <view class="grow">
+        <view class="label">体重 kg</view>
+        <input
+          type="digit"
+          value="{{profile.weight_kg}}"
+          data-key="profile.weight_kg"
+          bindinput="field"
+        />
+      </view>
+    </view>
+    <view class="row">
+      <view class="grow">
+        <view class="label">年龄</view>
+        <input
+          type="number"
+          value="{{profile.age}}"
+          data-key="profile.age"
+          bindinput="field"
+        />
+      </view>
+      <view class="grow">
+        <view class="label">体脂率 %（可选）</view>
+        <input
+          type="digit"
+          value="{{profile.body_fat_pct}}"
+          data-key="profile.body_fat_pct"
+          bindinput="field"
+        />
+      </view>
+    </view>
+    <view class="label">生理性别（仅用于成人参考公式）</view>
+    <picker
+      range="{{sexes}}"
+      value="{{sexIndex}}"
+      data-key="sexIndex"
+      bindchange="field"
+    >
+      {{sexes[sexIndex]}}
+    </picker>
+    <view class="label">膳食目标</view>
+    <picker
+      range="{{goals}}"
+      value="{{goalIndex}}"
+      data-key="goalIndex"
+      bindchange="field"
+    >
+      {{goals[goalIndex]}}
+    </picker>
+    <view class="label">人群标签</view>
+    <checkbox-group data-key="tags" bindchange="check">
+      <label wx:for="{{tags}}" wx:key="id" class="choice">
+        <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+        {{item.name}}
+      </label>
+    </checkbox-group>
+    <view class="heading">过敏原 · 永不妥协</view>
+    <checkbox-group data-key="allergens" bindchange="check">
+      <label wx:for="{{allergens}}" wx:key="id" class="choice">
+        <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+        {{item.name}}
+      </label>
+    </checkbox-group>
+    <view class="label">医生告知的禁忌食材（硬约束）</view>
+    <checkbox-group data-key="forbidden_ingredients" bindchange="check">
+      <label wx:for="{{forbidden}}" wx:key="id" class="choice">
+        <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+        {{item.name}}
+      </label>
+    </checkbox-group>
+    <view class="label">不喜欢的食材（逗号分隔，可覆盖）</view>
+    <input
+      value="{{dislikes}}"
+      data-key="dislikes"
+      bindinput="field"
+      placeholder="如：番茄,胡萝卜"
+    />
+    <view class="label">喜欢的口味 / 菜系</view>
+    <input value="{{likes}}" data-key="likes" bindinput="field" />
+    <view class="label">专业确认的每餐目标 JSON（可选；特殊人群必填）</view>
+    <textarea
+      value="{{target}}"
+      data-key="target"
+      bindinput="field"
+      maxlength="2000"
+      auto-height
+    />
+    <button class="mini secondary" bindtap="template">填写字段模板</button>
+    <view class="notice">
+      没有手动目标时，资料完整的普通成人可使用固定活动系数的估算参考；孕哺期、儿童和慢病不会自动套用成人公式。
+    </view>
+    <button disabled="{{busy}}" loading="{{busy}}" bindtap="save">
+      保存我的画像
+    </button>
+    <button class="secondary" bindtap="autoTarget">
+      查看已保存画像的营养目标
+    </button>
+  </view>
+  <button class="secondary" bindtap="twin">查看数字孪生与隐私设置</button>
+  <button class="secondary" bindtap="invite">
+    重置并复制群组邀请码（管理员）
+  </button>
+  <button class="danger" bindtap="logout">退出登录</button>
+</view>

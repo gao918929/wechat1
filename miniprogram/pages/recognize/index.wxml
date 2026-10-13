@@ -1,0 +1,119 @@
+<view class="page">
+  <view class="eyebrow">CAPTURE / REVIEW / CONFIRM</view>
+  <view class="title">{{titles[kind]}}</view>
+  <view class="notice">
+    识别是辅助，不是事实。每个字段都能改，确认后才会写入记录；原图不持久保存。
+  </view>
+  <button bindtap="photo" disabled="{{busy}}" loading="{{busy}}">
+    拍照 / 从相册选择
+  </button>
+  <view class="card">
+    <textarea
+      value="{{text}}"
+      data-key="text"
+      bindinput="field"
+      placeholder="自然语言录入或修正，如：把番茄改成400g"
+    />
+    <button class="secondary" bindtap="text" disabled="{{busy}}">
+      {{draft?'让 AI 修改这份草稿':'从文字生成草稿'}}
+    </button>
+  </view>
+  <block wx:if="{{draft}}">
+    <view wx:for="{{items}}" wx:key="index" class="card">
+      <view class="row">
+        <view class="heading">{{item.name}}</view>
+        <text class="badge {{item.estimated?'warn':''}}">
+          {{item.estimated?'估算':'待确认精确值'}}
+        </text>
+      </view>
+      <text wx:if="{{!item.matched}}" class="notice">
+        未匹配，请手动选择食材。
+      </text>
+      <picker
+        range="{{catalog}}"
+        range-key="name"
+        value="{{item.foodIndex}}"
+        data-index="{{index}}"
+        bindchange="matched"
+      >
+        {{item.matched?catalog[item.foodIndex].name:'点此手动匹配'}} ▾
+      </picker>
+      <view class="label">
+        重量（克）{{item.estimate_range_pct?' · 估算范围
+        ±'+item.estimate_range_pct+'%':''}}
+      </view>
+      <input
+        type="digit"
+        value="{{item.grams}}"
+        data-index="{{index}}"
+        data-key="grams"
+        bindinput="row"
+      />
+      <view class="row label">
+        <text>估算数据</text>
+        <switch
+          checked="{{item.estimated}}"
+          data-index="{{index}}"
+          data-key="estimated"
+          bindchange="row"
+        />
+      </view>
+      <block wx:if="{{kind!=='meal'}}">
+        <view class="label">确认食用期限</view>
+        <picker
+          mode="date"
+          value="{{item.expires}}"
+          data-index="{{index}}"
+          data-key="expires"
+          bindchange="row"
+        >
+          {{item.expires}}
+        </picker>
+      </block>
+      <block wx:if="{{kind==='receipt'}}">
+        <view class="label">该行金额（元，可留空）</view>
+        <input
+          type="digit"
+          value="{{item.price}}"
+          data-index="{{index}}"
+          data-key="price"
+          bindinput="row"
+        />
+      </block>
+      <button class="mini danger" data-index="{{index}}" bindtap="remove">
+        移除此条
+      </button>
+    </view>
+    <view wx:if="{{kind==='receipt'}}" class="card">
+      <view class="heading">实际支付总金额（元）</view>
+      <input type="digit" value="{{paid}}" data-key="paid" bindinput="field" />
+      <view class="row label">
+        <text>我已核对实付金额</text>
+        <switch checked="{{actual}}" data-key="actual" bindchange="field" />
+      </view>
+    </view>
+    <view wx:if="{{kind==='meal'}}" class="card">
+      <picker
+        range="{{contexts}}"
+        value="{{contextIndex}}"
+        data-key="contextIndex"
+        bindchange="field"
+      >
+        {{contexts[contextIndex]}}
+      </picker>
+      <view class="notice">
+        上方分量应为你本人摄入的原料可食重量。共同烹饪的其他分量，请在库存页另行记录。
+      </view>
+      <view wx:if="{{contextIndex==0}}" class="row label">
+        <text>按上述分量同步扣减库存</text>
+        <switch checked="{{deduct}}" data-key="deduct" bindchange="field" />
+      </view>
+    </view>
+    <view wx:for="{{draft.warnings}}" wx:key="index" class="notice">
+      {{item}}
+    </view>
+    <button bindtap="confirm" disabled="{{busy}}" loading="{{busy}}">
+      我已逐项核对 · 确认保存
+    </button>
+  </block>
+</view>

@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/inventory/index",
+    "pages/plan/index",
+    "pages/journal/index",
+    "pages/profile/index",
+    "pages/login/index",
+    "pages/recognize/index",
+    "pages/twin/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "MealAgent",
+    "navigationBarBackgroundColor": "#f6f7f2",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f7f2"
+  },
+  "tabBar": {
+    "color": "#7a8677",
+    "selectedColor": "#205c3d",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "今日"
+      },
+      {
+        "pagePath": "pages/inventory/index",
+        "text": "冰箱"
+      },
+      {
+        "pagePath": "pages/plan/index",
+        "text": "计划"
+      },
+      {
+        "pagePath": "pages/journal/index",
+        "text": "记录"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

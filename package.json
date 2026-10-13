@@ -1,0 +1,10 @@
+{
+  "name": "mealagent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "commonjs",
+  "scripts": {
+    "test:stream": "node backend/tests/test_sse.cjs",
+    "check:mini": "node scripts/check-miniprogram.cjs"
+  }
+}

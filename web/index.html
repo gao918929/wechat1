@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MealAgent · 好好吃饭，从容生活</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="/">m<span>MealAgent</span></a>
+      <p class="aside-note">好好吃饭，从容生活。</p>
+      <nav id="nav">
+        <button data-tab="overview" class="active">01　今日概览</button
+        ><button data-tab="inventory">02　冰箱库存</button
+        ><button data-tab="plan">03　一周计划</button
+        ><button data-tab="record">04　账单与复盘</button
+        ><button data-tab="profile">05　我的画像</button
+        ><button data-tab="memory">06　数字孪生</button>
+      </nav>
+      <div class="aside-bottom">
+        真实数据 · 可解释估算<br /><span id="connection">正在连接后端…</span
+        ><button id="logout" class="quiet">退出登录</button>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <span class="eyebrow">YOUR EVERYDAY MEAL COMPANION</span
+        ><select id="groupPicker" aria-label="当前群组">
+          <option>未选择群组</option>
+        </select>
+      </header>
+      <div id="toast" role="status" hidden></div>
+      <section id="auth" class="card" hidden>
+        <span class="eyebrow">LOCAL DEVELOPMENT CONSOLE</span>
+        <h2>欢迎，先连接你的账户。</h2>
+        <p>
+          这是配套的本地验收界面，与微信小程序使用同一套真实 API。AI
+          密钥只保存在后端，页面不会生成演示用假计划。
+        </p>
+        <form id="loginForm" class="inline">
+          <label
+            >开发用户名<input
+              name="name"
+              required
+              maxlength="60"
+              placeholder="你的名字" /></label
+          ><label
+            >本地开发密钥<input
+              name="key"
+              type="password"
+              required
+              minlength="16"
+              autocomplete="off"
+              placeholder="后端 .env 中的 DEV_LOGIN_KEY" /></label
+          ><button>登录本地账户 →</button>
+        </form>
+        <p class="hint">
+          仅在后端启用 ALLOW_DEV_LOGIN
+          后可用；开发登录只允许回环地址。真实微信登录请使用小程序。个人膳食信息将发给你配置的
+          AI 服务商，原图不持久保存。
+        </p>
+      </section>
+      <section id="overview" class="tab">
+        <div class="hero">
+          <div>
+            <span class="eyebrow">LESS WASTE. MORE BALANCE.</span>
+            <h1>让每一餐，<br />都有更好的安排。</h1>
+            <p>把库存、预算和偏好交给 AI。<br />把最终选择，留给你。</p>
+            <button data-goto="plan">开始规划这一周 ↗</button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="plate">
+              <div class="leaf l1"></div>
+              <div class="leaf l2"></div>
+              <div class="leaf l3"></div>
+              <div class="tomato"></div>
+              <div class="grain"></div>
+            </div>
+            <span>GOOD FOOD, LESS FUSS.</span>
+          </div>
+        </div>
+        <div class="metrics">
+          <article>
+            <span>冰箱里的食材</span><strong id="stockCount">—</strong
+            ><small id="alertCount">尚未加载</small>
+          </article>
+          <article>
+            <span>近 7 天实际支出</span><strong id="spent">—</strong
+            ><small>来源：确认后的实付账单</small>
+          </article>
+          <article>
+            <span>本周记录餐次</span><strong id="mealCount">—</strong
+            ><small>不把未记录餐食计作零摄入</small>
+          </article>
+        </div>
+        <div class="columns">
+          <article class="card">
+            <h2>你的家庭 / 宿舍</h2>
+            <form id="createGroup" class="inline">
+              <input name="name" required placeholder="群组名称" /><button>
+                创建
+              </button>
+            </form>
+            <form id="joinGroup" class="inline">
+              <input name="code" required placeholder="粘贴邀请码" /><button
+                class="secondary"
+              >
+                加入
+              </button>
+            </form>
+            <p class="hint" id="invite"></p>
+          </article>
+          <article class="card">
+            <h2>后台通知</h2>
+            <div id="notifications" class="empty">
+              还没有通知。离开页面也不会取消计划任务。
+            </div>
+          </article>
+        </div>
+        <article class="card">
+          <h2>已记录营养趋势</h2>
+          <div id="chart" class="empty">记录一餐后，趋势会出现在这里。</div>
+          <p class="hint">所有营养数值均为基于原料重量的估算，不是医学检测。</p>
+        </article>
+      </section>
+      <section id="inventory" class="tab" hidden>
+        <span class="eyebrow">KNOW WHAT YOU HAVE</span>
+        <h1>食材，不浪费。</h1>
+        <div class="columns">
+          <article class="card">
+            <h2>确认入库</h2>
+            <form id="stockForm">
+              <label
+                >食材<select name="ingredient_id" class="foods"></select
+              ></label>
+              <div class="inline">
+                <label
+                  >可食重量 / g<input
+                    name="grams"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    required /></label
+                ><label
+                  >食用期限<input name="expires_on" type="date" required
+                /></label>
+              </div>
+              <label class="check"
+                ><input name="estimated" type="checkbox" />此重量为估算</label
+              ><button>添加库存</button>
+            </form>
+          </article>
+          <article class="card">
+            <h2>采购参考价</h2>
+            <form id="priceForm">
+              <label
+                >食材<select name="ingredient_id" class="foods"></select></label
+              ><label
+                >价格 / 元每千克<input
+                  name="price"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required /></label
+              ><label
+                >来源（城市 / 市场）<input
+                  name="source"
+                  required
+                  placeholder="手动采集的市场报价" /></label
+              ><button class="secondary">保存为估算参考价</button>
+            </form>
+            <p class="hint">
+              有历史精确实付价时优先使用实付价。不会把参考价写成真实消费。
+            </p>
+          </article>
+        </div>
+        <div id="stockList"></div>
+      </section>
+      <section id="plan" class="tab" hidden>
+        <span class="eyebrow">FOUR AGENTS, ONE THOUGHTFUL PLAN</span>
+        <h1>把选择权，留给你。</h1>
+        <article class="card">
+          <form id="planForm">
+            <label
+              >告诉 AI 你的想法<textarea name="prompt" rows="3" required>
+请优先使用临期库存，兼顾所有成员的口味、预算和营养目标，规划一周晚餐。</textarea
+              >
+            </label>
+            <div class="inline">
+              <label
+                >预算 / 元<input
+                  name="budget"
+                  type="number"
+                  min="1"
+                  value="80"
+                  required /></label
+              ><label
+                >口径<select name="budget_mode">
+                  <option value="per_person">人均预算</option>
+                  <option value="total">总预算</option>
+                </select></label
+              ><label
+                >天数<input
+                  name="days"
+                  type="number"
+                  min="1"
+                  max="7"
+                  value="7"
+                  required /></label
+              ><label
+                >开始日期<input name="start_date" type="date" required
+              /></label>
+            </div>
+            <div id="diners"></div>
+            <label class="check"
+              ><input
+                type="checkbox"
+                name="override_soft"
+              />我允许覆盖普通口味偏好（过敏原 / 慢病禁忌不可覆盖）</label
+            ><button>开始真实多 Agent 规划 →</button>
+          </form>
+        </article>
+        <article class="card" id="jobStatus" hidden></article>
+        <div id="planResults"></div>
+        <article class="card">
+          <h2>群组已选方案</h2>
+          <div id="sharedPlans" class="empty">尚未选用方案</div>
+        </article>
+      </section>
+      <section id="record" class="tab" hidden>
+        <span class="eyebrow">CAPTURE / CHECK / CONFIRM</span>
+        <h1>记录每一餐的真实。</h1>
+        <article class="card">
+          <h2>照片识别与自然语言草稿</h2>
+          <form id="recognizeForm">
+            <div class="inline">
+              <label
+                >类型<select name="kind">
+                  <option value="inventory">食材入库</option>
+                  <option value="receipt">购物小票</option>
+                  <option value="meal">餐后复盘</option>
+                </select></label
+              ><label
+                >照片<input name="image" type="file" accept="image/*"
+              /></label>
+            </div>
+            <label
+              >或用文字描述<textarea
+                name="text"
+                rows="2"
+                placeholder="例如：番茄400g，重量已确认。"
+              ></textarea></label
+            ><button>识别为可编辑草稿</button>
+          </form>
+          <p class="hint">
+            不自动改库存、不自动记账。图片处理完即释放，不持久保存。
+          </p>
+        </article>
+        <article class="card" id="draftCard" hidden>
+          <h2>逐项检查，确认后写入</h2>
+          <p class="hint">
+            以下 JSON 是实际识别结果的可编辑确认表单。未知食材必须匹配目录
+            ID；重量缺失不能直接保存。expires_on 需由你确认。meal 中的
+            consumption 为空时只记录营养。
+          </p>
+          <textarea id="draftEditor" rows="16" spellcheck="false"></textarea>
+          <div class="inline">
+            <input id="refineText" placeholder="例如：把番茄改成500g" /><button
+              id="refineDraft"
+              class="secondary"
+            >
+              AI 修改草稿</button
+            ><button id="confirmDraft">我已核对 · 确认保存</button>
+          </div>
+          <pre id="draftWarnings"></pre>
+        </article>
+        <div class="columns">
+          <article class="card">
+            <h2>仅记录实付金额</h2>
+            <form id="receiptForm">
+              <label
+                >实际支付 / 元<input
+                  name="paid"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required /></label
+              ><label class="check"
+                ><input
+                  type="checkbox"
+                  required
+                />我已确认实际支付金额，账单不可直接改写</label
+              ><button>记录支出</button>
+            </form>
+          </article>
+          <article class="card">
+            <h2>实付账单</h2>
+            <div id="receiptList" class="empty">暂无账单</div>
+          </article>
+        </div>
+      </section>
+      <section id="profile" class="tab" hidden>
+        <span class="eyebrow">YOUR PREFERENCES, YOUR RULES</span>
+        <h1>一份只属于你的画像。</h1>
+        <article class="card">
+          <p>
+            这份画像只有本人能读取和修改。群体规划会读取饮食约束，但不向其他成员展示你的体征。请在下方编辑
+            JSON；手机端提供原生表单。
+          </p>
+          <p class="hint">
+            普通成人需填写 age / height_cm / weight_kg / sex，或设置
+            meal_target。孕哺期、慢病、儿童必须使用专业确认的每餐目标。allergens
+            使用目录键，forbidden_ingredients 使用食材 ID。
+          </p>
+          <textarea id="profileEditor" rows="22" spellcheck="false"></textarea>
+          <div class="inline">
+            <button id="saveProfile">保存画像</button
+            ><button id="viewTarget" class="secondary">查看营养目标</button>
+          </div>
+          <pre id="targetOutput"></pre>
+        </article>
+      </section>
+      <section id="memory" class="tab" hidden>
+        <span class="eyebrow">GETTING TO KNOW YOU</span>
+        <h1>越用，越懂你。</h1>
+        <div class="columns">
+          <article class="card">
+            <h2>个人孪生 · 私密</h2>
+            <pre id="personalTwin">登录后加载</pre>
+          </article>
+          <article class="card">
+            <h2>集体孪生 · 受权限保护</h2>
+            <pre id="groupTwin">选择群组后加载</pre>
+          </article>
+        </div>
+        <article class="card">
+          <form id="feedbackForm">
+            <label
+              >你的调整与偏好<textarea
+                name="text"
+                required
+                rows="3"
+                placeholder="例如：把胡萝卜换成了西兰花"
+              ></textarea></label
+            ><label class="check"
+              ><input
+                type="checkbox"
+                name="shared"
+              />允许这条偏好进入集体孪生</label
+            ><button>记录反馈</button>
+          </form>
+          <p class="hint">
+            孪生按周汇总。最新反馈和用餐偏差也会直接参与下一次计划。
+          </p>
+        </article>
+      </section>
+      <footer>
+        MealAgent · 通用膳食参考，不代替医生或营养师。特殊人群请遵医嘱。<br />本地验收界面
+        / 原生微信小程序位于 miniprogram 目录。
+      </footer>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
