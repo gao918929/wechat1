@@ -1,0 +1,56 @@
+<view class="container">
+  <view class="tabs">
+    <view class="tab {{view === 'me' ? 'active' : ''}}" bindtap="setView" data-v="me">个人孪生</view>
+    <view class="tab {{view === 'group' ? 'active' : ''}}" bindtap="setView" data-v="group">小组孪生</view>
+  </view>
+
+  <view class="card" wx:if="{{view === 'group' && groupError}}"><view class="small">{{groupError}}</view></view>
+
+  <block wx:if="{{vm && (view === 'me' || groupTwin)}}">
+    <view class="card">
+      <view class="between">
+        <view class="bold">已学习 {{vm.feedback}} 条反馈</view>
+        <text class="muted">v{{view === 'me' ? twin.version : groupTwin.version}}</text>
+      </view>
+      <view class="muted mt">{{view === 'me' ? twin.visibility : '可见范围：' + groupTwin.visibility}} · 每周自动更新一次</view>
+      <button class="btn ghost small mt" wx:if="{{view === 'me'}}" bindtap="refresh">立即按最新反馈更新</button>
+    </view>
+
+    <view class="card" wx:if="{{view === 'group'}}">
+      <view class="card-title">成员画像（并集 / 交集）</view>
+      <view class="small">全员忌口并集：{{vm.unionAvoid || '无'}}</view>
+      <view class="small mt">全员过敏原并集：{{vm.unionAllergens || '无'}}</view>
+      <view class="small mt" wx:if="{{vm.budget}}">周均支出 ¥{{vm.budget.avg_weekly_spend}} · 常去 {{vm.budget.channels.length ? vm.budget.channels[0] : '—'}}</view>
+      <view class="notice">{{groupTwin.note}}</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">口味偏好</view>
+      <view class="small">偏爱的菜：</view>
+      <view class="row wrap"><text wx:for="{{vm.favor}}" wx:key="name" class="tag">{{item.name}} +{{item.score}}</text><text wx:if="{{!vm.favor.length}}" class="muted">暂无</text></view>
+      <view class="small mt">不太喜欢：</view>
+      <view class="row wrap"><text wx:for="{{vm.avoid}}" wx:key="name" class="tag gray">{{item.name}} {{item.score}}</text><text wx:if="{{!vm.avoid.length}}" class="muted">暂无</text></view>
+      <view class="small mt" wx:if="{{vm.ingredients.length}}">食材倾向：</view>
+      <view class="row wrap"><text wx:for="{{vm.ingredients}}" wx:key="name" class="tag {{item.score > 0 ? '' : 'gray'}}">{{item.name}} {{item.score}}</text></view>
+      <view class="small mt" wx:if="{{vm.subs.length}}">替换习惯：</view>
+      <view class="row wrap"><text wx:for="{{vm.subs}}" wx:key="from" class="tag warn">{{item.from}}→{{item.to}} ×{{item.count}}</text></view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">习惯与校准</view>
+      <view class="small" wx:if="{{vm.choices.length}}">方案选择：<text wx:for="{{vm.choices}}" wx:key="name" class="tag gray">{{item.name}} ×{{item.n}}</text></view>
+      <view class="small mt" wx:if="{{vm.price}}">消费习惯：{{vm.price}}</view>
+      <view class="small mt" wx:if="{{vm.recent}}">最近吃过：{{vm.recent}}</view>
+      <view class="small mt" wx:if="{{vm.calibration.length}}">估重校准：<text wx:for="{{vm.calibration}}" wx:key="name" class="tag gray">{{item.name}} ×{{item.factor}}</text></view>
+      <view class="muted mt" wx:if="{{!vm.choices.length && !vm.calibration.length}}">使用越多，这里记住的越多。</view>
+    </view>
+
+    <view class="card" wx:if="{{view === 'me'}}">
+      <view class="card-title">手动调整（仅本人可见）</view>
+      <view class="field"><text class="label">喜欢</text><input class="input" value="{{likes}}" data-k="likes" bindinput="onInput" placeholder="如 牛肉、西兰花" /></view>
+      <view class="field"><text class="label">不喜欢</text><input class="input" value="{{dislikes}}" data-k="dislikes" bindinput="onInput" placeholder="如 茄子" /></view>
+      <view class="field"><text class="label">备注</text><input class="input" value="{{notes}}" data-k="notes" bindinput="onInput" placeholder="如 喜欢清淡、少油" /></view>
+      <button class="btn mt" bindtap="save">保存</button>
+    </view>
+  </block>
+</view>

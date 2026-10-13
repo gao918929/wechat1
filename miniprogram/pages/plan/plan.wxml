@@ -1,0 +1,123 @@
+<view class="container">
+  <!-- generation progress (streamed) -->
+  <view class="card" wx:if="{{status !== 'done' || showDetails}}">
+    <view class="card-title">
+      <text>{{status === 'done' ? '生成过程' : status === 'failed' ? '生成失败' : '智能体协作中…'}}</text>
+      <text class="muted" wx:if="{{status !== 'done' && status !== 'failed'}}">可离开页面，完成后会通知你</text>
+    </view>
+    <view wx:for="{{agents}}" wx:key="agent" class="list-item">
+      <view class="between"><text class="bold">{{item.icon}} {{item.title}}</text><text class="tag {{item.mode === 'llm' ? '' : 'gray'}}">{{item.mode === 'llm' ? 'LLM' : '规则'}}</text></view>
+      <view class="small mt">{{item.summary}}</view>
+    </view>
+    <view class="mt">
+      <view wx:for="{{log}}" wx:key="*this" class="muted" style="line-height:1.8">{{item}}</view>
+    </view>
+    <view class="small mt" wx:if="{{error}}" style="color:var(--danger)">{{error}}</view>
+  </view>
+
+  <!-- days arriving while streaming -->
+  <block wx:if="{{status !== 'done'}}">
+    <view class="card" wx:for="{{streamDays}}" wx:for-item="day" wx:key="day">
+      <view class="bold">第 {{day.day}} 天 · {{day.date}}</view>
+      <view wx:for="{{day.meals}}" wx:for-item="m" wx:key="meal" class="small mt">
+        {{m.label}}：<text wx:for="{{m.dishes}}" wx:key="name">{{item.name}}　</text>
+      </view>
+    </view>
+  </block>
+
+  <block wx:if="{{status === 'done' && variant}}">
+    <view class="tabs" wx:if="{{variants.length > 1}}">
+      <view wx:for="{{variants}}" wx:key="key" class="tab {{active === item.key ? 'active' : ''}}" bindtap="onTab" data-key="{{item.key}}">
+        {{item.title}}
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">
+        <text>{{variant.title}}</text>
+        <text class="tag {{variant.validation.passed ? '' : 'warn'}}">{{variant.validation.passed ? '三层校验通过' : '部分约束未满足'}}</text>
+      </view>
+      <view class="small">{{variant.tradeoff}}</view>
+      <view class="row mt">
+        <view class="stat"><view class="num">¥{{variant.costText}}</view><view class="lbl">预计采购</view></view>
+        <view class="stat"><view class="num">¥{{variant.perPersonText}}</view><view class="lbl">人均</view></view>
+        <view class="stat"><view class="num">{{variant.summary.budget_total ? '¥' + variant.summary.budget_total : '—'}}</view><view class="lbl">预算</view></view>
+      </view>
+      <view class="bar mt" wx:if="{{variant.summary.budget_total}}"><view class="fill {{variant.summary.within_budget ? '' : 'danger'}}" style="width:{{variant.usePct}}%"></view></view>
+      <view class="small mt" wx:if="{{variant.nearUsed}}">🧊 临期优先：{{variant.nearUsed}}</view>
+      <view class="small mt" wx:if="{{variant.nearUnused}}" style="color:var(--warn)">⚠ 未用完的临期食材：{{variant.nearUnused}}</view>
+      <view class="small mt" wx:if="{{variant.summary.cost_estimated}}"><text class="est">部分价格为参考价（估算）</text></view>
+      <view wx:if="{{!variant.validation.passed}}" class="mt">
+        <view class="small" wx:for="{{variant.issues}}" wx:key="*this">• {{item}}</view>
+        <view class="small mt bold" wx:if="{{variant.validation.suggestions}}">建议：</view>
+        <view class="small" wx:for="{{variant.validation.suggestions.tips}}" wx:key="*this">→ {{item}}</view>
+        <view class="muted" wx:if="{{variant.validation.suggestions}}">已满足：{{variant.satisfiedText}}</view>
+      </view>
+      <view class="btn-row">
+        <button class="btn {{chosen === active ? 'ghost' : ''}}" bindtap="choose">{{chosen === active ? '✓ 已选用' : '选用此方案'}}</button>
+        <button class="btn ghost" bindtap="shopping">🛒 购物清单</button>
+      </view>
+      <view class="muted mt center">{{variant.label}}</view>
+    </view>
+
+    <view class="card" wx:if="{{result.differentiated}}">
+      <view class="bold">差异化多菜已启用</view>
+      <view class="small mt" wx:for="{{result.diff_reasons}}" wx:key="*this">• {{item}}</view>
+      <view class="muted mt">每道菜标注“适合谁”，大家自由组合上桌。</view>
+    </view>
+
+    <view class="card" wx:for="{{days}}" wx:for-item="day" wx:key="day">
+      <view class="card-title"><text>第 {{day.day}} 天</text><text class="muted">{{day.date}}</text></view>
+      <view wx:for="{{day.meals}}" wx:for-item="m" wx:key="meal" class="mb">
+        <view class="between">
+          <text class="bold">{{m.label}}</text>
+          <view><text class="muted">¥{{m.cost}}</text><text class="tag ml" bindtap="eat" data-day="{{day.day}}" data-meal="{{m.meal}}">吃了 ✓</text></view>
+        </view>
+        <view wx:for="{{m.dishes}}" wx:for-item="x" wx:key="name" class="list-item">
+          <view class="between">
+            <view class="grow" bindtap="toggleDish" data-k="{{day.day}}-{{m.meal}}-{{x.name}}">
+              <text class="tag gray">{{x.kindLabel}}</text>
+              <text class="bold">{{x.name}}</text>
+              <text class="muted ml">{{x.kcal}} kcal · 蛋白 {{x.protein}}g /份</text>
+            </view>
+            <text class="muted" bindtap="dishActions" data-day="{{day.day}}" data-meal="{{m.meal}}" data-name="{{x.name}}" data-kind="{{x.kind}}">⋯</text>
+          </view>
+          <view class="small mt" wx:if="{{x.label}}"><text class="tag warn">{{x.label}}</text></view>
+          <view class="small mt" wx:if="{{x.invText}}"><text class="tag">用库存：{{x.invText}}</text></view>
+          <view class="small mt" wx:if="{{x.notes && x.notes.length}}"><text class="tag gray">替换：{{x.notesText}}</text></view>
+          <view wx:if="{{expanded[day.day + '-' + m.meal + '-' + x.name]}}" class="small mt">
+            <view>共 {{x.servings}} 份 · ¥{{x.costText}}{{x.cost_estimated ? '（估算）' : ''}} · {{x.minutes}} 分钟</view>
+            <view class="mt"><text wx:for="{{x.ingredients}}" wx:for-item="ing" wx:key="name">{{ing.name}} {{ing.grams}}g　</text>（每人份）</view>
+            <view class="mt muted">{{x.steps}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">给这周计划打分</view>
+      <view class="row">
+        <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this" style="font-size:48rpx;margin-right:16rpx" bindtap="rate" data-s="{{item}}">{{rating >= item ? '★' : '☆'}}</text>
+      </view>
+      <view class="muted mt">评分、收藏、删除、替换都会写入数字孪生，下周方案会更懂你。</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title" bindtap="toggleDetails"><text>四个智能体的分析</text><text class="muted">{{showDetails ? '收起' : '展开生成过程'}}</text></view>
+      <view class="list-item" wx:for="{{result.agents}}" wx:for-index="key" wx:key="key">
+        <view class="bold">{{item.title}} <text class="tag {{item.mode === 'llm' ? '' : 'gray'}}">{{item.mode === 'llm' ? 'LLM' : '规则'}}</text></view>
+        <view class="small mt">{{item.summary}}</view>
+      </view>
+      <view class="small mt" wx:if="{{result.conflicts.length}}">⚖️ 取舍：{{conflictsText}}</view>
+      <view class="small mt" wx:if="{{result.excluded.length}}">已排除 {{result.excluded.length}} 道菜（如 {{result.excluded[0].dish}}：{{result.excluded[0].reason}}）</view>
+      <view class="small mt" wx:for="{{result.warnings}}" wx:key="*this" style="color:var(--warn)">{{item}}</view>
+      <view class="muted mt">模型调用 {{result.llm_usage.calls}} 次 · 模式：{{result.mode === 'llm' ? 'DeepSeek 多智能体' : '离线规则引擎'}}{{result.cached ? ' · 缓存复用' : ''}}</view>
+    </view>
+    <view class="notice">{{result.disclaimer}}</view>
+  </block>
+
+  <view class="card" wx:if="{{status === 'failed'}}">
+    <view class="small">{{error}}</view>
+    <button class="btn mt" bindtap="retry">返回重试</button>
+  </view>
+</view>

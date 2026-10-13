@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Backend runtime data & secrets
+backend/.env
+backend/data/
+*.db
+
+# WeChat DevTools private settings
+miniprogram/project.private.config.json
+node_modules/
+.DS_Store

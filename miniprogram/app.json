@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/inventory/inventory",
+    "pages/planner/planner",
+    "pages/budget/budget",
+    "pages/profile/profile",
+    "pages/plan/plan",
+    "pages/recognize/recognize",
+    "pages/shopping/shopping",
+    "pages/nutrition/nutrition",
+    "pages/group/group",
+    "pages/twin/twin",
+    "pages/notifications/notifications"
+  ],
+  "window": {
+    "navigationBarTitleText": "MealAgent 膳食统筹",
+    "navigationBarBackgroundColor": "#2f7d5b",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f3f5f4",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#7a8580",
+    "selectedColor": "#2f7d5b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/inventory/inventory", "text": "冰箱" },
+      { "pagePath": "pages/planner/planner", "text": "计划" },
+      { "pagePath": "pages/budget/budget", "text": "账本" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

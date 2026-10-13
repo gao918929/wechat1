@@ -1,0 +1,94 @@
+<view class="container">
+  <view class="card">
+    <view class="between">
+      <view class="bold">{{title}}</view>
+      <button class="btn small ghost" bindtap="takePhoto" wx:if="{{!done}}">📷 {{rec && rec.upload_id ? '重拍' : '拍照'}}</button>
+    </view>
+    <view class="notice">识别只是辅助：点任意条目可修改，也可以直接说“把白菜改成400克”“这不是娃娃菜，是小白菜”。所有估算值都会标注“估算”。</view>
+    <view class="small" wx:if="{{reply}}">💬 {{reply}}</view>
+  </view>
+
+  <view class="card" wx:if="{{kind === 'receipt'}}">
+    <view class="field"><text class="label">商家</text><input class="input" value="{{card.merchant}}" data-key="merchant" bindblur="onMeta" placeholder="如 物美超市" /></view>
+    <view class="field"><text class="label">实付金额</text><input class="input" type="digit" value="{{card.total}}" data-key="total" bindblur="onMeta" placeholder="小票实付（记账口径）" /></view>
+    <picker mode="date" value="{{card.date}}" data-key="date" bindchange="onMeta">
+      <view class="field"><text class="label">购买日期</text><text class="grow">{{card.date || '今天'}}</text></view>
+    </picker>
+    <view class="field"><text class="label">同时入库</text><switch checked="{{addToInventory}}" bindchange="onAddInv" color="#2f7d5b" /></view>
+  </view>
+
+  <view class="card" wx:if="{{kind === 'meal'}}">
+    <view class="between">
+      <text>就餐场景</text>
+      <view class="row">
+        <text class="tag {{card.context === 'home' ? '' : 'gray'}}" bindtap="setContext" data-v="home">自己做（扣库存）</text>
+        <text class="tag {{card.context === 'out' ? '' : 'gray'}}" bindtap="setContext" data-v="out">外食/外卖（只记营养）</text>
+      </view>
+    </view>
+    <picker range="{{mealLabels}}" value="{{mealIndex}}" bindchange="onMeal">
+      <view class="field"><text class="label">餐次</text><text class="grow">{{mealLabels[mealIndex]}}</text></view>
+    </picker>
+    <view class="field"><text class="label">我吃了几份</text><slider class="grow" min="0.5" max="3" step="0.5" value="{{myShare}}" show-value bindchange="onShare" activeColor="#2f7d5b" /></view>
+  </view>
+
+  <view class="card">
+    <view class="card-title"><text>清单卡片（{{items.length}}）</text></view>
+    <view wx:if="{{!items.length}}" class="empty">暂无条目，可以说“加上一斤猪里脊”</view>
+    <view wx:for="{{items}}" wx:key="id" class="list-item">
+      <view class="between">
+        <view class="row grow" bindtap="openEdit" data-index="{{index}}">
+          <view>
+            <text class="bold">{{item.name}}</text>
+            <text class="muted ml" wx:if="{{item.recognized_as && item.recognized_as !== item.name}}">（识别为 {{item.recognized_as}}）</text>
+            <view class="small mt" wx:if="{{kind !== 'meal'}}">
+              <text wx:if="{{item.quantity}}">{{item.quantity}} 个 · </text>
+              <text class="{{item.is_estimated ? 'est' : ''}}">{{item.weight_text || (item.needs_weight ? '已识别食材，需补充重量' : '')}}</text>
+              <text wx:if="{{item.amount}}"> · ¥{{item.amount}}</text>
+              <text wx:if="{{item.unit_price}}" class="muted"> （{{item.unit_price}} 元/kg{{item.estimated ? '，估算' : ''}}）</text>
+            </view>
+            <view class="small mt" wx:else>
+              <text wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">{{ing.name}} {{ing.grams}}g　</text>
+              <view class="muted">约 {{item.nutrition_total.kcal}} kcal（估算，{{item.portion}} 人份）</view>
+            </view>
+            <view class="mt">
+              <text class="tag warn" wx:if="{{item.status === 'confirm'}}">待确认</text>
+              <text class="tag danger" wx:if="{{item.freshness === 'not_fresh'}}">外观不新鲜</text>
+              <text class="tag gray" wx:if="{{item.estimate && item.estimate.method}}">{{item.estimate.method}}</text>
+            </view>
+          </view>
+        </view>
+        <checkbox checked="{{include[item.id]}}" bindtap="toggleInclude" data-id="{{item.id}}" color="#2f7d5b" />
+      </view>
+    </view>
+    <view class="chat-bar mt" wx:if="{{!done}}">
+      <input class="input" placeholder="用一句话修改清单" value="{{chatText}}" bindinput="onChat" confirm-type="send" bindconfirm="sendChat" />
+      <button class="btn small" bindtap="sendChat">发送</button>
+    </view>
+    <button class="btn mt" bindtap="confirm" wx:if="{{rec && !done}}">确认{{kind === 'ingredients' ? '入库' : kind === 'receipt' ? '记账' : '记录'}}</button>
+  </view>
+
+  <view class="card" wx:if="{{done}}">
+    <view class="bold">✅ 完成</view>
+    <view class="small mt" wx:if="{{done.added}}">已入库：{{doneText.added}}</view>
+    <view class="small mt" wx:if="{{done.skipped && done.skipped.length}}">未入库（待确认）：{{doneText.skipped}}</view>
+    <view class="small mt" wx:if="{{done.total}}">已记账 ¥{{done.total}}</view>
+    <view class="small mt" wx:if="{{done.inventory_note}}">{{done.inventory_note}}</view>
+    <view class="small mt" wx:if="{{done.nutrition}}">本餐摄入约 {{done.nutrition.kcal}} kcal，蛋白质 {{done.nutrition.protein}} g（估算）</view>
+    <view class="small mt" wx:if="{{done.deviation && done.deviation.length}}">与计划相比未吃：{{doneText.deviation}}（已写入数字孪生）</view>
+  </view>
+
+  <view class="mask" wx:if="{{editIndex >= 0}}" bindtap="closeEdit">
+    <view class="sheet" catchtap="">
+      <view class="bold mb">修改条目</view>
+      <view class="field"><text class="label">名称</text><input class="input" value="{{edit.name}}" data-key="name" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind !== 'meal'}}"><text class="label">重量（克）</text><input class="input" type="digit" value="{{edit.weight_g}}" data-key="weight_g" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind !== 'meal'}}"><text class="label">数量（个）</text><input class="input" type="digit" value="{{edit.quantity}}" data-key="quantity" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind === 'receipt'}}"><text class="label">金额（元）</text><input class="input" type="digit" value="{{edit.amount}}" data-key="amount" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind === 'receipt'}}"><text class="label">单价 元/kg</text><input class="input" type="digit" value="{{edit.unit_price}}" data-key="unit_price" bindinput="onEdit" /></view>
+      <view class="btn-row">
+        <button class="btn ghost" bindtap="removeItem">删除</button>
+        <button class="btn" bindtap="saveEdit">保存</button>
+      </view>
+    </view>
+  </view>
+</view>

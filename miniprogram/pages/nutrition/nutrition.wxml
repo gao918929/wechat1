@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="tabs">
+    <view class="tab {{view === 'me' ? 'active' : ''}}" bindtap="setView" data-v="me">个人</view>
+    <view class="tab {{view === 'group' ? 'active' : ''}}" bindtap="setView" data-v="group">小组整体</view>
+  </view>
+  <view class="row mb">
+    <text class="tag {{days === 7 ? '' : 'gray'}}" bindtap="setDays" data-d="7">近 7 天</text>
+    <text class="tag {{days === 30 ? '' : 'gray'}}" bindtap="setDays" data-d="30">近 30 天</text>
+  </view>
+
+  <block wx:if="{{view === 'me' && report}}">
+    <view class="card">
+      <view class="between">
+        <view>
+          <view class="muted">膳食健康评分</view>
+          <view style="font-size:72rpx;font-weight:700;color:var(--primary)">{{report.score === null ? '—' : report.score}}</view>
+        </view>
+        <view class="muted" style="text-align:right">已记录 {{report.logged_days}} 天<view>目标 {{report.target.kcal}} kcal/天</view></view>
+      </view>
+      <view class="mt" wx:if="{{report.reasons.length}}">
+        <text class="tag warn" wx:for="{{report.reasons}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="muted mt" wx:if="{{!report.logged_days}}">还没有饮食记录：在计划里点“吃了 ✓”，或拍照复盘一餐。</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">每日能量趋势</view>
+      <view class="row" style="height:240rpx;align-items:flex-end">
+        <view wx:for="{{bars}}" wx:key="date" class="grow center" style="height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">
+          <view class="muted" style="font-size:18rpx">{{item.kcal || ''}}</view>
+          <view style="width:60%;height:{{item.h}}%;background:{{item.over ? 'var(--warn)' : 'var(--primary)'}};border-radius:8rpx 8rpx 0 0"></view>
+        </view>
+      </view>
+      <view class="row">
+        <view wx:for="{{bars}}" wx:key="date" class="grow center muted" style="font-size:18rpx">{{item.date}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">日均摄入 vs 目标</view>
+      <view wx:for="{{report.macros}}" wx:key="name" class="mt">
+        <view class="between small"><text>{{item.name}}</text><text>{{item.v}} / {{item.t}} {{item.unit}}</text></view>
+        <view class="bar"><view class="fill" style="width:{{item.pct}}%"></view></view>
+      </view>
+      <view class="card-title mt">维生素与矿物质（估算）</view>
+      <view class="row wrap">
+        <view wx:for="{{report.micro}}" wx:key="name" class="stat" style="min-width:25%">
+          <view class="bold">{{item.v}}{{item.unit}}</view><view class="lbl">{{item.name}}（参考 {{item.ref}}）</view>
+        </view>
+      </view>
+    </view>
+    <view class="notice">数据来源：{{report.sources}}。{{report.disclaimer}}</view>
+  </block>
+
+  <block wx:if="{{view === 'group'}}">
+    <view class="card">
+      <view class="card-title">{{group.name}} · 日均</view>
+      <view wx:for="{{members}}" wx:key="user_id" class="list-item">
+        <view class="between"><text class="bold">{{item.nickname}}</text><text class="muted">{{item.meals}} 餐记录</text></view>
+        <view class="between small mt"><text>能量 {{item.avg_kcal}} / {{item.target_kcal}} kcal</text><text>蛋白质 {{item.avg_protein}} / {{item.target_protein}} g</text></view>
+        <view class="bar mt"><view class="fill" style="width:{{item.pct}}%"></view></view>
+      </view>
+    </view>
+    <view class="notice">{{disclaimer}}</view>
+  </block>
+</view>

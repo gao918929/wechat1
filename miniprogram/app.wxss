@@ -1,0 +1,70 @@
+page {
+  --primary: #2f7d5b;
+  --primary-light: #e3f1ea;
+  --warn: #d9822b;
+  --warn-light: #fdf0e3;
+  --danger: #c94a4a;
+  --danger-light: #fbe9e9;
+  --text: #1f2a24;
+  --muted: #7a8580;
+  --line: #e6ebe8;
+  --card: #ffffff;
+  background: #f3f5f4;
+  color: var(--text);
+  font-size: 28rpx;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+}
+.container { padding: 24rpx; padding-bottom: 60rpx; }
+.card { background: var(--card); border-radius: 20rpx; padding: 24rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03); }
+.card-title { font-size: 32rpx; font-weight: 600; margin-bottom: 16rpx; display: flex; justify-content: space-between; align-items: center; }
+.row { display: flex; align-items: center; }
+.between { display: flex; justify-content: space-between; align-items: center; }
+.wrap { flex-wrap: wrap; }
+.grow { flex: 1; }
+.muted { color: var(--muted); font-size: 24rpx; }
+.small { font-size: 24rpx; }
+.bold { font-weight: 600; }
+.mt { margin-top: 16rpx; }
+.mb { margin-bottom: 16rpx; }
+.ml { margin-left: 12rpx; }
+.center { text-align: center; }
+.tag { display: inline-block; padding: 4rpx 14rpx; border-radius: 999rpx; font-size: 22rpx; background: var(--primary-light); color: var(--primary); margin: 4rpx 8rpx 4rpx 0; }
+.tag.warn { background: var(--warn-light); color: var(--warn); }
+.tag.danger { background: var(--danger-light); color: var(--danger); }
+.tag.gray { background: #eef1ef; color: var(--muted); }
+.btn { background: var(--primary); color: #fff; border-radius: 12rpx; font-size: 28rpx; padding: 18rpx 28rpx; text-align: center; }
+.btn.ghost { background: #fff; color: var(--primary); border: 2rpx solid var(--primary); }
+.btn.warn { background: var(--warn); }
+.btn.small { padding: 10rpx 20rpx; font-size: 24rpx; }
+.btn[disabled] { opacity: 0.5; }
+button.btn { margin: 0; line-height: 1.4; }
+button.btn::after { border: none; }
+.btn-row { display: flex; gap: 16rpx; margin-top: 16rpx; }
+.btn-row .btn { flex: 1; }
+.input { background: #f6f8f7; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 28rpx; }
+.textarea { background: #f6f8f7; border-radius: 12rpx; padding: 16rpx 20rpx; width: auto; min-height: 140rpx; font-size: 28rpx; }
+.field { display: flex; align-items: center; padding: 18rpx 0; border-bottom: 1rpx solid var(--line); }
+.field .label { width: 180rpx; color: var(--muted); }
+.field .input { flex: 1; }
+.list-item { padding: 20rpx 0; border-bottom: 1rpx solid var(--line); }
+.list-item:last-child { border-bottom: none; }
+.stat { flex: 1; text-align: center; }
+.stat .num { font-size: 40rpx; font-weight: 700; color: var(--primary); }
+.stat .lbl { font-size: 22rpx; color: var(--muted); }
+.bar { height: 16rpx; background: #edf1ef; border-radius: 999rpx; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--primary); border-radius: 999rpx; }
+.bar .fill.warn { background: var(--warn); }
+.bar .fill.danger { background: var(--danger); }
+.chat-bar { display: flex; gap: 12rpx; align-items: center; }
+.chat-bar .input { flex: 1; }
+.empty { text-align: center; color: var(--muted); padding: 40rpx 0; }
+.notice { font-size: 22rpx; color: var(--muted); line-height: 1.6; padding: 12rpx 0; }
+.est { color: var(--warn); font-size: 22rpx; }
+.grid { display: flex; flex-wrap: wrap; }
+.grid-item { width: 33.33%; text-align: center; padding: 20rpx 0; }
+.grid-item .icon { width: 88rpx; height: 88rpx; line-height: 88rpx; border-radius: 24rpx; margin: 0 auto 10rpx; background: var(--primary-light); color: var(--primary); font-size: 40rpx; }
+.tabs { display: flex; background: #fff; border-radius: 16rpx; padding: 6rpx; margin-bottom: 20rpx; }
+.tabs .tab { flex: 1; text-align: center; padding: 14rpx 0; border-radius: 12rpx; font-size: 26rpx; color: var(--muted); }
+.tabs .tab.active { background: var(--primary); color: #fff; }
+.mask { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.45); z-index: 100; display: flex; align-items: flex-end; }
+.sheet { background: #fff; width: 100%; border-radius: 24rpx 24rpx 0 0; padding: 32rpx 32rpx 60rpx; box-sizing: border-box; }

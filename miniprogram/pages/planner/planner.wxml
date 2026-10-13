@@ -1,0 +1,47 @@
+<view class="container">
+  <view class="card">
+    <view class="card-title"><text>一句话生成一周计划</text><text class="muted">{{group.name}}</text></view>
+    <textarea class="textarea" style="width:100%;box-sizing:border-box" maxlength="1000" auto-height value="{{instruction}}" bindinput="onInput"
+      placeholder="例如：我在减脂，宿舍4个人，每人预算80元，不吃辣，冰箱里有快过期的鸡胸肉，帮我们规划一周晚餐" />
+    <view class="mt">
+      <text class="muted">试试：</text>
+      <view wx:for="{{examples}}" wx:key="*this" class="tag gray" style="display:block;margin-top:10rpx" bindtap="useExample" data-i="{{index}}">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <picker range="{{dayOptions}}" bindchange="onDays">
+      <view class="field"><text class="label">天数</text><text class="grow">{{days}} 天</text><text class="muted">▾</text></view>
+    </picker>
+    <view class="field">
+      <text class="label">餐次</text>
+      <view class="row grow">
+        <text class="tag {{meals.breakfast ? '' : 'gray'}}" bindtap="toggleMeal" data-k="breakfast">早餐</text>
+        <text class="tag {{meals.lunch ? '' : 'gray'}}" bindtap="toggleMeal" data-k="lunch">午餐</text>
+        <text class="tag {{meals.dinner ? '' : 'gray'}}" bindtap="toggleMeal" data-k="dinner">晚餐</text>
+      </view>
+    </view>
+    <view class="field"><text class="label">就餐人数</text><input class="input" type="number" value="{{people}}" bindinput="onPeople" placeholder="默认：小组成员数 / 指令中的人数" /></view>
+    <view class="field"><text class="label">备选方案</text><text class="grow small">同时生成 健康优先 / 预算优先</text><switch checked="{{alternatives}}" bindchange="onAlt" color="#2f7d5b" /></view>
+    <view class="field" wx:if="{{avoidances.length}}">
+      <text class="label">推翻忌口</text>
+      <view class="row wrap grow">
+        <text wx:for="{{avoidances}}" wx:key="*this" class="tag {{overrides[item] ? 'warn' : 'gray'}}" bindtap="toggleOverride" data-k="{{item}}">{{overrides[item] ? '这次可以吃 ' : '回避 '}}{{item}}</text>
+      </view>
+    </view>
+    <view class="notice">过敏原是硬约束（一票否决），不能推翻；口味忌口是软约束，AI 默认回避，你可以推翻。</view>
+    <button class="btn mt" bindtap="submit" disabled="{{submitting}}">{{submitting ? '提交中…' : '🤖 召集四个智能体开始规划'}}</button>
+  </view>
+
+  <view class="card">
+    <view class="card-title">历史计划</view>
+    <view wx:if="{{!plans.length}}" class="muted">暂无</view>
+    <view wx:for="{{plans}}" wx:key="id" class="list-item" bindtap="open" data-id="{{item.id}}">
+      <view class="between">
+        <text class="small grow" style="margin-right:16rpx">#{{item.id}} {{item.instruction || '按小组设置生成'}}</text>
+        <text class="tag {{item.status === 'done' ? '' : item.status === 'failed' ? 'danger' : 'warn'}}">{{item.status === 'done' ? '已完成' : item.status === 'failed' ? '失败' : '生成中'}}</text>
+      </view>
+      <view class="muted mt" wx:if="{{item.summary}}">{{item.summary.title}} · ¥{{item.summary.total_cost}} · 人均 ¥{{item.summary.per_person_cost}}</view>
+    </view>
+  </view>
+</view>

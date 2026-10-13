@@ -1,0 +1,53 @@
+<view class="container">
+  <view class="card">
+    <view class="btn-row" style="margin-top:0">
+      <button class="btn" bindtap="photo">📷 拍照识别</button>
+      <button class="btn ghost" bindtap="receipt">🧾 小票入库</button>
+    </view>
+    <view class="chat-bar mt">
+      <input class="input" placeholder="说一句：冰箱里还有两个鸡蛋和半颗白菜" value="{{chatText}}" bindinput="onChatInput" confirm-type="send" bindconfirm="sendChat" />
+      <button class="btn small" bindtap="sendChat">发送</button>
+    </view>
+    <view class="small mt" wx:if="{{chatReply}}">{{chatReply}}</view>
+    <view class="notice" wx:if="{{!isAdmin}}">你是成员：可标记消耗（如“今天用了两个鸡蛋”）；新增/修改库存需要管理员。</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">
+      <text>库存（{{items.length}}）</text>
+      <text class="muted" wx:if="{{isAdmin}}" bindtap="toggleAdd">{{showAdd ? '收起' : '+ 手动添加'}}</text>
+    </view>
+    <view wx:if="{{showAdd}}" class="mb">
+      <view class="field"><text class="label">食材</text><input class="input" value="{{form.name}}" data-key="name" bindinput="onForm" placeholder="如 鸡胸肉" /></view>
+      <view class="row wrap" wx:if="{{suggestions.length}}">
+        <text class="tag gray" wx:for="{{suggestions}}" wx:key="*this" data-name="{{item}}" bindtap="pickSuggestion">{{item}}</text>
+      </view>
+      <view class="field"><text class="label">数量（个）</text><input class="input" type="digit" value="{{form.quantity}}" data-key="quantity" bindinput="onForm" /></view>
+      <view class="field"><text class="label">重量（克）</text><input class="input" type="digit" value="{{form.weight_g}}" data-key="weight_g" bindinput="onForm" /></view>
+      <picker mode="date" value="{{form.purchase_date}}" data-key="purchase_date" bindchange="onForm">
+        <view class="field"><text class="label">购买日期</text><text class="grow">{{form.purchase_date || '默认今天（录入日）'}}</text></view>
+      </picker>
+      <button class="btn mt" bindtap="submitAdd">添加到冰箱</button>
+    </view>
+
+    <view wx:if="{{!items.length}}" class="empty">冰箱空空，拍张照或说一句话来录入</view>
+    <view wx:for="{{items}}" wx:key="id" class="list-item" bindtap="itemActions" data-index="{{index}}">
+      <view class="between">
+        <view>
+          <text class="bold">{{item.name}}</text>
+          <text class="muted ml" wx:if="{{item.quantity}}">{{item.quantity}} 个</text>
+          <text class="muted ml" wx:if="{{item.weight_text}}">{{item.weight_text}}</text>
+          <text class="est ml" wx:if="{{item.needs_weight}}">需补充重量</text>
+        </view>
+        <view>
+          <text class="tag {{levelTag[item.freshness.level]}}">{{item.freshness.level_label}}</text>
+        </view>
+      </view>
+      <view class="muted mt">
+        到期 {{item.freshness.expires_on}}（{{item.freshness.days_left >= 0 ? '剩 ' + item.freshness.days_left + ' 天' : '已过期'}}）·
+        {{item.freshness.date_basis === 'receipt' ? '按小票日期' : '按录入日期'}} · 来源 {{item.source}}
+      </view>
+    </view>
+  </view>
+  <view class="notice center">保质期按食材类别计算（叶菜 2–3 天、根茎 2–4 周…），外观不新鲜优先于时间判断。</view>
+</view>

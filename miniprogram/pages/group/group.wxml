@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="card">
+    <view class="card-title">我的小组</view>
+    <view wx:for="{{groups}}" wx:key="id" class="list-item between" bindtap="switchTo" data-id="{{item.id}}">
+      <view><text class="bold">{{item.name}}</text><text class="muted ml">{{item.members}} 人 · {{item.role === 'admin' ? '管理员' : '成员'}}</text></view>
+      <text class="tag {{current.id === item.id ? '' : 'gray'}}">{{current.id === item.id ? '当前' : '切换'}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{detail}}">
+    <view class="card-title">
+      <text>{{detail.name}}</text>
+      <text class="tag gray" bindtap="copyCode">邀请码 {{detail.invite_code}} · 复制</text>
+    </view>
+    <view wx:for="{{detail.member_list}}" wx:key="id" class="list-item" bindtap="memberActions" data-index="{{index}}">
+      <view class="between">
+        <text class="bold">{{item.nickname}}{{item.isMe ? '（我）' : ''}}</text>
+        <view>
+          <text class="tag {{item.role === 'admin' ? '' : 'gray'}}">{{item.role === 'admin' ? '管理员' : '成员'}}</text>
+          <text class="tag gray" wx:if="{{detail.twin_visibility === 'selected' && item.visible}}">可看孪生</text>
+        </view>
+      </view>
+      <view class="muted mt" wx:if="{{item.allergens.length || item.avoidances.length}}">
+        <text wx:for="{{item.allergens}}" wx:for-item="a" wx:key="*this" class="tag danger">{{a}}</text>
+        <text wx:for="{{item.avoidances}}" wx:for-item="a" wx:key="*this" class="tag warn">{{a}}</text>
+      </view>
+    </view>
+    <view class="notice">管理员可编辑库存与预算；成员可标记消耗、提交需求。所有人的忌口都会进入计划。</view>
+    <view wx:if="{{isOwner}}" class="mt">
+      <view class="small bold">群体数字孪生可见范围</view>
+      <view class="row mt"><text wx:for="{{vis}}" wx:key="key" class="tag {{detail.twin_visibility === item.key ? '' : 'gray'}}" bindtap="setVis" data-k="{{item.key}}">{{item.label}}</text></view>
+    </view>
+    <button class="btn ghost mt" wx:if="{{!isOwner && detail.kind !== 'personal'}}" bindtap="leave">退出小组</button>
+  </view>
+
+  <view class="card">
+    <view class="card-title">加入小组</view>
+    <view class="chat-bar"><input class="input" placeholder="输入室友/家人分享的邀请码" value="{{code}}" bindinput="onCode" /><button class="btn small" bindtap="join">加入</button></view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">创建小组</view>
+    <view class="row mb">
+      <text class="tag {{newKind === 'dorm' ? '' : 'gray'}}" bindtap="setKind" data-k="dorm">宿舍</text>
+      <text class="tag {{newKind === 'household' ? '' : 'gray'}}" bindtap="setKind" data-k="household">家庭</text>
+    </view>
+    <view class="chat-bar"><input class="input" placeholder="如 302 宿舍" value="{{newName}}" bindinput="onName" /><button class="btn small" bindtap="create">创建</button></view>
+  </view>
+</view>

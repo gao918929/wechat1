@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="card">
+    <view wx:if="{{!items.length}}" class="empty">暂无通知</view>
+    <view wx:for="{{items}}" wx:key="id" class="list-item" bindtap="open" data-index="{{index}}">
+      <view class="between"><text class="bold">{{item.read ? '' : '● '}}{{item.title}}</text><text class="muted">{{item.time}}</text></view>
+      <view class="small mt">{{item.body}}</view>
+    </view>
+  </view>
+  <view class="notice center">计划在后台生成完成后会通知你（配置订阅消息后也会推送微信通知）。</view>
+</view>

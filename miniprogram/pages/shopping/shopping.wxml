@@ -1,0 +1,44 @@
+<view class="container" wx:if="{{shopping}}">
+  <view class="card">
+    <view class="bold">{{title}}</view>
+    <view class="row mt">
+      <view class="stat"><view class="num">¥{{totalText}}</view><view class="lbl">合计</view></view>
+      <view class="stat"><view class="num">¥{{perText}}</view><view class="lbl">人均（{{shopping.people}}人）</view></view>
+      <view class="stat"><view class="num" style="color:{{shopping.over_budget ? 'var(--danger)' : 'var(--primary)'}}">{{shopping.budget_total ? '¥' + shopping.budget_total : '—'}}</view><view class="lbl">预算</view></view>
+    </view>
+    <view class="tag danger mt" wx:if="{{shopping.over_budget}}">超出预算 ¥{{shopping.over_amount}}</view>
+    <view class="btn-row">
+      <button class="btn ghost" bindtap="copyText">复制文字</button>
+      <button class="btn ghost" bindtap="makeImage">生成图片</button>
+    </view>
+    <view class="notice">勾选会实时同步给小组所有人；库存已有的食材已自动扣除。</view>
+  </view>
+
+  <view class="card" wx:for="{{shopping.sections}}" wx:for-item="sec" wx:key="section">
+    <view class="card-title">{{sec.label}}</view>
+    <view wx:for="{{sec.items}}" wx:key="name" class="list-item between" bindtap="toggle" data-name="{{item.name}}">
+      <view class="row grow">
+        <checkbox checked="{{checked[item.name]}}" color="#2f7d5b" />
+        <view>
+          <view class="bold" style="{{checked[item.name] ? 'text-decoration:line-through;color:#aaa' : ''}}">{{item.name}}</view>
+          <view class="muted">{{item.qty_text}}<text wx:if="{{item.have_g}}"> · 库存已有 {{item.have_g}}g</text></view>
+        </view>
+      </view>
+      <view class="center">
+        <view>¥{{item.cost}}</view>
+        <view class="est" wx:if="{{item.price_estimated}}">参考价·估算</view>
+        <view class="muted" wx:else>历史成交价</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{shopping.pantry.length}}">
+    <view class="bold">常备调料检查（不计入预算）</view>
+    <view class="small mt">{{pantryText}}</view>
+  </view>
+  <view class="card" wx:if="{{shopping.covered_by_inventory.length}}">
+    <view class="bold">库存已够，无需购买</view>
+    <view class="small mt">{{coveredText}}</view>
+  </view>
+  <canvas type="2d" id="shot" style="width:360px;height:{{canvasH}}px;position:fixed;left:-2000px;top:0"></canvas>
+</view>

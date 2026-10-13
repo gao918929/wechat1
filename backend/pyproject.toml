@@ -1,0 +1,17 @@
+[project]
+name = "mealagent-backend"
+version = "3.1.0"
+description = "MealAgent: AI-powered meal coordination backend for the WeChat mini program"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+ignore = ["B008", "B905", "E501"]
