@@ -1,5 +1,7 @@
 # MealAgent · AI 膳食统筹微信小程序
 
+English | [中文](README.zh-CN.md)
+
 An AI meal-coordination WeChat mini program built from
 [`MealAgent_Project_Design_Document_Final_EN.md`](MealAgent_Project_Design_Document_Final_EN.md) (V3.1).
 It connects six stages: **inventory → budget → health → multi-agent weekly planning → shopping → post-meal review**.
