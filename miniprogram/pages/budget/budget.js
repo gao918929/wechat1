@@ -16,6 +16,7 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 3 });
     app.ready().then(() => this.load());
     if (!this.off) this.off = app.onSocket((ev) => { if (ev.type === 'expense.added' || ev.type === 'group.updated') this.load(); });
   },

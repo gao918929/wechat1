@@ -1,3 +1,4 @@
+<glass-nav title="AI 膳食计划" />
 <view class="container">
   <view class="card">
     <view class="card-title"><text>一句话生成一周计划</text><text class="muted">{{group.name}}</text></view>
@@ -22,7 +23,7 @@
       </view>
     </view>
     <view class="field"><text class="label">就餐人数</text><input class="input" type="number" value="{{people}}" bindinput="onPeople" placeholder="默认：小组成员数 / 指令中的人数" /></view>
-    <view class="field"><text class="label">备选方案</text><text class="grow small">同时生成 健康优先 / 预算优先</text><switch checked="{{alternatives}}" bindchange="onAlt" color="#2f7d5b" /></view>
+    <view class="field"><text class="label">备选方案</text><text class="grow small">同时生成 健康优先 / 预算优先</text><switch checked="{{alternatives}}" bindchange="onAlt" color="#34c759" /></view>
     <view class="field" wx:if="{{avoidances.length}}">
       <text class="label">推翻忌口</text>
       <view class="row wrap grow">

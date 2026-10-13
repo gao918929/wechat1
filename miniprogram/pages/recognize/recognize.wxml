@@ -1,3 +1,4 @@
+<glass-nav title="{{title}}" back />
 <view class="container">
   <view class="card">
     <view class="between">
@@ -14,7 +15,7 @@
     <picker mode="date" value="{{card.date}}" data-key="date" bindchange="onMeta">
       <view class="field"><text class="label">购买日期</text><text class="grow">{{card.date || '今天'}}</text></view>
     </picker>
-    <view class="field"><text class="label">同时入库</text><switch checked="{{addToInventory}}" bindchange="onAddInv" color="#2f7d5b" /></view>
+    <view class="field"><text class="label">同时入库</text><switch checked="{{addToInventory}}" bindchange="onAddInv" color="#34c759" /></view>
   </view>
 
   <view class="card" wx:if="{{kind === 'meal'}}">
@@ -28,7 +29,7 @@
     <picker range="{{mealLabels}}" value="{{mealIndex}}" bindchange="onMeal">
       <view class="field"><text class="label">餐次</text><text class="grow">{{mealLabels[mealIndex]}}</text></view>
     </picker>
-    <view class="field"><text class="label">我吃了几份</text><slider class="grow" min="0.5" max="3" step="0.5" value="{{myShare}}" show-value bindchange="onShare" activeColor="#2f7d5b" /></view>
+    <view class="field"><text class="label">我吃了几份</text><slider class="grow" min="0.5" max="3" step="0.5" value="{{myShare}}" show-value bindchange="onShare" activeColor="#34c759" /></view>
   </view>
 
   <view class="card">
@@ -57,7 +58,7 @@
             </view>
           </view>
         </view>
-        <checkbox checked="{{include[item.id]}}" bindtap="toggleInclude" data-id="{{item.id}}" color="#2f7d5b" />
+        <checkbox checked="{{include[item.id]}}" bindtap="toggleInclude" data-id="{{item.id}}" color="#34c759" />
       </view>
     </view>
     <view class="chat-bar mt" wx:if="{{!done}}">

@@ -26,6 +26,7 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 4 });
     app.ready().then(() => (app.globalData.meta ? app.globalData.meta : app.loadMeta())).then((meta) => {
       this.setData({ meta });
       return api.get('/api/me');

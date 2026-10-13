@@ -1,0 +1,13 @@
+<view class="gn-backdrop">
+  <view class="gn-blob gn-b1"></view>
+  <view class="gn-blob gn-b2"></view>
+  <view class="gn-blob gn-b3"></view>
+  <view class="gn-blob gn-b4"></view>
+</view>
+<view class="gn-bar" style="padding-top:{{statusBar}}px;height:{{barHeight}}px">
+  <view class="gn-inner" style="height:{{barHeight}}px;padding-right:{{capsuleSpace}}px;padding-left:{{capsuleSpace}}px">
+    <view wx:if="{{back}}" class="gn-back" bindtap="goBack"><view class="gn-chevron"></view></view>
+    <view class="gn-title">{{title}}</view>
+  </view>
+</view>
+<view style="height:{{total}}px"></view>

@@ -1,3 +1,4 @@
+<glass-nav title="预算与记账" />
 <view class="container">
   <view class="tabs">
     <view class="tab {{period === 'week' ? 'active' : ''}}" bindtap="setPeriod" data-p="week">本周</view>

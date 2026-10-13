@@ -17,6 +17,7 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 1 });
     app.ready().then(() => this.load());
     if (!this.off) {
       this.off = app.onSocket((ev) => {

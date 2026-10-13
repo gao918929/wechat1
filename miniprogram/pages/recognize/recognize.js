@@ -36,7 +36,6 @@ Page({
       kind, title: TITLES[kind], planId: q.plan_id ? Number(q.plan_id) : null, planDay: q.day ? Number(q.day) : null,
       mealIndex: q.meal ? Math.max(0, this.data.meals.indexOf(q.meal)) : (hour < 10 ? 0 : hour < 15 ? 1 : 2)
     });
-    wx.setNavigationBarTitle({ title: TITLES[kind] });
     app.ready().then(() => (q.camera ? this.takePhoto() : this.manual()));
   },
 

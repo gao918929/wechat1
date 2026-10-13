@@ -14,26 +14,46 @@
     "pages/notifications/notifications"
   ],
   "window": {
-    "navigationBarTitleText": "MealAgent 膳食统筹",
-    "navigationBarBackgroundColor": "#2f7d5b",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#f3f5f4",
+    "navigationStyle": "custom",
+    "navigationBarTitleText": "MealAgent",
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#f2f5f4",
+    "backgroundColor": "#f2f5f4",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#7a8580",
-    "selectedColor": "#2f7d5b",
+    "color": "#8e8e93",
+    "selectedColor": "#2f9e54",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
-      { "pagePath": "pages/index/index", "text": "首页" },
-      { "pagePath": "pages/inventory/inventory", "text": "冰箱" },
-      { "pagePath": "pages/planner/planner", "text": "计划" },
-      { "pagePath": "pages/budget/budget", "text": "账本" },
-      { "pagePath": "pages/profile/profile", "text": "我的" }
-    ]
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/inventory/inventory",
+        "text": "冰箱"
+      },
+      {
+        "pagePath": "pages/planner/planner",
+        "text": "计划"
+      },
+      {
+        "pagePath": "pages/budget/budget",
+        "text": "账本"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ],
+    "custom": true
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "glass-nav": "/components/glass-nav/glass-nav"
+  }
 }

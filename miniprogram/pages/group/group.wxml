@@ -1,3 +1,4 @@
+<glass-nav title="小组管理" back />
 <view class="container">
   <view class="card">
     <view class="card-title">我的小组</view>

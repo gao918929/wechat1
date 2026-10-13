@@ -1,9 +1,10 @@
+<glass-nav title="我的" />
 <view class="container" wx:if="{{meta}}">
   <view class="card">
     <view class="row wrap">
-      <view class="grid-item" bindtap="go" data-url="/pages/twin/twin"><view class="icon">🧬</view><view class="small">数字孪生</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/group/group"><view class="icon">👥</view><view class="small">小组管理</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon">📊</view><view class="small">营养分析</view></view>
+      <view class="grid-item" bindtap="go" data-url="/pages/twin/twin"><view class="icon i-purple">🧬</view><view class="small">数字孪生</view></view>
+      <view class="grid-item" bindtap="go" data-url="/pages/group/group"><view class="icon i-blue">👥</view><view class="small">小组管理</view></view>
+      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon i-teal">📊</view><view class="small">营养分析</view></view>
     </view>
   </view>
 
@@ -56,7 +57,7 @@
       <text wx:for="{{extraAvoid}}" wx:key="*this" class="tag warn" bindtap="removeExtra" data-list="extraAvoid" data-v="{{item}}">{{item}} ✕</text>
     </view>
     <view class="chat-bar mt"><input class="input" placeholder="其他不吃的食材，如 洋葱" value="{{customAvoid}}" data-k="customAvoid" bindinput="onCustom" /><button class="btn small" bindtap="addCustom" data-k="avoid">添加</button></view>
-    <view class="field"><text class="label">最高辣度</text><slider class="grow" min="0" max="3" value="{{form.max_spicy}}" show-value bindchange="onSpicy" activeColor="#2f7d5b" /></view>
+    <view class="field"><text class="label">最高辣度</text><slider class="grow" min="0" max="3" value="{{form.max_spicy}}" show-value bindchange="onSpicy" activeColor="#34c759" /></view>
     <view class="field"><text class="label">爱吃</text><input class="input" value="{{likesText}}" bindinput="onLikes" placeholder="用顿号分隔，如 牛肉、西兰花" /></view>
     <button class="btn mt" bindtap="save">保存资料</button>
   </view>

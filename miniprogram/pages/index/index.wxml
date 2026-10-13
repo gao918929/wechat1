@@ -1,15 +1,16 @@
+<glass-nav title="MealAgent" />
 <view class="container">
-  <view class="card">
+  <view class="card hero">
     <view class="between">
       <view>
-        <view class="bold" style="font-size:36rpx">你好，{{user.nickname || '朋友'}}</view>
+        <view class="large-title">你好，{{user.nickname || '朋友'}}</view>
         <view class="muted mt">AI 建议，你来决定 · 越用越懂你</view>
       </view>
       <view class="tag {{llmOnline ? '' : 'gray'}}">{{llmOnline ? 'DeepSeek 在线' : '离线规则引擎'}}</view>
     </view>
     <picker range="{{groups}}" range-key="name" value="{{groupIndex}}" bindchange="onGroupChange">
-      <view class="between mt input">
-        <text>当前：{{group.name}}（{{group.members}}人）</text>
+      <view class="between mt input" style="border-radius:999rpx;padding-left:30rpx">
+        <text>🏠 {{group.name}} · {{group.members}} 人</text>
         <text class="muted">切换 ▾</text>
       </view>
     </picker>
@@ -18,11 +19,11 @@
   <view class="card">
     <view class="grid">
       <view class="grid-item" bindtap="recognize" data-kind="ingredients"><view class="icon">📷</view><view class="small">拍冰箱</view></view>
-      <view class="grid-item" bindtap="recognize" data-kind="receipt"><view class="icon">🧾</view><view class="small">拍小票记账</view></view>
-      <view class="grid-item" bindtap="recognize" data-kind="meal"><view class="icon">🍽</view><view class="small">餐后复盘</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/planner/planner"><view class="icon">🤖</view><view class="small">生成周计划</view></view>
-      <view class="grid-item" bindtap="openShopping"><view class="icon">🛒</view><view class="small">购物清单</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon">📊</view><view class="small">营养分析</view></view>
+      <view class="grid-item" bindtap="recognize" data-kind="receipt"><view class="icon i-orange">🧾</view><view class="small">拍小票记账</view></view>
+      <view class="grid-item" bindtap="recognize" data-kind="meal"><view class="icon i-pink">🍽</view><view class="small">餐后复盘</view></view>
+      <view class="grid-item" bindtap="go" data-url="/pages/planner/planner"><view class="icon i-purple">🤖</view><view class="small">生成周计划</view></view>
+      <view class="grid-item" bindtap="openShopping"><view class="icon i-blue">🛒</view><view class="small">购物清单</view></view>
+      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon i-teal">📊</view><view class="small">营养分析</view></view>
     </view>
   </view>
 

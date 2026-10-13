@@ -1,3 +1,4 @@
+<glass-nav title="营养分析" back />
 <view class="container">
   <view class="tabs">
     <view class="tab {{view === 'me' ? 'active' : ''}}" bindtap="setView" data-v="me">个人</view>
@@ -28,7 +29,7 @@
       <view class="row" style="height:240rpx;align-items:flex-end">
         <view wx:for="{{bars}}" wx:key="date" class="grow center" style="height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">
           <view class="muted" style="font-size:18rpx">{{item.kcal || ''}}</view>
-          <view style="width:60%;height:{{item.h}}%;background:{{item.over ? 'var(--warn)' : 'var(--primary)'}};border-radius:8rpx 8rpx 0 0"></view>
+          <view style="width:60%;height:{{item.h}}%;background:{{item.over ? 'linear-gradient(180deg,#ffcc00,#ff9500)' : 'linear-gradient(180deg,#5ee08a,#30b0c7)'}};border-radius:12rpx 12rpx 4rpx 4rpx"></view>
         </view>
       </view>
       <view class="row">

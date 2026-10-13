@@ -1,3 +1,4 @@
+<glass-nav title="膳食计划" back />
 <view class="container">
   <!-- generation progress (streamed) -->
   <view class="card" wx:if="{{status !== 'done' || showDetails}}">

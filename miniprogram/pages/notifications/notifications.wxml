@@ -1,3 +1,4 @@
+<glass-nav title="消息通知" back />
 <view class="container">
   <view class="card">
     <view wx:if="{{!items.length}}" class="empty">暂无通知</view>

@@ -1,3 +1,4 @@
+<glass-nav title="数字孪生" back />
 <view class="container">
   <view class="tabs">
     <view class="tab {{view === 'me' ? 'active' : ''}}" bindtap="setView" data-v="me">个人孪生</view>

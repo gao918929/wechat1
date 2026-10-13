@@ -1,3 +1,4 @@
+<glass-nav title="智能冰箱" />
 <view class="container">
   <view class="card">
     <view class="btn-row" style="margin-top:0">

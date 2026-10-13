@@ -7,6 +7,8 @@ An AI meal-coordination WeChat mini program built from
 It connects six stages: **inventory → budget → health → multi-agent weekly planning → shopping → post-meal review**.
 **Dietary digital twins** learn from every edit, rating and correction.
 
+![Home screen preview (browser approximation of the frosted-glass UI)](docs/preview-home.png)
+
 ```
 miniprogram/   WeChat mini program (12 pages, native WXML/WXSS/JS)
 backend/       FastAPI backend: business services, DeepSeek client, multi-agent orchestrator
