@@ -1,11 +1,24 @@
 const api = require('../../utils/api');
-const { MEAL, KIND, VARIANT, AGENT_ICON, money } = require('../../utils/util');
+const { MEAL, KIND, VARIANT, money } = require('../../utils/util');
 const app = getApp();
 
 const LAYER = { hard: '禁忌', inventory: '库存', nutrition: '营养', budget: '预算' };
+const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+const AGENTS = [
+  { key: 'health', title: '健康适配', icon: 'health', cls: '', role: '营养与安全' },
+  { key: 'iterative', title: '迭代优化', icon: 'loop', cls: 'i-purple', role: '数字孪生偏好' },
+  { key: 'inventory', title: '库存优先', icon: 'fridge', cls: 'i-blue', role: '临期先用' },
+  { key: 'budget', title: '预算约束', icon: 'wallet', cls: 'i-orange', role: '成本控制' }
+];
+const STAGES = { intent: '解析指令', agent: '智能体分析中', framework: '编排菜单', validation: '三层校验', revision: '退回修订',
+  conflict: '生成备选方案', variant: '方案排序', day: '输出菜单', shopping: '生成购物清单', done: '完成' };
 
 function decorateDay(day) {
+  const d = new Date(day.date.replace(/-/g, '/'));
   return Object.assign({}, day, {
+    dayNum: d.getDate(), week: '周' + WEEK[d.getDay()], month: (d.getMonth() + 1) + '月',
+    dishCount: day.meals.reduce((n, m) => n + m.dishes.length, 0),
+    costText: money(day.meals.reduce((c, m) => c + (m.cost || 0), 0)),
     meals: day.meals.map((m) => Object.assign({}, m, {
       label: MEAL[m.meal] || m.meal,
       dishes: m.dishes.map((x) => Object.assign({}, x, {
@@ -22,31 +35,17 @@ function decorateDay(day) {
 
 Page({
   data: {
-    id: null,
-    status: 'pending',
-    log: [],
-    agents: [],
-    intent: null,
-    framework: null,
-    streamDays: [],
-    result: null,
-    variants: [],
-    active: '',
-    variant: null,
-    days: [],
-    chosen: '',
-    expanded: {},
-    showDetails: false,
-    rating: 0,
-    error: ''
+    id: null, status: 'pending', stage: '排队中', log: [], agents: [], doneCount: 0, intent: null,
+    streamDays: [], result: null, variants: [], active: '', variant: null, days: [], chosen: '',
+    expanded: {}, showDetails: false, rating: 0, error: '', conflictsText: '', agentRows: []
   },
 
   onLoad(q) {
     this.setData({ id: Number(q.id) });
+    this.agentMap = {};
+    this.renderAgents();
     app.ready().then(() => this.start());
-    this.off = app.onSocket((ev) => {
-      if (ev.type === 'plan.edited' && ev.plan_id === this.data.id) this.loadPlan();
-    });
+    this.off = app.onSocket((ev) => { if (ev.type === 'plan.edited' && ev.plan_id === this.data.id) this.loadPlan(); });
   },
 
   onUnload() {
@@ -55,51 +54,49 @@ Page({
   },
 
   start() {
-    this.setData({ log: [], agents: [], streamDays: [] });
-    this.agentMap = {};
     this.stream = api.streamPlan(this.data.id, 0, (ev) => this.onEvent(ev), (end) => {
       if (end.type === 'done' || end.type === 'error' || end.type === 'failed') this.loadPlan();
     });
   },
 
-  addLog(text) {
-    const log = this.data.log.concat([text]);
-    this.setData({ log: log.slice(-40) });
+  renderAgents() {
+    const agents = AGENTS.map((a) => {
+      const d = this.agentMap[a.key];
+      return Object.assign({}, a, { done: !!d, mode: d && d.mode, summary: d ? d.summary : '', seconds: d ? d.seconds : 0 });
+    });
+    this.setData({ agents, doneCount: agents.filter((a) => a.done).length });
+  },
+
+  addLog(kind, text) {
+    this.setData({ log: this.data.log.concat([{ kind, text }]).slice(-30) });
   },
 
   onEvent(ev) {
     const d = ev.data || {};
+    if (STAGES[ev.type]) this.setData({ stage: STAGES[ev.type] });
     if (ev.type === 'intent') {
       const budget = d.budget && d.budget.total ? '预算 ¥' + d.budget.total : '未设预算';
       this.setData({ intent: d, status: 'running' });
-      this.addLog('🧭 调度器解析指令：' + d.diners.length + ' 人 · ' + d.days + ' 天 · ' + budget + ' · ' +
-        (d.differentiated ? '差异化多菜' : '全员兼容') + (d.hard_constraints.length ? ' · 硬约束：' + d.hard_constraints.join('、') : '') +
-        '（' + (d.mode === 'llm' ? 'DeepSeek' : '离线规则引擎') + '）');
+      this.addLog('info', d.diners.length + ' 人 · ' + d.days + ' 天 · ' + budget + ' · ' + (d.differentiated ? '差异化多菜' : '全员兼容') +
+        (d.hard_constraints.length ? ' · 硬约束 ' + d.hard_constraints.join('、') : ''));
     } else if (ev.type === 'agent') {
       this.agentMap[d.agent] = d;
-      const agents = Object.keys(this.agentMap).map((k) => Object.assign({ icon: AGENT_ICON[k] }, this.agentMap[k]));
-      this.setData({ agents });
-      this.addLog((AGENT_ICON[d.agent] || '•') + ' ' + d.title + ' 完成（' + (d.mode === 'llm' ? '独立 LLM 调用' : '规则') + '，' + d.seconds + 's）');
+      this.renderAgents();
     } else if (ev.type === 'framework') {
-      this.setData({ framework: d });
-      this.addLog('📐 总体框架已确定，开始编排菜单');
+      this.addLog('info', '总体框架确定，开始编排菜单');
     } else if (ev.type === 'validation') {
       const layers = Object.keys(d.layers).map((k) => LAYER[k] + (d.layers[k].passed ? '✓' : '✗')).join(' ');
-      this.addLog('🔎 三层校验［' + VARIANT[d.variant] + '］第 ' + (d.attempt + 1) + ' 轮：' + layers);
+      this.addLog(d.passed ? 'ok' : 'warn', VARIANT[d.variant] + '方案 · 第 ' + (d.attempt + 1) + ' 轮校验  ' + layers);
     } else if (ev.type === 'revision') {
-      d.rounds.forEach((r) => this.addLog('↩️ 退回' + r.title + '修订：' + (r.applied.length ? r.applied.slice(0, 3).join('；') : '无可行修改')));
+      d.rounds.forEach((r) => this.addLog('warn', '退回' + r.title + '：' + (r.applied.length ? r.applied.slice(0, 2).join('；') : '无可行修改')));
     } else if (ev.type === 'conflict') {
-      this.addLog('⚖️ 检测到取舍：' + d.conflicts.join('；') + ' → 生成多套方案');
+      this.addLog('info', '存在取舍：' + d.conflicts.join('；'));
     } else if (ev.type === 'cached') {
-      this.addLog('⚡ ' + d.message);
+      this.addLog('ok', d.message);
     } else if (ev.type === 'variant') {
-      this.addLog('📋 ' + d.title + '：¥' + money(d.summary.total_cost) + (d.passed ? ' ✓' : ' （部分约束未满足）'));
+      this.addLog('ok', d.title + ' · ¥' + money(d.summary.total_cost));
     } else if (ev.type === 'day') {
       this.setData({ streamDays: this.data.streamDays.concat([decorateDay(d.day)]) });
-    } else if (ev.type === 'shopping') {
-      this.addLog('🛒 购物清单已生成：¥' + money(d.shopping.total_cost) + '（人均 ¥' + money(d.shopping.per_person_cost) + '）');
-    } else if (ev.type === 'done') {
-      this.addLog('✅ 完成');
     } else if (ev.type === 'error') {
       this.setData({ error: d.message, status: 'failed' });
     }
@@ -113,7 +110,12 @@ Page({
       }
       const result = p.result;
       const active = this.data.active || p.chosen_variant || result.recommended;
-      this.setData({ status: 'done', result, chosen: p.chosen_variant, conflictsText: (result.conflicts || []).join('；'), variants: result.variants.map((v) => ({ key: v.key, title: v.title })) });
+      const agentRows = AGENTS.map((a) => Object.assign({}, result.agents[a.key] || {}, a));
+      this.setData({
+        status: 'done', result, chosen: p.chosen_variant, agentRows,
+        conflictsText: (result.conflicts || []).join('；'),
+        variants: result.variants.map((v) => ({ key: v.key, title: VARIANT[v.key] + (v.recommended ? ' · 推荐' : '') }))
+      });
       this.selectVariant(active);
     });
   },
@@ -124,9 +126,9 @@ Page({
     const vm = Object.assign({}, v, {
       costText: money(s.total_cost), perPersonText: money(s.per_person_cost),
       usePct: s.budget_utilization ? Math.min(100, Math.round(s.budget_utilization * 100)) : 0,
-      nearUsed: s.near_expiry_used.map((u) => u.name + '（第' + u.day + '天）').join('、'),
+      nearUsed: s.near_expiry_used.map((u) => u.name + ' · 第' + u.day + '天'),
       nearUnused: s.near_expiry_unused.map((u) => u.name).join('、'),
-      issues: v.validation.issues.slice(0, 8).map((i) => i.message),
+      issues: v.validation.issues.slice(0, 6).map((i) => i.message),
       satisfiedText: v.validation.suggestions ? v.validation.suggestions.satisfied.join('、') : ''
     });
     this.setData({ active: v.key, variant: vm, days: v.days.map(decorateDay) });
@@ -159,7 +161,7 @@ Page({
   dishActions(e) {
     const { day, meal, name, kind } = e.currentTarget.dataset;
     wx.showActionSheet({
-      itemList: ['❤ 收藏这道菜', '🔄 换一道', '🗑 删除这道菜'],
+      itemList: ['收藏这道菜', '换一道', '删除这道菜'],
       success: (res) => {
         if (res.tapIndex === 0) this.feedback({ kind: 'favorite', dish: name });
         if (res.tapIndex === 2) this.feedback({ kind: 'delete_dish', day, meal, dish: name });

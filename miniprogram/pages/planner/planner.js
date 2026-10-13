@@ -7,12 +7,13 @@ const EXAMPLES = [
   '一家三口，有一位孕妇，孩子5岁，下周午餐和晚餐，总预算400元，清淡少油',
   '宿舍3个人想省钱，每人每周60元，帮我安排5天的午饭'
 ];
+const EXAMPLE_TITLES = ['宿舍减脂晚餐', '孕妇+孩子的家常餐', '省钱午饭'];
 
 Page({
   data: {
     group: null,
     instruction: '',
-    examples: EXAMPLES,
+    examples: EXAMPLES.map((text, i) => ({ text, title: EXAMPLE_TITLES[i] })),
     days: 7,
     dayOptions: [1, 2, 3, 4, 5, 6, 7, 14],
     meals: { breakfast: false, lunch: false, dinner: true },
@@ -34,13 +35,22 @@ Page({
   load() {
     const group = app.currentGroup();
     const user = app.globalData.user || {};
-    this.setData({ group, avoidances: user.avoidances || [] });
+    const meta = app.globalData.meta || {};
+    const labels = {};
+    (meta.avoid_options || []).concat(meta.allergen_options || []).forEach((o) => { labels[o.key] = o.label; });
+    this.setData({ group, avoidances: (user.avoidances || []).map((k) => ({ key: k, label: labels[k] || k })) });
     if (!group) return Promise.resolve();
-    return api.get('/api/groups/' + group.id + '/plans').then((plans) => this.setData({ plans }));
+    return api.get('/api/groups/' + group.id + '/plans').then((plans) => this.setData({
+      plans: plans.map((x) => Object.assign(x, {
+        dateText: x.created_at.slice(5, 10).replace('-', '/'),
+        state: x.status === 'done' ? 'ok' : x.status === 'failed' ? 'danger' : 'warn',
+        stateText: x.status === 'done' ? '已完成' : x.status === 'failed' ? '失败' : '生成中'
+      }))
+    }));
   },
 
   onInput(e) { this.setData({ instruction: e.detail.value }); },
-  useExample(e) { this.setData({ instruction: this.data.examples[e.currentTarget.dataset.i] }); },
+  useExample(e) { this.setData({ instruction: this.data.examples[e.currentTarget.dataset.i].text }); },
   onDays(e) { this.setData({ days: this.data.dayOptions[e.detail.value] }); },
   toggleMeal(e) {
     const k = e.currentTarget.dataset.k;

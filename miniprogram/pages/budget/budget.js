@@ -35,7 +35,12 @@ Page({
       report.totalText = money(report.total);
       report.usePct = report.budget ? Math.min(100, pct(report.total / report.budget)) : 0;
       report.by_category.forEach((c) => { c.pctText = pct(c.share); });
-      expenses.forEach((e) => { e.date = e.paid_at.slice(0, 10); e.itemText = e.items.map((i) => i.name).join('、'); });
+      report.useText = report.budget ? pct(report.total / report.budget) : null;
+      expenses.forEach((e) => {
+        e.date = e.paid_at.slice(5, 10).replace('-', '/');
+        e.itemText = e.items.map((i) => i.name).join('、');
+        e.sourceText = e.source === 'manual' ? '手动' : e.source === 'label' ? '价签' : '小票';
+      });
       this.setData({ report, expenses, budgetMode: g.budget_mode, budgetAmount: g.budget_amount ? String(g.budget_amount) : '' });
     });
   },

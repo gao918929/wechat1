@@ -19,10 +19,15 @@ Page({
     }
     return api.get('/api/me/nutrition', { days: this.data.days }).then((r) => {
       const max = Math.max(r.target.kcal * 1.3, ...r.series.map((s) => s.kcal), 1);
-      const bars = r.series.map((s) => ({
-        date: s.date.slice(5), kcal: s.kcal, score: s.score,
-        h: Math.round(s.kcal / max * 100), over: s.kcal > r.target.kcal * 1.1
+      const CHART = 260; // rpx
+      const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+      const bars = r.series.slice(-7).map((s) => ({
+        date: s.date.slice(5).replace('-', '/'), week: WEEK[new Date(s.date.replace(/-/g, '/')).getDay()], kcal: s.kcal, score: s.score,
+        h: Math.max(s.kcal ? 8 : 4, Math.round(s.kcal / max * CHART)), over: s.kcal > r.target.kcal * 1.1, empty: !s.kcal
       }));
+      r.targetLine = Math.round(r.target.kcal / max * CHART);
+      r.scoreText = r.score === null || r.score === undefined ? '—' : r.score;
+      r.scoreLevel = r.score >= 85 ? '很棒' : r.score >= 70 ? '不错' : r.score >= 50 ? '需改进' : '待记录';
       const avg = r.average || {};
       const macro = (v, t) => (t ? Math.min(100, Math.round((v || 0) / t * 100)) : 0);
       r.macros = [

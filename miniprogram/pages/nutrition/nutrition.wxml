@@ -10,44 +10,48 @@
   </view>
 
   <block wx:if="{{view === 'me' && report}}">
-    <view class="card">
-      <view class="between">
-        <view>
-          <view class="muted">膳食健康评分</view>
-          <view style="font-size:72rpx;font-weight:700;color:var(--primary)">{{report.score === null ? '—' : report.score}}</view>
-        </view>
-        <view class="muted" style="text-align:right">已记录 {{report.logged_days}} 天<view>目标 {{report.target.kcal}} kcal/天</view></view>
-      </view>
-      <view class="mt" wx:if="{{report.reasons.length}}">
-        <text class="tag warn" wx:for="{{report.reasons}}" wx:key="*this">{{item}}</text>
-      </view>
-      <view class="muted mt" wx:if="{{!report.logged_days}}">还没有饮食记录：在计划里点“吃了 ✓”，或拍照复盘一餐。</view>
-    </view>
-
-    <view class="card">
-      <view class="card-title">每日能量趋势</view>
-      <view class="row" style="height:240rpx;align-items:flex-end">
-        <view wx:for="{{bars}}" wx:key="date" class="grow center" style="height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">
-          <view class="muted" style="font-size:18rpx">{{item.kcal || ''}}</view>
-          <view style="width:60%;height:{{item.h}}%;background:{{item.over ? 'linear-gradient(180deg,#ffcc00,#ff9500)' : 'linear-gradient(180deg,#5ee08a,#30b0c7)'}};border-radius:12rpx 12rpx 4rpx 4rpx"></view>
-        </view>
-      </view>
+    <view class="card hero">
       <view class="row">
-        <view wx:for="{{bars}}" wx:key="date" class="grow center muted" style="font-size:18rpx">{{item.date}}</view>
+        <view class="ring-wrap">
+          <view class="ring" style="--p:{{report.score || 0}}"></view>
+          <view class="ring-center"><view class="big">{{report.scoreText}}</view><view class="unit">健康评分</view></view>
+        </view>
+        <view class="grow" style="margin-left:36rpx">
+          <view class="score-level">{{report.scoreLevel}}</view>
+          <view class="muted">已记录 {{report.logged_days}} 天 · 目标 {{report.target.kcal}} kcal/天</view>
+          <view class="row wrap mt" wx:if="{{report.reasons.length}}"><text class="tag warn" wx:for="{{report.reasons}}" wx:key="*this">{{item}}</text></view>
+          <view class="muted mt" wx:if="{{!report.logged_days}}">在计划里点“吃了”，或拍照复盘一餐</view>
+        </view>
       </view>
     </view>
 
+    <view class="section-title"><text>能量趋势</text><text class="muted">虚线为目标</text></view>
     <view class="card">
-      <view class="card-title">日均摄入 vs 目标</view>
-      <view wx:for="{{report.macros}}" wx:key="name" class="mt">
-        <view class="between small"><text>{{item.name}}</text><text>{{item.v}} / {{item.t}} {{item.unit}}</text></view>
+      <view class="chart">
+        <view class="target-line" style="bottom:{{report.targetLine + 74}}rpx"></view>
+        <view wx:for="{{bars}}" wx:key="date" class="col">
+          <view class="col-val">{{item.kcal || ''}}</view>
+          <view class="col-bar {{item.over ? 'over' : ''}} {{item.empty ? 'empty' : ''}}" style="height:{{item.h}}rpx"></view>
+          <view class="col-day">{{item.week}}</view>
+          <view class="col-date">{{item.date}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-title"><text>日均摄入</text><text class="muted">对比目标</text></view>
+    <view class="card">
+      <view wx:for="{{report.macros}}" wx:key="name" class="macro-row">
+        <view class="between"><text class="bold">{{item.name}}</text><text class="muted">{{item.v}} / {{item.t}} {{item.unit}}</text></view>
         <view class="bar"><view class="fill" style="width:{{item.pct}}%"></view></view>
       </view>
-      <view class="card-title mt">维生素与矿物质（估算）</view>
-      <view class="row wrap">
-        <view wx:for="{{report.micro}}" wx:key="name" class="stat" style="min-width:25%">
-          <view class="bold">{{item.v}}{{item.unit}}</view><view class="lbl">{{item.name}}（参考 {{item.ref}}）</view>
-        </view>
+    </view>
+
+    <view class="section-title"><text>维生素与矿物质</text><text class="muted">估算</text></view>
+    <view class="micro-grid">
+      <view wx:for="{{report.micro}}" wx:key="name" class="micro">
+        <view class="micro-v">{{item.v}}<text class="micro-u">{{item.unit}}</text></view>
+        <view class="bold">{{item.name}}</view>
+        <view class="muted">参考 {{item.ref}}{{item.unit}}</view>
       </view>
     </view>
     <view class="notice">数据来源：{{report.sources}}。{{report.disclaimer}}</view>

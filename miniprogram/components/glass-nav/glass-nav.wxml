@@ -4,10 +4,18 @@
   <view class="gn-blob gn-b3"></view>
   <view class="gn-blob gn-b4"></view>
 </view>
-<view class="gn-bar" style="padding-top:{{statusBar}}px;height:{{barHeight}}px">
-  <view class="gn-inner" style="height:{{barHeight}}px;padding-right:{{capsuleSpace}}px;padding-left:{{capsuleSpace}}px">
+<view class="gn-bar {{scrolled ? 'gn-glass' : ''}}" style="padding-top:{{statusBar}}px;height:{{barHeight}}px">
+  <view class="gn-inner" style="height:{{barHeight}}px;padding:0 {{capsuleSpace}}px">
     <view wx:if="{{back}}" class="gn-back" bindtap="goBack"><view class="gn-chevron"></view></view>
-    <view class="gn-title">{{title}}</view>
+    <view class="gn-title {{large && !scrolled ? 'gn-hidden' : ''}}">{{title}}</view>
   </view>
 </view>
 <view style="height:{{total}}px"></view>
+<view wx:if="{{large}}" class="gn-large">
+  <view class="gn-large-text">
+    <view class="gn-sub" wx:if="{{subtitle}}">{{subtitle}}</view>
+    <view class="gn-large-title">{{title}}</view>
+  </view>
+  <slot name="right"></slot>
+</view>
+<view class="gn-sentinel"></view>

@@ -1,0 +1,12 @@
+.home-avatar { position: relative; margin-bottom: 8rpx; }
+.home-avatar .avatar { margin-right: 0; width: 76rpx; height: 76rpx; font-size: 30rpx; box-shadow: 0 8rpx 20rpx rgba(29, 158, 108, 0.3); }
+.badge { position: absolute; right: -8rpx; top: -8rpx; min-width: 32rpx; height: 32rpx; padding: 0 8rpx; box-sizing: border-box; border-radius: 16rpx; background: #e5484d; color: #fff; font-size: 20rpx; line-height: 32rpx; text-align: center; border: 3rpx solid #f4f6f2; }
+.group-chip { display: inline-flex; align-items: center; padding: 14rpx 26rpx; margin: 0 0 24rpx; border-radius: 999rpx; background: rgba(255, 255, 255, 0.6); border: 1rpx solid rgba(255, 255, 255, 0.8); font-size: 26rpx; }
+.group-chip .muted { margin-left: 8rpx; }
+.live-dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #2fc07e; margin-right: 14rpx; box-shadow: 0 0 0 6rpx rgba(47, 192, 126, 0.18); }
+.live-dot.off { background: #b0b6b2; box-shadow: none; }
+.today-left { font-size: 36rpx; font-weight: 800; letter-spacing: -0.5rpx; margin: 4rpx 0 12rpx; }
+.unit-inline { font-size: 22rpx; color: var(--text-3); font-weight: 500; }
+.macro { margin-top: 10rpx; }
+.empty-card { display: flex; align-items: center; padding: 26rpx 32rpx; }
+.plan-quote { font-size: 30rpx; font-weight: 600; margin: 18rpx 0 6rpx; color: #fff; }

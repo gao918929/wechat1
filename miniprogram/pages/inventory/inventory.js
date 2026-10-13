@@ -2,6 +2,21 @@ const api = require('../../utils/api');
 const { LEVEL_TAG } = require('../../utils/util');
 const app = getApp();
 
+// Visual freshness: a bar that drains as the item approaches expiry.
+function decorate(it) {
+  const f = it.freshness;
+  const pct = f.level === 'expired' || f.level === 'not_fresh' ? 100
+    : Math.max(6, Math.min(100, Math.round((f.days_left / Math.max(1, f.shelf_days)) * 100)));
+  const daysText = f.level === 'expired' ? '已过期' : f.level === 'not_fresh' ? '不新鲜'
+    : f.days_left === 0 ? '今天到期' : f.days_left + ' 天';
+  const amount = [it.quantity ? it.quantity + ' 个' : '', it.weight_text].filter(Boolean).join(' · ');
+  return Object.assign(it, {
+    initial: it.name.slice(0, 1), cat: it.category || 'vegetables', pct, daysText,
+    barCls: f.level === 'ok' ? '' : f.level === 'near_expiry' ? 'warn' : 'danger',
+    amount: amount || (it.needs_weight ? '需补充重量' : '')
+  });
+}
+
 Page({
   data: {
     group: null,
@@ -11,6 +26,7 @@ Page({
     chatText: '',
     chatReply: '',
     showAdd: false,
+    stats: { total: 0, urgent: 0, needsWeight: 0 },
     form: { name: '', quantity: '', weight_g: '', purchase_date: '' },
     suggestions: [],
     levelTag: LEVEL_TAG
@@ -36,7 +52,13 @@ Page({
     const group = app.currentGroup();
     if (!group) return Promise.resolve();
     this.setData({ group, isAdmin: group.role === 'admin' });
-    return api.get('/api/groups/' + group.id + '/inventory').then((d) => this.setData({ items: d.items, alerts: d.alerts }));
+    return api.get('/api/groups/' + group.id + '/inventory').then((d) => {
+      const items = d.items.map(decorate);
+      this.setData({
+        items, alerts: d.alerts,
+        stats: { total: items.length, urgent: d.alerts.length, needsWeight: d.needs_weight.length }
+      });
+    });
   },
 
   photo() { wx.navigateTo({ url: '/pages/recognize/recognize?kind=ingredients&camera=1' }); },

@@ -1,67 +1,92 @@
-<glass-nav title="MealAgent" />
+<glass-nav title="{{title}}" subtitle="{{dateText}}" large>
+  <view slot="right" class="home-avatar" bindtap="go" data-url="/pages/profile/profile">
+    <view class="avatar round">{{initial}}</view>
+    <view class="badge" wx:if="{{unread}}">{{unread}}</view>
+  </view>
+</glass-nav>
+
 <view class="container">
-  <view class="card hero">
-    <view class="between">
-      <view>
-        <view class="large-title">你好，{{user.nickname || '朋友'}}</view>
-        <view class="muted mt">AI 建议，你来决定 · 越用越懂你</view>
-      </view>
-      <view class="tag {{llmOnline ? '' : 'gray'}}">{{llmOnline ? 'DeepSeek 在线' : '离线规则引擎'}}</view>
+  <picker range="{{groups}}" range-key="name" value="{{groupIndex}}" bindchange="onGroupChange">
+    <view class="group-chip">
+      <view class="live-dot {{llmOnline ? '' : 'off'}}"></view>
+      <text class="bold">{{group.name}}</text>
+      <text class="muted">· {{group.members}} 人 · {{llmOnline ? 'DeepSeek 在线' : '离线规则引擎'}}</text>
+      <text class="chevron">⌄</text>
     </view>
-    <picker range="{{groups}}" range-key="name" value="{{groupIndex}}" bindchange="onGroupChange">
-      <view class="between mt input" style="border-radius:999rpx;padding-left:30rpx">
-        <text>🏠 {{group.name}} · {{group.members}} 人</text>
-        <text class="muted">切换 ▾</text>
+  </picker>
+
+  <!-- today: energy ring + macros -->
+  <view class="card hero" bindtap="go" data-url="/pages/nutrition/nutrition">
+    <view class="row">
+      <view class="ring-wrap">
+        <view class="ring {{today.over ? 'over' : ''}}" style="--p:{{today.pct || 0}}"></view>
+        <view class="ring-center">
+          <view class="big">{{today.kcal || 0}}</view>
+          <view class="unit">/ {{today.target || '—'}} kcal</view>
+        </view>
       </view>
-    </picker>
+      <view class="grow" style="margin-left:36rpx">
+        <view class="muted">今日能量</view>
+        <view class="today-left">{{today.over ? '已超出目标' : '还可摄入 ' + (today.left || 0)}}<text class="unit-inline" wx:if="{{!today.over}}"> kcal</text></view>
+        <view wx:for="{{today.macros}}" wx:key="name" class="macro">
+          <view class="between"><text class="small">{{item.name}}</text><text class="muted">{{item.v}}/{{item.t}}g</text></view>
+          <view class="bar thin"><view class="fill {{item.cls}}" style="width:{{item.pct}}%"></view></view>
+        </view>
+      </view>
+    </view>
   </view>
 
+  <!-- quick actions -->
   <view class="card">
     <view class="grid">
-      <view class="grid-item" bindtap="recognize" data-kind="ingredients"><view class="icon">📷</view><view class="small">拍冰箱</view></view>
-      <view class="grid-item" bindtap="recognize" data-kind="receipt"><view class="icon i-orange">🧾</view><view class="small">拍小票记账</view></view>
-      <view class="grid-item" bindtap="recognize" data-kind="meal"><view class="icon i-pink">🍽</view><view class="small">餐后复盘</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/planner/planner"><view class="icon i-purple">🤖</view><view class="small">生成周计划</view></view>
-      <view class="grid-item" bindtap="openShopping"><view class="icon i-blue">🛒</view><view class="small">购物清单</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon i-teal">📊</view><view class="small">营养分析</view></view>
+      <view class="grid-item" bindtap="recognize" data-kind="ingredients"><view class="icon"><image src="/assets/icons/camera-w.svg" /></view>拍冰箱</view>
+      <view class="grid-item" bindtap="recognize" data-kind="receipt"><view class="icon i-orange"><image src="/assets/icons/receipt-w.svg" /></view>小票记账</view>
+      <view class="grid-item" bindtap="recognize" data-kind="meal"><view class="icon i-pink"><image src="/assets/icons/utensils-w.svg" /></view>餐后复盘</view>
+      <view class="grid-item" bindtap="go" data-url="/pages/planner/planner"><view class="icon i-purple"><image src="/assets/icons/sparkles-w.svg" /></view>AI 周计划</view>
+      <view class="grid-item" bindtap="openShopping"><view class="icon i-blue"><image src="/assets/icons/cart-w.svg" /></view>购物清单</view>
+      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon i-teal"><image src="/assets/icons/chart-w.svg" /></view>营养分析</view>
     </view>
   </view>
 
-  <view class="card">
-    <view class="card-title">
-      <text>临期提醒</text>
-      <text class="muted" bindtap="go" data-url="/pages/inventory/inventory">查看冰箱 ›</text>
+  <!-- near-expiry -->
+  <view class="section-title"><text>临期提醒</text><text class="link" bindtap="go" data-url="/pages/inventory/inventory">冰箱 ›</text></view>
+  <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}" wx:if="{{alerts.length}}">
+    <view wx:for="{{alerts}}" wx:key="id" class="chip">
+      <view class="dot {{item.level === 'near_expiry' ? 'warn' : 'danger'}}"></view>
+      <text class="chip-main">{{item.name}}</text>
+      <text class="chip-sub">{{item.level !== 'near_expiry' ? item.label : item.days_left > 0 ? '剩 ' + item.days_left + ' 天' : '今天到期'}}</text>
     </view>
-    <view wx:if="{{!alerts.length}}" class="muted">暂无临期或不新鲜的食材 👍</view>
-    <view wx:for="{{alerts}}" wx:key="id" class="between list-item">
-      <text>{{item.name}}</text>
-      <view>
-        <text class="tag {{item.level === 'near_expiry' ? 'warn' : 'danger'}}">{{item.label}}</text>
-        <text class="muted" wx:if="{{item.days_left >= 0}}">剩 {{item.days_left}} 天</text>
-      </view>
-    </view>
-    <view class="notice" wx:if="{{alerts.length}}">生成计划时，库存优先智能体会把临期食材安排在最前面。</view>
+  </scroll-view>
+  <view class="card empty-card" wx:else>
+    <view class="mini-icon"><image src="/assets/icons/leaf-w.svg" /></view>
+    <view class="grow"><view class="bold">冰箱状态良好</view><view class="muted">没有临期或不新鲜的食材</view></view>
   </view>
 
-  <view class="card" bindtap="openPlan">
-    <view class="card-title">
-      <text>最近的计划</text>
-      <text class="muted" wx:if="{{latestPlan}}">查看 ›</text>
-    </view>
-    <view wx:if="{{!latestPlan}}" class="muted">还没有计划，去“计划”页用一句话生成吧。</view>
-    <block wx:else>
-      <view class="small">{{latestPlan.instruction || '按小组设置生成'}}</view>
-      <view class="mt" wx:if="{{latestPlan.summary}}">
-        <text class="tag">{{latestPlan.summary.title}}</text>
-        <text class="tag gray">¥{{latestPlan.summary.total_cost}}</text>
-        <text class="tag gray">人均 ¥{{latestPlan.summary.per_person_cost}}</text>
+  <!-- latest plan -->
+  <view class="section-title"><text>本周计划</text><text class="link" bindtap="go" data-url="/pages/planner/planner">全部 ›</text></view>
+  <view class="card feature" bindtap="openPlan">
+    <block wx:if="{{latestPlan && latestPlan.summary}}">
+      <view class="between">
+        <text class="tag glass">{{latestPlan.summary.title}}</text>
+        <text class="muted">#{{latestPlan.id}}</text>
       </view>
-      <view class="mt" wx:else><text class="tag warn">{{latestPlan.status === 'failed' ? '生成失败' : '生成中…'}}</text></view>
+      <view class="plan-quote ellipsis">“{{latestPlan.instruction || '按小组设置生成'}}”</view>
+      <view class="row mt">
+        <view class="stat"><view class="num">¥{{latestPlan.summary.total_cost}}</view><view class="lbl">预计采购</view></view>
+        <view class="stat"><view class="num">¥{{latestPlan.summary.per_person_cost}}</view><view class="lbl">人均</view></view>
+        <view class="stat"><view class="num">{{latestPlan.days}}天</view><view class="lbl">{{latestPlan.summary.within_budget === false ? '超预算' : '预算内'}}</view></view>
+      </view>
     </block>
-  </view>
-
-  <view class="card between" bindtap="go" data-url="/pages/notifications/notifications">
-    <text>消息通知</text>
-    <text class="tag {{unread ? 'warn' : 'gray'}}">{{unread}} 条未读</text>
+    <block wx:elif="{{latestPlan}}">
+      <view class="bold" style="color:#fff">{{latestPlan.status === 'failed' ? '上次生成失败' : '四个智能体正在规划…'}}</view>
+      <view class="muted mt">点击查看进度</view>
+    </block>
+    <block wx:else>
+      <view class="row">
+        <image src="/assets/icons/sparkles-w.svg" style="width:56rpx;height:56rpx;margin-right:20rpx" />
+        <view class="grow"><view class="bold" style="color:#fff;font-size:32rpx">一句话生成一周菜单</view><view class="muted">库存、预算、健康、口味，一次兼顾</view></view>
+        <text style="font-size:40rpx">›</text>
+      </view>
+    </block>
   </view>
 </view>

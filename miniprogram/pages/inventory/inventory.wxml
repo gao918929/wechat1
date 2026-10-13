@@ -1,54 +1,67 @@
-<glass-nav title="智能冰箱" />
+<glass-nav title="冰箱" subtitle="{{group.name}} · {{stats.total}} 种食材" large>
+  <view slot="right" class="nav-add" wx:if="{{isAdmin}}" bindtap="toggleAdd"><image src="/assets/icons/plus-g.svg" /></view>
+</glass-nav>
+
 <view class="container">
-  <view class="card">
-    <view class="btn-row" style="margin-top:0">
-      <button class="btn" bindtap="photo">📷 拍照识别</button>
-      <button class="btn ghost" bindtap="receipt">🧾 小票入库</button>
+  <view class="action-row">
+    <view class="action-card" bindtap="photo">
+      <view class="mini-icon"><image src="/assets/icons/camera-w.svg" /></view>
+      <view><view class="bold">拍照识别</view><view class="muted">参照物估重</view></view>
     </view>
-    <view class="chat-bar mt">
+    <view class="action-card" bindtap="receipt">
+      <view class="mini-icon i-orange"><image src="/assets/icons/receipt-w.svg" /></view>
+      <view><view class="bold">小票入库</view><view class="muted">顺便记账</view></view>
+    </view>
+  </view>
+
+  <view class="card ask">
+    <view class="chat-bar">
       <input class="input" placeholder="说一句：冰箱里还有两个鸡蛋和半颗白菜" value="{{chatText}}" bindinput="onChatInput" confirm-type="send" bindconfirm="sendChat" />
-      <button class="btn small" bindtap="sendChat">发送</button>
+      <view class="send" bindtap="sendChat"><image src="/assets/icons/send-w.svg" /></view>
     </view>
-    <view class="small mt" wx:if="{{chatReply}}">{{chatReply}}</view>
-    <view class="notice" wx:if="{{!isAdmin}}">你是成员：可标记消耗（如“今天用了两个鸡蛋”）；新增/修改库存需要管理员。</view>
+    <view class="reply" wx:if="{{chatReply}}">{{chatReply}}</view>
+    <view class="muted mt" wx:if="{{!isAdmin}}">你是成员：可以标记消耗（如“今天用了两个鸡蛋”）；新增或修改库存需要管理员。</view>
   </view>
 
-  <view class="card">
-    <view class="card-title">
-      <text>库存（{{items.length}}）</text>
-      <text class="muted" wx:if="{{isAdmin}}" bindtap="toggleAdd">{{showAdd ? '收起' : '+ 手动添加'}}</text>
-    </view>
-    <view wx:if="{{showAdd}}" class="mb">
-      <view class="field"><text class="label">食材</text><input class="input" value="{{form.name}}" data-key="name" bindinput="onForm" placeholder="如 鸡胸肉" /></view>
-      <view class="row wrap" wx:if="{{suggestions.length}}">
-        <text class="tag gray" wx:for="{{suggestions}}" wx:key="*this" data-name="{{item}}" bindtap="pickSuggestion">{{item}}</text>
-      </view>
-      <view class="field"><text class="label">数量（个）</text><input class="input" type="digit" value="{{form.quantity}}" data-key="quantity" bindinput="onForm" /></view>
-      <view class="field"><text class="label">重量（克）</text><input class="input" type="digit" value="{{form.weight_g}}" data-key="weight_g" bindinput="onForm" /></view>
-      <picker mode="date" value="{{form.purchase_date}}" data-key="purchase_date" bindchange="onForm">
-        <view class="field"><text class="label">购买日期</text><text class="grow">{{form.purchase_date || '默认今天（录入日）'}}</text></view>
-      </picker>
-      <button class="btn mt" bindtap="submitAdd">添加到冰箱</button>
-    </view>
+  <view class="stats-strip">
+    <view class="stat"><view class="num">{{stats.total}}</view><view class="lbl">种食材</view></view>
+    <view class="stat"><view class="num warn-num">{{stats.urgent}}</view><view class="lbl">需尽快处理</view></view>
+    <view class="stat"><view class="num">{{stats.needsWeight}}</view><view class="lbl">待补重量</view></view>
+  </view>
 
+  <view class="section-title"><text>全部食材</text><text class="muted">按到期先后</text></view>
+  <view class="card flush">
     <view wx:if="{{!items.length}}" class="empty">冰箱空空，拍张照或说一句话来录入</view>
-    <view wx:for="{{items}}" wx:key="id" class="list-item" bindtap="itemActions" data-index="{{index}}">
-      <view class="between">
-        <view>
+    <view wx:for="{{items}}" wx:key="id" class="inv-row" bindtap="itemActions" data-index="{{index}}">
+      <view class="avatar c-{{item.cat}}">{{item.initial}}</view>
+      <view class="grow">
+        <view class="between">
           <text class="bold">{{item.name}}</text>
-          <text class="muted ml" wx:if="{{item.quantity}}">{{item.quantity}} 个</text>
-          <text class="muted ml" wx:if="{{item.weight_text}}">{{item.weight_text}}</text>
-          <text class="est ml" wx:if="{{item.needs_weight}}">需补充重量</text>
+          <text class="days {{item.barCls}}">{{item.daysText}}</text>
         </view>
-        <view>
-          <text class="tag {{levelTag[item.freshness.level]}}">{{item.freshness.level_label}}</text>
+        <view class="between meta">
+          <text class="muted {{item.needs_weight ? 'est' : ''}}">{{item.amount}}</text>
+          <text class="muted">{{item.freshness.expires_on}}</text>
         </view>
-      </view>
-      <view class="muted mt">
-        到期 {{item.freshness.expires_on}}（{{item.freshness.days_left >= 0 ? '剩 ' + item.freshness.days_left + ' 天' : '已过期'}}）·
-        {{item.freshness.date_basis === 'receipt' ? '按小票日期' : '按录入日期'}} · 来源 {{item.source}}
+        <view class="bar thin"><view class="fill {{item.barCls}}" style="width:{{item.pct}}%"></view></view>
       </view>
     </view>
   </view>
-  <view class="notice center">保质期按食材类别计算（叶菜 2–3 天、根茎 2–4 周…），外观不新鲜优先于时间判断。</view>
+  <view class="notice">保质期按食材类别计算（叶菜 2–3 天、根茎 2–4 周…）；外观不新鲜优先于时间判断。</view>
+</view>
+
+<view class="mask" wx:if="{{showAdd}}" bindtap="toggleAdd">
+  <view class="sheet" catchtap="">
+    <view class="card-title">手动添加</view>
+    <view class="field"><text class="label">食材</text><input class="input" value="{{form.name}}" data-key="name" bindinput="onForm" placeholder="如 鸡胸肉" /></view>
+    <view class="row wrap mt" wx:if="{{suggestions.length}}">
+      <text class="tag gray" wx:for="{{suggestions}}" wx:key="*this" data-name="{{item}}" bindtap="pickSuggestion">{{item}}</text>
+    </view>
+    <view class="field"><text class="label">数量（个）</text><input class="input" type="digit" value="{{form.quantity}}" data-key="quantity" bindinput="onForm" /></view>
+    <view class="field"><text class="label">重量（克）</text><input class="input" type="digit" value="{{form.weight_g}}" data-key="weight_g" bindinput="onForm" /></view>
+    <picker mode="date" value="{{form.purchase_date}}" data-key="purchase_date" bindchange="onForm">
+      <view class="field"><text class="label">购买日期</text><text class="grow">{{form.purchase_date || '默认今天'}}</text><text class="chevron">›</text></view>
+    </picker>
+    <button class="btn mt" bindtap="submitAdd">放进冰箱</button>
+  </view>
 </view>

@@ -1,63 +1,85 @@
-<glass-nav title="预算与记账" />
+<glass-nav title="账本" subtitle="{{report ? report.start + ' – ' + report.end : '预算与记账'}}" large />
+
 <view class="container">
   <view class="tabs">
     <view class="tab {{period === 'week' ? 'active' : ''}}" bindtap="setPeriod" data-p="week">本周</view>
     <view class="tab {{period === 'month' ? 'active' : ''}}" bindtap="setPeriod" data-p="month">本月</view>
   </view>
 
-  <view class="card" wx:if="{{report}}">
-    <view class="between">
-      <view class="muted">{{report.start}} ~ {{report.end}}</view>
-      <view class="muted">{{report.count}} 笔</view>
+  <view class="card feature" wx:if="{{report}}">
+    <view class="row">
+      <view class="grow">
+        <view class="muted">实际支出（小票实付）</view>
+        <view class="spend">¥{{report.totalText}}</view>
+        <view class="muted">人均 ¥{{report.per_person}} · {{report.members}} 人 · {{report.count}} 笔</view>
+      </view>
+      <view class="ring-wrap" wx:if="{{report.budget}}">
+        <view class="ring white {{report.over_budget ? 'over' : ''}}" style="--p:{{report.usePct}}"></view>
+        <view class="ring-center"><view class="big">{{report.useText}}%</view><view class="unit">预算已用</view></view>
+      </view>
     </view>
-    <view class="row mt">
-      <view class="stat"><view class="num">¥{{report.totalText}}</view><view class="lbl">实际支出</view></view>
-      <view class="stat"><view class="num">¥{{report.per_person}}</view><view class="lbl">人均（{{report.members}}人）</view></view>
-      <view class="stat"><view class="num" style="color:{{report.over_budget ? 'var(--danger)' : 'var(--primary)'}}">{{report.budget ? '¥' + report.budget_left : '—'}}</view><view class="lbl">预算剩余</view></view>
+    <view class="budget-line" wx:if="{{report.budget}}">
+      <text>预算 ¥{{report.budget}}（{{report.budget_mode === 'per_person' ? '人均' : '总'}}）</text>
+      <text class="bold-w">{{report.over_budget ? '超出 ¥' + (-report.budget_left) : '剩余 ¥' + report.budget_left}}</text>
     </view>
-    <view class="bar mt" wx:if="{{report.budget}}"><view class="fill {{report.over_budget ? 'danger' : report.usePct > 85 ? 'warn' : ''}}" style="width:{{report.usePct}}%"></view></view>
-    <view class="muted mt" wx:if="{{report.budget}}">预算 ¥{{report.budget}}（{{report.budget_mode === 'per_person' ? '人均预算' : '总预算'}}）</view>
+  </view>
 
-    <view class="mt" wx:for="{{report.by_category}}" wx:key="category">
-      <view class="between small"><text>{{item.label}}</text><text>¥{{item.amount}} · {{item.pctText}}%</text></view>
-      <view class="bar"><view class="fill" style="width:{{item.pctText}}%"></view></view>
+  <view class="card" wx:if="{{report && report.by_category.length}}">
+    <view class="card-title">支出构成</view>
+    <view class="stack">
+      <view wx:for="{{report.by_category}}" wx:key="category" class="seg c-{{item.category}}" style="width:{{item.pctText}}%"></view>
     </view>
-    <view class="mt" wx:if="{{report.by_payer.length > 1}}">
+    <view wx:for="{{report.by_category}}" wx:key="category" class="legend">
+      <view class="ldot c-{{item.category}}"></view>
+      <text class="grow">{{item.label}}</text>
+      <text class="muted">{{item.pctText}}%</text>
+      <text class="bold amt">¥{{item.amount}}</text>
+    </view>
+    <view class="row wrap mt" wx:if="{{report.by_payer.length > 1}}">
       <text class="muted">谁付的：</text>
       <text class="tag gray" wx:for="{{report.by_payer}}" wx:key="user_id">{{item.nickname}} ¥{{item.amount}}</text>
     </view>
-    <view class="notice">{{report.note}}；成本测算优先使用你的历史成交价。</view>
   </view>
 
-  <view class="card">
-    <view class="btn-row" style="margin-top:0">
-      <button class="btn" bindtap="photo">🧾 拍小票 / 价签</button>
-      <button class="btn ghost" bindtap="toggleManual">✍️ 手动记一笔</button>
+  <view class="action-row">
+    <view class="action-card" bindtap="photo">
+      <view class="mini-icon i-orange"><image src="/assets/icons/receipt-w.svg" /></view>
+      <view><view class="bold">拍小票</view><view class="muted">自动识别单价</view></view>
     </view>
-    <view wx:if="{{showManual}}" class="mt">
-      <view class="field"><text class="label">实付金额</text><input class="input" type="digit" data-k="total_amount" value="{{manual.total_amount}}" bindinput="onManual" /></view>
-      <view class="field"><text class="label">商家</text><input class="input" data-k="merchant" value="{{manual.merchant}}" bindinput="onManual" /></view>
-      <view class="field"><text class="label">备注</text><input class="input" data-k="note" value="{{manual.note}}" bindinput="onManual" /></view>
-      <button class="btn mt" bindtap="saveManual">保存</button>
+    <view class="action-card" bindtap="toggleManual">
+      <view class="mini-icon"><image src="/assets/icons/plus-w.svg" /></view>
+      <view><view class="bold">记一笔</view><view class="muted">手动输入</view></view>
     </view>
   </view>
 
+  <view class="card" wx:if="{{showManual}}">
+    <view class="field"><text class="label">实付金额</text><input class="input" type="digit" data-k="total_amount" value="{{manual.total_amount}}" bindinput="onManual" placeholder="¥" /></view>
+    <view class="field"><text class="label">商家</text><input class="input" data-k="merchant" value="{{manual.merchant}}" bindinput="onManual" /></view>
+    <view class="field"><text class="label">备注</text><input class="input" data-k="note" value="{{manual.note}}" bindinput="onManual" /></view>
+    <button class="btn mt" bindtap="saveManual">保存</button>
+  </view>
+
+  <view class="section-title"><text>流水</text></view>
+  <view class="card flush">
+    <view wx:if="{{!expenses.length}}" class="empty">暂无记录</view>
+    <view wx:for="{{expenses}}" wx:key="id" class="tx" bindtap="expenseActions" data-index="{{index}}">
+      <view class="mini-icon {{item.source === 'manual' ? 'i-blue' : 'i-orange'}}"><image src="/assets/icons/{{item.source === 'manual' ? 'wallet' : 'receipt'}}-w.svg" /></view>
+      <view class="grow">
+        <view class="bold">{{item.merchant || '未填商家'}}</view>
+        <view class="muted ellipsis">{{item.date}} · {{item.sourceText}}<text wx:if="{{item.itemText}}"> · {{item.itemText}}</text></view>
+      </view>
+      <text class="tx-amt">-¥{{item.total_amount}}</text>
+    </view>
+  </view>
+
+  <view class="section-title" wx:if="{{isAdmin}}"><text>预算设置</text></view>
   <view class="card" wx:if="{{isAdmin}}">
-    <view class="card-title">预算设置</view>
-    <view class="tabs" style="background:#f6f8f7">
-      <view class="tab {{budgetMode === 'per_person' ? 'active' : ''}}" bindtap="setMode" data-m="per_person">人均预算（默认）</view>
+    <view class="tabs" style="margin-bottom:12rpx">
+      <view class="tab {{budgetMode === 'per_person' ? 'active' : ''}}" bindtap="setMode" data-m="per_person">人均预算</view>
       <view class="tab {{budgetMode === 'total' ? 'active' : ''}}" bindtap="setMode" data-m="total">总预算</view>
     </view>
     <view class="field"><text class="label">每周 ¥</text><input class="input" type="digit" value="{{budgetAmount}}" bindinput="onAmount" placeholder="{{budgetMode === 'per_person' ? '每人每周' : '小组每周合计'}}" /></view>
-    <button class="btn mt" bindtap="saveBudget">保存预算</button>
+    <button class="btn tinted mt" bindtap="saveBudget">保存预算</button>
   </view>
-
-  <view class="card">
-    <view class="card-title">流水</view>
-    <view wx:if="{{!expenses.length}}" class="muted">暂无记录</view>
-    <view wx:for="{{expenses}}" wx:key="id" class="list-item" bindtap="expenseActions" data-index="{{index}}">
-      <view class="between"><text class="bold">¥{{item.total_amount}}</text><text class="muted">{{item.date}}</text></view>
-      <view class="muted mt">{{item.merchant || '未填商家'}} · {{item.source === 'manual' ? '手动' : item.source === 'label' ? '价签' : '小票'}}<text wx:if="{{item.itemText}}"> · {{item.itemText}}</text></view>
-    </view>
-  </view>
+  <view class="notice">{{report.note}}；成本测算优先使用你的历史成交价，没有时用参考价并标注“估算”。</view>
 </view>

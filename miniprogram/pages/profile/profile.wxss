@@ -1,0 +1,9 @@
+.me-card { padding-bottom: 24rpx; }
+.me-avatar { width: 112rpx; height: 112rpx; font-size: 44rpx; margin-right: 26rpx; box-shadow: 0 12rpx 28rpx rgba(29, 158, 108, 0.3); }
+.me-name { font-size: 40rpx; font-weight: 800; letter-spacing: -0.5rpx; margin-bottom: 6rpx; }
+.me-stats { margin-top: 28rpx; padding-top: 24rpx; border-top: 1rpx solid var(--line); }
+.me-stats .num { font-size: 36rpx; }
+.menu { display: flex; align-items: center; padding: 22rpx 0; border-bottom: 1rpx solid var(--line); font-size: 30rpx; }
+.menu:last-child { border-bottom: none; }
+.small-title { font-size: 30rpx; justify-content: flex-start; }
+.small-title .tag { margin-left: 14rpx; }

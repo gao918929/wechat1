@@ -1,27 +1,32 @@
-<glass-nav title="我的" />
+<glass-nav title="我的" large />
 <view class="container" wx:if="{{meta}}">
-  <view class="card">
-    <view class="row wrap">
-      <view class="grid-item" bindtap="go" data-url="/pages/twin/twin"><view class="icon i-purple">🧬</view><view class="small">数字孪生</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/group/group"><view class="icon i-blue">👥</view><view class="small">小组管理</view></view>
-      <view class="grid-item" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="icon i-teal">📊</view><view class="small">营养分析</view></view>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{targets}}">
-    <view class="card-title">我的每日目标</view>
+  <view class="card hero me-card">
     <view class="row">
-      <view class="stat"><view class="num">{{targets.daily.kcal}}</view><view class="lbl">kcal</view></view>
-      <view class="stat"><view class="num">{{targets.daily.protein_g}}</view><view class="lbl">蛋白质 g</view></view>
-      <view class="stat"><view class="num">{{targets.daily.fat_g}}</view><view class="lbl">脂肪 g</view></view>
-      <view class="stat"><view class="num">{{targets.daily.carb_g}}</view><view class="lbl">碳水 g</view></view>
+      <view class="avatar round me-avatar">{{form.nickname ? form.nickname[0] : '我'}}</view>
+      <view class="grow">
+        <view class="me-name">{{form.nickname || '未命名'}}</view>
+        <view class="muted">{{goalText}}</view>
+      </view>
     </view>
-    <view class="muted mt">{{targets.daily.basis}}</view>
-    <view class="small mt" wx:for="{{targets.daily.notes}}" wx:key="*this" style="color:var(--warn)">{{item}}</view>
+    <view class="row me-stats" wx:if="{{targets}}">
+      <view class="stat"><view class="num">{{targets.daily.kcal}}</view><view class="lbl">kcal / 天</view></view>
+      <view class="stat"><view class="num">{{targets.daily.protein_g}}g</view><view class="lbl">蛋白质</view></view>
+      <view class="stat"><view class="num">{{targets.daily.fat_g}}g</view><view class="lbl">脂肪</view></view>
+      <view class="stat"><view class="num">{{targets.daily.carb_g}}g</view><view class="lbl">碳水</view></view>
+    </view>
+    <view class="muted mt" wx:if="{{targets}}">{{targets.daily.basis}}</view>
+    <view class="small mt" wx:for="{{targets.daily.notes}}" wx:key="*this" style="color:var(--orange)">{{item}}</view>
   </view>
 
-  <view class="card">
-    <view class="card-title">健康资料</view>
+  <view class="card flush">
+    <view class="menu" bindtap="go" data-url="/pages/twin/twin"><view class="mini-icon i-purple"><image src="/assets/icons/dna-w.svg" /></view><text class="grow">数字孪生</text><text class="muted">越用越懂你</text><text class="chevron">›</text></view>
+    <view class="menu" bindtap="go" data-url="/pages/group/group"><view class="mini-icon i-blue"><image src="/assets/icons/users-w.svg" /></view><text class="grow">小组管理</text><text class="muted">宿舍 / 家庭</text><text class="chevron">›</text></view>
+    <view class="menu" bindtap="go" data-url="/pages/nutrition/nutrition"><view class="mini-icon i-teal"><image src="/assets/icons/chart-w.svg" /></view><text class="grow">营养分析</text><text class="chevron">›</text></view>
+    <view class="menu" bindtap="go" data-url="/pages/notifications/notifications"><view class="mini-icon i-pink"><image src="/assets/icons/bell-w.svg" /></view><text class="grow">消息通知</text><text class="chevron">›</text></view>
+  </view>
+
+  <view class="section-title"><text>健康资料</text></view>
+  <view class="card flush">
     <view class="field"><text class="label">昵称</text><input class="input" value="{{form.nickname}}" data-k="nickname" bindinput="onField" /></view>
     <picker range="{{sexes}}" range-key="label" value="{{sexIndex}}" bindchange="onSex">
       <view class="field"><text class="label">性别</text><text class="grow">{{sexes[sexIndex].label}}</text><text class="muted">▾</text></view>
@@ -43,21 +48,22 @@
     </view>
   </view>
 
+  <view class="section-title"><text>忌口与过敏</text></view>
   <view class="card">
-    <view class="card-title">过敏原 <text class="tag danger">硬约束 · 一票否决</text></view>
+    <view class="card-title small-title">过敏原 <text class="tag danger">硬约束 · 一票否决</text></view>
     <view class="row wrap">
       <text wx:for="{{meta.allergen_options}}" wx:key="key" class="tag {{sel.allergens[item.key] ? 'danger' : 'gray'}}" bindtap="toggleSel" data-group="allergens" data-k="{{item.key}}">{{item.label}}</text>
       <text wx:for="{{extraAllergens}}" wx:key="*this" class="tag danger" bindtap="removeExtra" data-list="extraAllergens" data-v="{{item}}">{{item}} ✕</text>
     </view>
     <view class="chat-bar mt"><input class="input" placeholder="其他过敏食材" value="{{customAllergen}}" data-k="customAllergen" bindinput="onCustom" /><button class="btn small" bindtap="addCustom" data-k="allergen">添加</button></view>
 
-    <view class="card-title mt">口味忌口 <text class="tag warn">软约束 · 可推翻</text></view>
+    <view class="card-title small-title mt">口味忌口 <text class="tag warn">软约束 · 可推翻</text></view>
     <view class="row wrap">
       <text wx:for="{{meta.avoid_options}}" wx:key="key" class="tag {{sel.avoidances[item.key] ? 'warn' : 'gray'}}" bindtap="toggleSel" data-group="avoidances" data-k="{{item.key}}">{{item.label}}</text>
       <text wx:for="{{extraAvoid}}" wx:key="*this" class="tag warn" bindtap="removeExtra" data-list="extraAvoid" data-v="{{item}}">{{item}} ✕</text>
     </view>
     <view class="chat-bar mt"><input class="input" placeholder="其他不吃的食材，如 洋葱" value="{{customAvoid}}" data-k="customAvoid" bindinput="onCustom" /><button class="btn small" bindtap="addCustom" data-k="avoid">添加</button></view>
-    <view class="field"><text class="label">最高辣度</text><slider class="grow" min="0" max="3" value="{{form.max_spicy}}" show-value bindchange="onSpicy" activeColor="#34c759" /></view>
+    <view class="field"><text class="label">最高辣度</text><slider class="grow" min="0" max="3" value="{{form.max_spicy}}" show-value bindchange="onSpicy" activeColor="#1d9e6c" /></view>
     <view class="field"><text class="label">爱吃</text><input class="input" value="{{likesText}}" bindinput="onLikes" placeholder="用顿号分隔，如 牛肉、西兰花" /></view>
     <button class="btn mt" bindtap="save">保存资料</button>
   </view>
