@@ -1,6 +1,6 @@
 # MealAgent · AI 膳食统筹微信小程序
 
-[English](README.md) | 中文
+[English](README.md) | 中文 · 📋 [项目进展与待办](docs/PROJECT_STATUS.md)
 
 依据设计文档 [`MealAgent_Project_Design_Document_Final_EN.md`](MealAgent_Project_Design_Document_Final_EN.md)（V3.1 终版）实现的 AI 膳食统筹微信小程序。
 它把六个环节串成闭环：**库存 → 预算 → 健康 → 多智能体周计划 → 购物 → 餐后复盘**；
