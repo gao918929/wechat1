@@ -4,7 +4,7 @@
   <view class="card hero party anim-slide" wx:if="{{detail}}">
     <view class="win-tab"><image class="win-tab-icon" src="/assets/px/users.svg" />当前队伍</view>
     <view class="party-head">
-      <view class="party-icon"><image src="/assets/px/{{detail.kind === 'household' ? 'tab-home' : 'users'}}.svg" /></view>
+      <view class="party-icon"><image class="party-img" src="/assets/px/{{detail.kind === 'household' ? 'tab-home' : 'users'}}.svg" /></view>
       <view class="grow">
         <view class="party-name ellipsis">{{detail.name}}</view>
         <view class="party-meta">{{kindLabel}} · 我是{{isAdmin ? '管理员' : '成员'}}</view>
@@ -45,7 +45,7 @@
         hover-class="{{isAdmin && !item.isMe ? 'px-pressed' : 'none'}}" bindtap="memberActions" data-index="{{index}}">
         <view class="ava {{item.tone}}">
           <text class="ava-char">{{item.initial}}</text>
-          <view wx:if="{{item.role === 'admin'}}" class="crown anim-pop"><image src="/assets/px/trophy.svg" /></view>
+          <view wx:if="{{item.role === 'admin'}}" class="crown anim-pop"><image class="crown-img" src="/assets/px/trophy.svg" /></view>
         </view>
         <view class="grow">
           <view class="mem-top">

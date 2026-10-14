@@ -40,7 +40,7 @@ function nameList(list) {
 function chefTip(alerts, today, plan) {
   const near = alerts.filter((a) => a.level === 'near_expiry');
   const todayExp = near.filter((a) => !(a.days_left > 0));
-  if (todayExp.length) return nameList(todayExp) + '今天到期，今晚先把它做掉吧！';
+  if (todayExp.length) return nameList(todayExp) + '今天到期，今晚先把' + (todayExp.length > 1 ? '它们' : '它') + '做掉吧！';
   if (near.length) {
     const min = Math.min.apply(null, near.map((a) => a.days_left));
     return nameList(near) + (min <= 1 ? '明天就到期' : min + ' 天内到期') + '，优先安排进下一餐吧。';
@@ -132,7 +132,9 @@ Page({
         kcal: day.kcal || 0, target: t.kcal, pct: pct(day.kcal, t.kcal), over,
         left: Math.max(0, t.kcal - (day.kcal || 0)),
         ratio,
-        meter: over ? ratio : Math.min(100, ratio),
+        // capped: when over, the bar turns solid red and the number shakes once instead of a looping
+        // red flash, which would be a 4th looping animation on the first screen (spec §5 restraint)
+        meter: Math.min(100, ratio),
         macros: [
           { name: '蛋白质', v: Math.round(day.protein || 0), t: t.protein_g, pct: pct(day.protein, t.protein_g), cls: '', color: 'green' },
           { name: '碳水', v: Math.round(day.carb || 0), t: t.carb_g, pct: pct(day.carb, t.carb_g), cls: 'blue', color: 'blue' },

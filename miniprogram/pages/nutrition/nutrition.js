@@ -52,6 +52,7 @@ Page({
           m.initial = (m.nickname || '?').slice(0, 1);
           m.tone = MEMBER_TONES[i % MEMBER_TONES.length];
           m.proteinPct = m.target_protein ? Math.min(100, Math.round(m.avg_protein / m.target_protein * 100)) : 0;
+          m.kcalOver = !!m.target_kcal && m.avg_kcal > m.target_kcal * 1.1;
         });
         this.setData({ group: g, members: r.members, disclaimer: r.disclaimer });
       });

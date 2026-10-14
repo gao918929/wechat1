@@ -22,7 +22,10 @@ Page({
     likesText: '',
     sel: { groups: {}, allergens: {}, avoidances: {} },
     extraAvoid: [],
-    extraAllergens: []
+    extraAllergens: [],
+    // display only: pixel chili readout for the spicy slider
+    spicyLevels: [1, 2, 3],
+    spicyNames: ['不吃辣', '微辣', '中辣', '特辣']
   },
 
   onShow() {

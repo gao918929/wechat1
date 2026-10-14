@@ -19,7 +19,7 @@
     <view class="card hero dex anim-slide">
       <view class="win-tab"><image class="win-tab-icon" src="/assets/px/twin.svg" />记忆图鉴</view>
       <view class="dex-head">
-        <view class="dex-portrait"><image class="anim-bob" src="/assets/px/twin.svg" /></view>
+        <view class="dex-portrait"><image class="dex-img anim-bob" src="/assets/px/twin.svg" /></view>
         <view class="grow">
           <view class="dex-kicker">{{view === 'me' ? '个人孪生' : '小组孪生'}}<text class="ver px-num">V{{view === 'me' ? twin.version : groupTwin.version}}</text></view>
           <view class="dex-learn"><text class="px-num dex-num">{{vm.feedback}}</text><text class="dex-unit">条反馈已学习</text></view>

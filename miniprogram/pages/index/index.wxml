@@ -25,7 +25,8 @@
   <!-- mascot advice -->
   <view class="chef-say anim-slide-x" wx:if="{{tip}}">
     <view class="name-plate">番茄小厨</view>
-    <view class="px-dialog chef-box"><px-typewriter text="{{tip}}" speed="30" step="2" /></view>
+    <!-- no blinking ▼: the tab icon, chef sprite and online light already use the 3-loop budget (spec §5) -->
+    <view class="px-dialog chef-box"><px-typewriter text="{{tip}}" speed="30" step="2" cursor="{{false}}" /></view>
   </view>
 
   <!-- today: RPG status window -->
@@ -34,8 +35,8 @@
       <view class="win-tab"><image class="win-tab-icon" src="/assets/px/flame.svg" />今日能量</view>
       <view class="en-top">
         <view class="en-kcal">
-          <text class="px-num en-big {{today.over ? 'is-over' : ''}}">{{today.kcal || 0}}</text>
-          <text class="px-num en-target">/{{today.target || 0}}</text>
+          <text class="px-num en-big {{today.over ? 'is-over anim-shake' : ''}}">{{today.kcal || 0}}</text>
+          <text class="px-num en-target">/{{today.target || '--'}}</text>
           <text class="en-unit">kcal</text>
         </view>
         <text class="px-num en-pct {{today.over ? 'is-over' : ''}}">{{today.ratio || 0}}%</text>
@@ -134,7 +135,7 @@
           </view>
         </view>
         <view class="plan-budget">
-          <text class="plan-budget-l">预算</text>
+          <text class="plan-budget-l" wx:if="{{planMeta.budgetPct >= 0}}">预算</text>
           <view class="grow" wx:if="{{planMeta.budgetPct >= 0}}"><px-meter value="{{planMeta.budgetPct}}" segments="10" color="yellow" height="24" /></view>
           <view class="grow" wx:else></view>
           <text class="px-num plan-budget-v" wx:if="{{planMeta.budgetPct >= 0}}">{{planMeta.budgetPct}}%</text>

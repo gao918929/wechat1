@@ -29,7 +29,7 @@
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.dex-portrait image { width: 80rpx; height: 80rpx; display: block; }
+.dex-img { width: 80rpx; height: 80rpx; display: block; }
 .dex-kicker { display: flex; align-items: center; font-size: 24rpx; color: var(--text-3); letter-spacing: 1rpx; }
 .ver { margin-left: 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 32rpx; color: #fff; background: var(--purple);
   box-shadow: 0 0 0 2rpx var(--purple-d); }
@@ -96,7 +96,8 @@
   box-shadow: 0 -4rpx 0 0 var(--orange-d), 0 4rpx 0 0 var(--orange-d), -4rpx 0 0 0 var(--orange-d), 4rpx 0 0 0 var(--orange-d), inset 0 -4rpx 0 0 #f5c784; }
 .badge.info { background: var(--blue-l); color: var(--blue-d);
   box-shadow: 0 -4rpx 0 0 var(--blue-d), 0 4rpx 0 0 var(--blue-d), -4rpx 0 0 0 var(--blue-d), 4rpx 0 0 0 var(--blue-d), inset 0 -4rpx 0 0 #8ccbf2; }
-.sc { margin-left: 10rpx; font-size: 20rpx; }
+/* PixelNum glyphs sit high in their em box: nudge down onto the Chinese baseline */
+.sc { position: relative; top: 4rpx; margin-left: 10rpx; font-size: 20rpx; line-height: 1; }
 .badge-star { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 0 6rpx 0 -4rpx; }
 .swap-arrow { width: 24rpx; height: 24rpx; flex-shrink: 0; margin: 0 6rpx; }
 .none { font-size: 24rpx; color: var(--text-3); margin: 8rpx 4rpx; }

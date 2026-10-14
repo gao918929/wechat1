@@ -43,7 +43,7 @@
 .rank-cap { font-size: 20rpx; line-height: 1; letter-spacing: 4rpx; margin-bottom: 12rpx; text-shadow: 2rpx 2rpx 0 var(--ink); }
 .rank-letter { font-size: 56rpx; line-height: 1; text-shadow: 4rpx 4rpx 0 var(--ink); }
 .rank-badge.g-none .rank-cap, .rank-badge.g-none .rank-letter { text-shadow: none; }
-.rank-spark { position: absolute; right: -20rpx; top: -24rpx; width: 48rpx; height: 48rpx; }
+.rank-spark { position: absolute; right: -32rpx; top: -32rpx; width: 64rpx; height: 64rpx; }
 
 .rank-info { flex: 1; min-width: 0; }
 .rank-lbl { font-size: 24rpx; color: var(--text-3); }
@@ -68,7 +68,7 @@
 
 /* ---------------------------------------------------------------- health partner dialogue */
 .doc-say { display: flex; align-items: flex-end; margin: 0 0 40rpx; }
-.doc-sprite { width: 112rpx; height: 112rpx; flex-shrink: 0; margin: 0 12rpx 4rpx -8rpx; }
+.doc-sprite { width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 0 16rpx 8rpx 0; }
 .doc-box { position: relative; flex: 1; min-width: 0; padding-top: 20rpx; }
 .name-plate {
   position: absolute; left: 24rpx; top: 0; z-index: 2; padding: 0 16rpx; height: 40rpx; line-height: 40rpx;
@@ -161,5 +161,6 @@
 .mac { display: flex; align-items: center; height: 48rpx; }
 .mac-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .mac-meter { flex: 1; min-width: 0; }
-.mac-val { flex-shrink: 0; margin-left: 16rpx; font-size: 20rpx; color: var(--text); white-space: nowrap; }
+.mac-val { width: 176rpx; flex-shrink: 0; margin-left: 12rpx; text-align: right; font-size: 20rpx; color: var(--text); white-space: nowrap; letter-spacing: -2rpx; }
+.mac-val.is-over { color: var(--red-d); }
 .mac-unit { width: 52rpx; flex-shrink: 0; margin-left: 8rpx; font-size: 20rpx; color: var(--text-3); }

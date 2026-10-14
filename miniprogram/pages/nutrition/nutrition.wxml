@@ -21,7 +21,7 @@
         <view class="rank-badge {{report.gradeCls}} anim-pop">
           <text class="rank-cap">RANK</text>
           <text class="px-num rank-letter">{{report.grade}}</text>
-          <view class="rank-spark" wx:if="{{report.grade === 'S'}}"><px-sprite name="sprite-sparkle" frames="4" size="48" duration="800" /></view>
+          <view class="rank-spark" wx:if="{{report.grade === 'S'}}"><px-sprite name="sprite-sparkle" frames="4" size="64" duration="800" /></view>
         </view>
         <view class="rank-info">
           <view class="rank-lbl">健康评分</view>
@@ -46,7 +46,7 @@
 
     <!-- health partner read-out -->
     <view class="doc-say anim-slide d1">
-      <view class="doc-sprite"><px-sprite name="sprite-health" frames="2" size="112" duration="1000" /></view>
+      <view class="doc-sprite"><px-sprite name="sprite-health" frames="2" size="96" duration="1000" /></view>
       <view class="doc-box">
         <view class="name-plate">健康伙伴</view>
         <view class="px-dialog doc-dialog"><px-typewriter text="{{report.comment}}" speed="30" step="2" /></view>
@@ -132,8 +132,8 @@
           </view>
           <view class="mac">
             <image class="mac-icon" src="/assets/px/flame.svg" />
-            <view class="mac-meter"><px-meter value="{{item.pct}}" segments="10" color="yellow" height="16" /></view>
-            <text class="px-num mac-val">{{item.avg_kcal}}/{{item.target_kcal}}</text>
+            <view class="mac-meter"><px-meter value="{{item.pct}}" segments="10" color="{{item.kcalOver ? 'red' : 'yellow'}}" height="16" /></view>
+            <text class="px-num mac-val {{item.kcalOver ? 'is-over' : ''}}">{{item.avg_kcal}}/{{item.target_kcal}}</text>
             <text class="mac-unit">kcal</text>
           </view>
           <view class="mac">

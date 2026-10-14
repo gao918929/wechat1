@@ -3,7 +3,7 @@
   <!-- mailbox header -->
   <view class="card hero mailbox anim-slide">
     <view class="mb-bell {{unread ? 'has' : ''}}">
-      <image class="{{unread ? 'anim-wiggle' : ''}}" src="/assets/px/bell.svg" />
+      <image class="mb-img {{unread ? 'anim-wiggle' : ''}}" src="/assets/px/bell.svg" />
       <view wx:if="{{unread}}" class="mb-count px-num">{{unread > 99 ? '99+' : unread}}</view>
     </view>
     <view class="grow">
@@ -15,17 +15,17 @@
   <view class="section-title" wx:if="{{items.length}}"><text>收件</text><text class="sec-hint">点开查看详情</text></view>
 
   <view wx:if="{{!items.length}}" class="card empty-box anim-pop">
-    <image class="empty-bell" src="/assets/px/bell.svg" />
+    <image class="empty-icon" src="/assets/px/send.svg" />
     <view class="empty-text">暂无通知</view>
   </view>
 
   <view wx:for="{{items}}" wx:key="id" class="card letter {{item.read ? 'read' : 'unread'}} {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}"
     hover-class="px-pressed" bindtap="open" data-index="{{index}}">
-    <view class="mini-icon lt-icon {{item.read ? 'i-off' : item.tone}}"><image src="/assets/px/{{item.icon}}.svg" /></view>
+    <view class="mini-icon lt-icon {{item.read ? 'i-off' : item.tone}}"><image class="lt-img" src="/assets/px/{{item.icon}}.svg" /></view>
     <view class="grow lt-main">
       <view class="lt-top">
         <text class="lt-title">{{item.title}}</text>
-        <view wx:if="{{!item.read}}" class="lt-dot {{item.blink ? 'anim-blink' : ''}}"></view>
+        <view wx:if="{{!item.read}}" class="lt-led"><view class="lt-dot {{item.blink ? 'anim-blink' : ''}}"></view></view>
       </view>
       <view class="lt-body">{{item.body}}</view>
       <view class="lt-foot">

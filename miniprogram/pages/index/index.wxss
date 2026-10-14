@@ -61,7 +61,7 @@
 .win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
 .en-top { display: flex; align-items: flex-end; justify-content: space-between; }
 .en-kcal { display: flex; align-items: baseline; min-width: 0; }
-.en-big { font-size: 48rpx; line-height: 1.2; color: var(--ink); }
+.en-big { display: inline-block; font-size: 48rpx; line-height: 1.2; color: var(--ink); } /* inline-block so the over-target shake (transform) applies */
 .en-big.is-over, .en-pct.is-over { color: var(--red); }
 .en-target { font-size: 24rpx; margin-left: 8rpx; color: var(--text-3); }
 .en-unit { font-size: 24rpx; margin-left: 8rpx; color: var(--text-3); }
@@ -76,7 +76,8 @@
 .mac { display: flex; align-items: center; height: 52rpx; }
 .mac-name { width: 104rpx; flex-shrink: 0; font-size: 24rpx; color: var(--text-2); }
 .mac-meter { flex: 1; min-width: 0; }
-.mac-val { width: 184rpx; flex-shrink: 0; text-align: right; font-size: 20rpx; color: var(--text); }
+/* min-width (not width): a 4-digit "1999/1150g" widens the column and shortens the meter instead of overflowing */
+.mac-val { min-width: 176rpx; margin-left: 8rpx; flex-shrink: 0; white-space: nowrap; text-align: right; font-size: 20rpx; color: var(--text); }
 .mac-val.is-over { color: var(--red); }
 
 /* ---------------------------------------------------------------- quick actions */

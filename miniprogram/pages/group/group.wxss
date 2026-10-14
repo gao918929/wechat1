@@ -18,7 +18,7 @@
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.party-icon image { width: 80rpx; height: 80rpx; }
+.party-img { width: 80rpx; height: 80rpx; }
 .party-name { font-size: 40rpx; line-height: 1.4; letter-spacing: 2rpx; color: var(--ink); }
 .party-meta { font-size: 24rpx; color: var(--text-3); margin-top: 4rpx; }
 
@@ -65,7 +65,7 @@
 .ava.t-pink { background: var(--pink); }
 /* admin wears the trophy badge on the avatar corner */
 .crown { position: absolute; left: 20rpx; top: -36rpx; width: 48rpx; height: 48rpx; }
-.crown image { width: 48rpx; height: 48rpx; display: block; }
+.crown-img { width: 48rpx; height: 48rpx; display: block; }
 
 .mem-top { display: flex; align-items: center; min-width: 0; }
 .mem-name { font-size: 30rpx; line-height: 1.5; color: var(--ink); letter-spacing: 1rpx; }
