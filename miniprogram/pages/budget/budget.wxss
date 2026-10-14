@@ -50,14 +50,7 @@
 .payers { display: flex; align-items: center; flex-wrap: wrap; margin-top: 8rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); }
 .payers-lbl { font-size: 24rpx; color: var(--text-3); margin-right: 12rpx; }
 
-/* category colours (match the inventory avatars) */
-.c-vegetables { background-color: var(--green); }
-.c-meat_eggs { background-color: var(--red); }
-.c-seafood { background-color: var(--blue); }
-.c-staples { background-color: var(--yellow); }
-.c-soy_dairy { background-color: var(--purple); }
-.c-seasonings { background-color: #a89fb8; }
-.c-other { background-color: var(--pink); }
+/* category colours: global .cat-<key> (same as inventory avatars and shopping bars) */
 
 /* ---------------------------------------------------------------- quick entries */
 .action-row { display: flex; margin: 0 0 40rpx; }
@@ -86,7 +79,6 @@
 .card.ledger { padding: 4rpx 24rpx; }
 .tx { display: flex; align-items: center; margin: 0 -12rpx; padding: 20rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .tx:last-child { border-bottom: none; }
-.tx.px-pressed { background: var(--paper-2); }
 .tx .mini-icon { margin-right: 20rpx; }
 .tx-name { font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
 .tx-meta { font-size: 24rpx; color: var(--text-3); margin-top: 4rpx; }

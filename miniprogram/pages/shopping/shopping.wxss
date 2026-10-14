@@ -52,18 +52,19 @@
 .sec-name { flex: 1; min-width: 0; font-size: 32rpx; letter-spacing: 2rpx; }
 .sec-done { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .sec-count { font-size: 20rpx; }
-/* bar colours per section (white text on dark ones, ink text on yellow) */
-.c-vegetables { background: var(--green); }
-.c-meat_eggs { background: var(--red); }
-.c-seafood { background: var(--blue); }
-.c-soy_dairy { background: var(--purple); }
-.c-staples { background: var(--yellow); color: var(--ink); text-shadow: none; }
-.c-seasonings { background: #a89fb8; }
+/* bar colours per section: global .cat-<key> (white text on dark ones, ink text on yellow) */
 
 .sec-list { padding: 4rpx 28rpx 8rpx; }
 .it { display: flex; align-items: center; margin: 0 -12rpx; padding: 16rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .it:last-child { border-bottom: none; }
-.it.px-pressed { background: var(--paper-2); }
+/* ingredient icon (16px art at 1:1) in a small sunken cell; the initial stands in when there is no icon */
+.it-cell {
+  width: 48rpx; height: 48rpx; flex-shrink: 0; margin: 4rpx 20rpx 4rpx 0; display: flex; align-items: center; justify-content: center;
+  background: var(--paper-2); box-shadow: inset 4rpx 4rpx 0 0 var(--paper-3);
+}
+.it-img { width: 32rpx; height: 32rpx; }
+.it-initial { font-size: 24rpx; line-height: 1; color: var(--text-3); }
+.it.done .it-cell { opacity: 0.45; }
 .it-name { font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
 .it-qty { font-size: 24rpx; color: var(--text-3); }
 .it-have { color: var(--blue-d); }

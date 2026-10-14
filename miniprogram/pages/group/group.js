@@ -1,15 +1,11 @@
 const api = require('../../utils/api');
+const { metaLabels } = require('../../utils/util');
 const app = getApp();
 
 const VIS = [{ key: 'owner', label: '仅创建者' }, { key: 'selected', label: '指定成员' }, { key: 'all', label: '全部成员' }];
 // display-only helpers (pixel roster)
 const KIND_LABEL = { dorm: '宿舍', household: '家庭', personal: '个人' };
-const TONES = ['t-green', 't-blue', 't-orange', 't-purple', 't-pink'];
-function labelMap(options) {
-  const m = {};
-  (options || []).forEach((o) => { m[o.key] = o.label; });
-  return m;
-}
+const TONES = ['tone-green', 'tone-blue', 'tone-orange', 'tone-purple', 'tone-pink'];
 
 Page({
   data: { groups: [], current: null, detail: null, isAdmin: false, isOwner: false, newName: '', newKind: 'dorm', code: '', vis: VIS, me: null,
@@ -27,17 +23,14 @@ Page({
       const visible = detail.twin_visible_member_ids || [];
       detail.member_list.forEach((m) => { m.visible = visible.indexOf(m.id) >= 0; m.isMe = m.id === me; });
       // display fields: avatar initial / colour, readable diet labels, party stats, invite-code cells
-      const meta = app.globalData.meta || {};
-      const AL = labelMap(meta.allergen_options);
-      const AV = labelMap(meta.avoid_options);
       const diet = {};
       detail.member_list.forEach((m, i) => {
         // Chinese nicknames share prefixes (小明 / 小红), so show the last character; otherwise the first letter
         const chars = Array.from(m.nickname || '?');
         m.initial = chars.length > 1 && /[\u4e00-\u9fff]/.test(chars[0]) ? chars[chars.length - 1] : chars[0].toUpperCase();
         m.tone = TONES[i % TONES.length];
-        m.allergenText = (m.allergens || []).map((a) => AL[a] || a);
-        m.avoidText = (m.avoidances || []).map((a) => AV[a] || a);
+        m.allergenText = metaLabels('allergen_options', m.allergens);
+        m.avoidText = metaLabels('avoid_options', m.avoidances);
         (m.allergens || []).concat(m.avoidances || []).forEach((a) => { diet[a] = 1; });
       });
       this.setData({ detail, isAdmin: detail.role === 'admin', isOwner: detail.owner_id === me,

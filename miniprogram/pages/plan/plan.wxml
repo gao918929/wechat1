@@ -1,9 +1,9 @@
 <px-nav title="膳食计划" back />
 
-<view class="container">
+<view class="container no-tab">
   <!-- ====================== generating: party battle screen ====================== -->
   <block wx:if="{{status !== 'done'}}">
-    <view class="card feature gen-head {{status === 'failed' ? 'gen-fail' : 'purple'}} anim-slide">
+    <view class="card feature gen-head {{status === 'failed' ? 'red' : 'purple'}} anim-slide">
       <view class="gen-top">
         <view class="gen-icon">
           <px-sprite wx:if="{{status !== 'failed'}}" name="sprite-pot" frames="4" size="80" duration="800" />
@@ -23,12 +23,12 @@
       </view>
     </view>
 
-    <view class="section-title"><text>出战小队</text><text class="muted"><text class="px-num squad-count">{{doneCount}}/4</text> 已完成</text></view>
+    <view class="section-title"><text>出战小队</text><text class="sec-hint"><text class="px-num squad-count">{{doneCount}}/4</text> 已完成</text></view>
     <view class="squad">
       <view wx:for="{{agents}}" wx:key="key" class="hero-wrap anim-slide {{'d' + (index + 1)}}">
         <view class="hero {{item.done ? 'done' : ''}}">
           <view class="hero-top">
-            <view class="hero-cell c-{{item.key}}">
+            <view class="hero-cell agent-{{item.key}}">
               <px-sprite name="sprite-{{item.key}}" frames="2" size="96" duration="900" playing="{{!item.done && status !== 'failed'}}" />
             </view>
             <view class="hero-id">
@@ -60,18 +60,18 @@
       </view>
     </view>
 
-    <view class="section-title" wx:if="{{streamDays.length}}"><text>菜单生成中</text><text class="muted">已出 {{streamDays.length}} 天</text></view>
+    <view class="section-title" wx:if="{{streamDays.length}}"><text>菜单生成中</text><text class="sec-hint">已出 {{streamDays.length}} 天</text></view>
     <view class="card flush" wx:if="{{streamDays.length}}">
       <view wx:for="{{streamDays}}" wx:for-item="day" wx:key="day" class="stream-row anim-slide-x">
-        <view class="cal cal-sm">
-          <view class="cal-top">{{day.week}}</view>
-          <view class="px-num cal-day">{{day.dayNum}}</view>
+        <view class="px-cal sm">
+          <view class="px-cal-top">{{day.week}}</view>
+          <view class="px-num px-cal-day">{{day.dayNum}}</view>
         </view>
         <view class="grow stream-dishes"><block wx:for="{{day.meals}}" wx:for-item="m" wx:key="meal"><text wx:for="{{m.dishes}}" wx:key="name" class="stream-dish">{{item.name}}</text></block></view>
       </view>
     </view>
     <button class="btn mt" wx:if="{{status === 'failed'}}" bindtap="retry" hover-class="px-pressed">
-      <image class="btn-icon" src="/assets/px/ui-back.svg" />返回重试
+      <image class="btn-icon back-icon" src="/assets/px/ui-back.svg" />返回重试
     </button>
   </block>
 
@@ -140,12 +140,12 @@
       <view class="note-foot">每道菜标注“适合谁”，大家自由组合上桌。</view>
     </view>
 
-    <view class="section-title"><text>每日菜单</text><text class="muted">{{result.days}} 天 · 点菜名看做法</text></view>
+    <view class="section-title"><text>每日菜单</text><text class="sec-hint">{{result.days}} 天 · 点菜名看做法</text></view>
     <view class="card day-card" wx:for="{{days}}" wx:for-item="day" wx:key="day">
       <view class="day-head">
-        <view class="cal">
-          <view class="cal-top">{{day.week}}</view>
-          <view class="px-num cal-day">{{day.dayNum}}</view>
+        <view class="px-cal">
+          <view class="px-cal-top">{{day.week}}</view>
+          <view class="px-num px-cal-day">{{day.dayNum}}</view>
         </view>
         <view class="grow">
           <view class="day-title">第 {{day.day}} 天<text class="day-date">{{day.month}}{{day.dayNum}}日</text></view>
@@ -164,7 +164,7 @@
         <view wx:for="{{m.dishes}}" wx:for-item="x" wx:key="name" class="dish">
           <view class="dish-row">
             <view class="kind-block k-{{x.kind}}">{{x.kindShort}}</view>
-            <view class="grow dish-main" bindtap="toggleDish" data-k="{{day.day}}-{{m.meal}}-{{x.name}}" hover-class="dish-down">
+            <view class="grow dish-main" bindtap="toggleDish" data-k="{{day.day}}-{{m.meal}}-{{x.name}}" hover-class="px-pressed-row">
               <view class="dish-top">
                 <text class="dish-name">{{x.name}}</text>
                 <text class="dish-kind">{{x.kindLabel}}</text>
@@ -210,7 +210,7 @@
     </view>
     <view class="card flush">
       <view wx:for="{{agentRows}}" wx:key="key" class="agent-row">
-        <view class="agent-face c-{{item.key}}">
+        <view class="agent-face agent-{{item.key}}">
           <px-sprite name="sprite-{{item.key}}" frames="2" size="72" playing="{{false}}" />
         </view>
         <view class="grow">

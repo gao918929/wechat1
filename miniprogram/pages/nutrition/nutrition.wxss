@@ -4,7 +4,7 @@
 /* ---------------------------------------------------------------- view tabs + range switch */
 .tabs.view-tabs { margin: 16rpx 4rpx 32rpx; }
 .range { display: flex; align-items: center; margin: 0 4rpx 52rpx; }
-.range-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; }
+.range-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; }
 .range-lbl { flex: 1; min-width: 0; margin-left: 12rpx; font-size: 24rpx; color: var(--text-2); }
 .rg {
   margin: 4rpx 4rpx 4rpx 24rpx; padding: 6rpx 20rpx; font-size: 24rpx; line-height: 1.6; color: var(--text-2); background: var(--paper-2);
@@ -16,15 +16,6 @@
     inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8, 4rpx 6rpx 0 0 var(--shadow);
 }
 .px-loading.wait { margin: 24rpx 8rpx 48rpx; }
-
-/* ---------------------------------------------------------------- window name tab (matches index) */
-.win-tab {
-  position: absolute; left: 24rpx; top: -20rpx; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
-  font-size: 22rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
-.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
 
 /* ---------------------------------------------------------------- rating window */
 .card.rank-card { padding: 44rpx 28rpx 24rpx; }
@@ -67,15 +58,10 @@
 .reason-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 12rpx 12rpx 0 0; }
 
 /* ---------------------------------------------------------------- health partner dialogue */
-.doc-say { display: flex; align-items: flex-end; margin: 0 0 40rpx; }
+/* the global .name-plate.green hangs 20rpx above the box; padding (not margin, which would collapse) makes room */
+.doc-say { display: flex; align-items: flex-end; margin: 0 0 40rpx; padding-top: 20rpx; }
 .doc-sprite { width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 0 16rpx 8rpx 0; }
-.doc-box { position: relative; flex: 1; min-width: 0; padding-top: 20rpx; }
-.name-plate {
-  position: absolute; left: 24rpx; top: 0; z-index: 2; padding: 0 16rpx; height: 40rpx; line-height: 40rpx;
-  font-size: 22rpx; color: var(--ink); background: var(--green-l);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--green), inset 4rpx 4rpx 0 0 #eafbe6;
-}
+.doc-box { position: relative; flex: 1; min-width: 0; }
 .px-dialog.doc-dialog { margin: 0 4rpx 4rpx; padding: 36rpx 24rpx 20rpx; font-size: 24rpx; line-height: 1.75; }
 
 /* ---------------------------------------------------------------- energy chart: stacked pixel blocks */
@@ -115,7 +101,7 @@
 .macro-row { padding: 20rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
 .macro-row:last-child { border-bottom: none; }
 .mr-head { display: flex; align-items: center; }
-.mr-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.mr-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .mr-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
 .mr-v { font-size: 24rpx; color: var(--ink); }
 .mr-t { font-size: 20rpx; color: var(--text-3); margin-left: 4rpx; }
@@ -150,11 +136,6 @@
 .mem { display: flex; align-items: flex-start; padding: 24rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
 .mem:last-child { border-bottom: none; }
 .avatar.mem-avatar { margin: 8rpx 24rpx 4rpx 4rpx; }
-.avatar.t-green { background: var(--green); }
-.avatar.t-blue { background: var(--blue); }
-.avatar.t-orange { background: var(--orange); }
-.avatar.t-purple { background: var(--purple); }
-.avatar.t-pink { background: var(--pink); }
 .mem-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4rpx; }
 .mem-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
 .mem-head .tag { margin: 4rpx 4rpx 4rpx 16rpx; }

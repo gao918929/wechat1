@@ -1,5 +1,5 @@
 <px-nav title="数字孪生" back />
-<view class="container">
+<view class="container no-tab">
   <view class="tabs">
     <view class="tab {{view === 'me' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setView" data-v="me">
       <image class="tab-icon" src="/assets/px/{{view === 'me' ? 'tab-me' : 'tab-me-off'}}.svg" />个人孪生
@@ -69,7 +69,7 @@
         </view>
       </view>
       <view class="px-dialog note anim-slide-x" wx:if="{{groupTwin.note}}">
-        <view class="note-plate">孪生小结</view>
+        <view class="name-plate purple">孪生小结</view>
         <px-typewriter text="{{groupTwin.note}}" speed="30" step="2" />
       </view>
     </block>
@@ -82,7 +82,7 @@
         <view class="badges">
           <view wx:for="{{vm.favor}}" wx:key="name" class="badge good">
             <image wx:if="{{index === 0}}" class="badge-star" src="/assets/px/star.svg" />
-            <text>{{item.name}}</text><text class="px-num sc">{{item.scoreText}}</text>
+            <text>{{item.name}}</text><text class="px-num inline sc">{{item.scoreText}}</text>
           </view>
           <text wx:if="{{!vm.favor.length}}" class="none">暂无</text>
         </view>
@@ -91,7 +91,7 @@
       <view class="pg">
         <view class="pg-head"><image class="pg-icon" src="/assets/px/cross.svg" /><text class="grow">不太喜欢</text><text class="px-num pg-count">{{vm.avoid.length}}</text></view>
         <view class="badges">
-          <view wx:for="{{vm.avoid}}" wx:key="name" class="badge bad"><text>{{item.name}}</text><text class="px-num sc">{{item.scoreText}}</text></view>
+          <view wx:for="{{vm.avoid}}" wx:key="name" class="badge bad"><text>{{item.name}}</text><text class="px-num inline sc">{{item.scoreText}}</text></view>
           <text wx:if="{{!vm.avoid.length}}" class="none">暂无</text>
         </view>
       </view>
@@ -99,7 +99,7 @@
       <view class="pg" wx:if="{{vm.ingredients.length}}">
         <view class="pg-head"><image class="pg-icon" src="/assets/px/leaf.svg" /><text class="grow">食材倾向</text><text class="px-num pg-count">{{vm.ingredients.length}}</text></view>
         <view class="badges">
-          <view wx:for="{{vm.ingredients}}" wx:key="name" class="badge {{item.score > 0 ? 'good' : 'plain'}}"><text>{{item.name}}</text><text class="px-num sc">{{item.scoreText}}</text></view>
+          <view wx:for="{{vm.ingredients}}" wx:key="name" class="badge {{item.score > 0 ? 'good' : 'plain'}}"><text>{{item.name}}</text><text class="px-num inline sc">{{item.scoreText}}</text></view>
         </view>
       </view>
 
@@ -107,7 +107,7 @@
         <view class="pg-head"><image class="pg-icon" src="/assets/px/loop.svg" /><text class="grow">替换习惯</text><text class="px-num pg-count">{{vm.subs.length}}</text></view>
         <view class="badges">
           <view wx:for="{{vm.subs}}" wx:key="from" class="badge swap">
-            <text>{{item.from}}</text><image class="swap-arrow" src="/assets/px/ui-next.svg" /><text>{{item.to}}</text><text class="px-num sc">×{{item.count}}</text>
+            <text>{{item.from}}</text><image class="swap-arrow" src="/assets/px/ui-next.svg" /><text>{{item.to}}</text><text class="px-num inline sc">×{{item.count}}</text>
           </view>
         </view>
       </view>
@@ -120,7 +120,7 @@
         <view class="mini-icon i-purple"><image src="/assets/px/magic.svg" /></view>
         <view class="grow">
           <view class="entry-t">方案选择</view>
-          <view class="badges"><view wx:for="{{vm.choices}}" wx:key="name" class="badge plain"><text>{{item.name}}</text><text class="px-num sc">×{{item.n}}</text></view></view>
+          <view class="badges"><view wx:for="{{vm.choices}}" wx:key="name" class="badge plain"><text>{{item.name}}</text><text class="px-num inline sc">×{{item.n}}</text></view></view>
         </view>
       </view>
       <view class="entry" wx:if="{{vm.price}}">
@@ -135,7 +135,7 @@
         <view class="mini-icon i-teal"><image src="/assets/px/scale.svg" /></view>
         <view class="grow">
           <view class="entry-t">估重校准</view>
-          <view class="badges"><view wx:for="{{vm.calibration}}" wx:key="name" class="badge info"><text>{{item.name}}</text><text class="px-num sc">×{{item.factorText}}</text></view></view>
+          <view class="badges"><view wx:for="{{vm.calibration}}" wx:key="name" class="badge info"><text>{{item.name}}</text><text class="px-num inline sc">×{{item.factorText}}</text></view></view>
         </view>
       </view>
       <view class="entry hint" wx:if="{{!vm.choices.length && !vm.calibration.length}}">

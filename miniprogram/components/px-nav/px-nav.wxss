@@ -13,3 +13,6 @@
 .pn-large-text { flex: 1; min-width: 0; }
 .pn-sub { font-family: "Pixel", sans-serif; font-size: 24rpx; color: #958aa6; letter-spacing: 1rpx; margin-bottom: 8rpx; }
 .pn-large-title { font-family: "Pixel", sans-serif; font-size: 56rpx; line-height: 1.2; color: #2b2340; letter-spacing: 2rpx; text-shadow: 4rpx 4rpx 0 #e2d3b1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* long titles (e.g. greeting + nickname) step down a size instead of being cut; line box stays 68rpx so the header does not jump */
+.pn-large-title.long { font-size: 48rpx; line-height: 68rpx; }
+.pn-large-title.xlong { font-size: 40rpx; line-height: 68rpx; letter-spacing: 1rpx; }

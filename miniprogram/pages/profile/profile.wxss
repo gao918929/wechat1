@@ -1,15 +1,6 @@
 /* 我的 · Pixel Kitchen — character card, RPG stat panel, pixel menu + form.
    1 art pixel = 4rpx; notched outlines via box-shadow; hard shadows only, no radius / blur / soft gradients. */
 
-/* ---------------------------------------------------------------- window name tab (matches index / nutrition) */
-.win-tab {
-  position: absolute; left: 24rpx; top: -20rpx; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
-  font-size: 22rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
-.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
-
 /* ---------------------------------------------------------------- character card */
 .card.char-card { margin-top: 24rpx; padding: 44rpx 28rpx 24rpx; }
 .char-top { display: flex; align-items: center; }
@@ -54,7 +45,6 @@
 .card.flush.menu-card { padding: 8rpx 16rpx; margin-bottom: 44rpx; }
 .menu { display: flex; align-items: center; padding: 20rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .menu:last-child { border-bottom: none; }
-.menu.px-pressed { background: var(--paper-2); }
 .menu-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
 .menu-sub { font-size: 24rpx; color: var(--text-3); margin-left: 12rpx; }
 .chev { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 16rpx; }
@@ -64,7 +54,6 @@
 .form-card .field .label { width: 168rpx; flex-shrink: 0; }
 /* a picker wraps its row, so restore the divider that .field:last-child removes */
 .field.pick { border-bottom: 4rpx dashed var(--paper-3); margin: 0 -12rpx; padding-left: 12rpx; padding-right: 12rpx; }
-.field.pick.px-pressed { background: var(--paper-2); }
 .pick-v { flex: 1; min-width: 0; text-align: right; font-size: 28rpx; color: var(--text-2); }
 .pick-caret { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 16rpx; transform: rotate(90deg); }
 .field.opts-field { align-items: flex-start; }
@@ -85,13 +74,13 @@
 .opt.on.gold { color: var(--ink); background: var(--yellow); }
 .opt.on.warn { color: var(--orange-d); background: #ffe2b0; }
 .opt.on.danger { color: var(--red-d); background: var(--red-l); }
-.opt-x { width: 24rpx; height: 24rpx; margin-left: 8rpx; }
+.opt-x { width: 32rpx; height: 32rpx; margin: 0 -4rpx 0 8rpx; }
 
 /* ---------------------------------------------------------------- allergens & avoidances */
 .card.diet-card { padding: 28rpx 28rpx 32rpx; }
 .sub-title { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 12rpx; }
 .sub-title.gap { margin-top: 40rpx; padding-top: 28rpx; border-top: 4rpx dashed var(--paper-3); }
-.st-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.st-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .st-name { font-size: 28rpx; color: var(--text); margin-right: 16rpx; }
 .sub-title .tag { margin: 4rpx 4rpx 4rpx 0; }
 .chat-bar.add-bar { margin-top: 20rpx; align-items: stretch; }
@@ -101,7 +90,7 @@
 .spicy-head { display: flex; align-items: center; }
 .spicy-lbl { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
 .chilis { display: flex; align-items: center; }
-.chili { width: 40rpx; height: 40rpx; margin-left: 4rpx; opacity: 0.25; }
+.chili { width: 32rpx; height: 32rpx; margin-left: 4rpx; opacity: 0.25; }
 .chili.on { opacity: 1; }
 .spicy-name { width: 104rpx; text-align: right; font-size: 24rpx; color: var(--red-d); }
 .spicy-slider { display: block; margin: 24rpx 8rpx 8rpx; }

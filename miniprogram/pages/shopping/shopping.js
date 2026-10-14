@@ -1,5 +1,5 @@
 const api = require('../../utils/api');
-const { money } = require('../../utils/util');
+const { money, iconFor, initialOf } = require('../../utils/util');
 const app = getApp();
 // pixel icon shown in each section's window title bar
 const SECTION_ICON = { vegetables: 'broccoli', meat_eggs: 'meat', seafood: 'fish', soy_dairy: 'milk', staples: 'meal', seasonings: 'chili' };
@@ -30,7 +30,8 @@ Page({
       const s = r.shopping;
       s.sections.forEach((sec) => {
         sec.icon = SECTION_ICON[sec.section] || 'cart';
-        sec.items.forEach((it) => { it.costText = money(it.cost); });
+        // display-only: ingredient icon (shared rules in utils/util.js) or its initial
+        sec.items.forEach((it) => { it.costText = money(it.cost); it.icon = iconFor(it.name); it.initial = initialOf(it.name); });
       });
       this.setData({
         variant: r.variant, title: r.title, shopping: r.shopping, checked: r.checked || {},

@@ -27,7 +27,7 @@
   </view>
 
   <!-- example quests -->
-  <view class="section-title"><text>示例任务</text><text class="muted">点一下直接接取</text></view>
+  <view class="section-title"><text>示例任务</text><text class="sec-hint">点一下直接接取</text></view>
   <scroll-view scroll-x class="quests" enhanced show-scrollbar="{{false}}">
     <view wx:for="{{examples}}" wx:key="title" class="quest anim-slide {{'d' + (index + 2)}}" bindtap="useExample" data-i="{{index}}" hover-class="px-pressed">
       <view class="quest-band">
@@ -46,7 +46,7 @@
   <view class="section-title"><text>任务设置</text></view>
   <view class="card flush opts">
     <picker range="{{dayOptions}}" bindchange="onDays">
-      <view class="opt" hover-class="opt-down">
+      <view class="opt" hover-class="px-pressed-row">
         <image class="opt-icon" src="/assets/px/calendar.svg" />
         <text class="opt-label">天数</text>
         <view class="grow opt-value"><text class="px-num opt-num">{{days}}</text><text class="opt-unit">天</text></view>
@@ -75,9 +75,9 @@
         <view class="opt-label">备选方案</view>
         <view class="opt-sub">另出 健康优先 / 预算优先</view>
       </view>
-      <view class="toggle {{alternatives ? 'on' : ''}}" bindtap="onAlt" hover-class="px-pressed">
-        <view class="toggle-knob"></view>
-        <text class="px-num toggle-txt">{{alternatives ? 'ON' : 'OFF'}}</text>
+      <view class="px-toggle alt-toggle {{alternatives ? 'on' : ''}}" bindtap="onAlt" hover-class="px-pressed">
+        <view class="px-toggle-knob"></view>
+        <text class="px-num px-toggle-txt">{{alternatives ? 'ON' : 'OFF'}}</text>
       </view>
     </view>
     <view class="opt opt-last opt-top" wx:if="{{avoidances.length}}">
@@ -107,19 +107,19 @@
     </view>
     <view class="party">
       <view class="member">
-        <view class="member-cell c-health"><px-sprite name="sprite-health" frames="2" size="72" playing="{{false}}" /></view>
+        <view class="member-cell agent-health"><px-sprite name="sprite-health" frames="2" size="72" playing="{{false}}" /></view>
         <text class="member-name">健康适配</text>
       </view>
       <view class="member">
-        <view class="member-cell c-iterative"><px-sprite name="sprite-iterative" frames="2" size="72" playing="{{false}}" /></view>
+        <view class="member-cell agent-iterative"><px-sprite name="sprite-iterative" frames="2" size="72" playing="{{false}}" /></view>
         <text class="member-name">迭代优化</text>
       </view>
       <view class="member">
-        <view class="member-cell c-inventory"><px-sprite name="sprite-inventory" frames="2" size="72" playing="{{false}}" /></view>
+        <view class="member-cell agent-inventory"><px-sprite name="sprite-inventory" frames="2" size="72" playing="{{false}}" /></view>
         <text class="member-name">库存优先</text>
       </view>
       <view class="member">
-        <view class="member-cell c-budget"><px-sprite name="sprite-budget" frames="2" size="72" playing="{{false}}" /></view>
+        <view class="member-cell agent-budget"><px-sprite name="sprite-budget" frames="2" size="72" playing="{{false}}" /></view>
         <text class="member-name">预算约束</text>
       </view>
     </view>
@@ -130,16 +130,16 @@
   </view>
 
   <!-- history = quest log -->
-  <view class="section-title"><text>任务日志</text><text class="muted" wx:if="{{plans.length}}">共 {{plans.length}} 条</text></view>
+  <view class="section-title"><text>任务日志</text><text class="sec-hint" wx:if="{{plans.length}}">共 {{plans.length}} 条</text></view>
   <view wx:if="{{!plans.length}}" class="card log-empty">
     <image class="log-empty-icon" src="/assets/px/tab-plan-off.svg" />
     <view class="empty">还没有计划</view>
   </view>
   <view wx:for="{{plans}}" wx:key="id" class="log-wrap anim-slide {{index < 6 ? 'd' + (index + 1) : ''}}">
     <view class="log" bindtap="open" data-id="{{item.id}}" hover-class="px-pressed">
-      <view class="cal">
-        <view class="cal-top">{{item.dateMon}}</view>
-        <view class="px-num cal-day">{{item.dateDay}}</view>
+      <view class="px-cal">
+        <view class="px-cal-top">{{item.dateMon}}</view>
+        <view class="px-num px-cal-day">{{item.dateDay}}</view>
       </view>
       <view class="grow">
         <view class="log-text">{{item.instruction || '按小组设置生成'}}</view>

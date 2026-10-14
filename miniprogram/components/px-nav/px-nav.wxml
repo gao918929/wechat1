@@ -10,7 +10,7 @@
 <view wx:if="{{large}}" class="pn-large">
   <view class="pn-large-text">
     <view class="pn-sub" wx:if="{{subtitle}}">{{subtitle}}</view>
-    <view class="pn-large-title">{{title}}</view>
+    <view class="pn-large-title {{titleSize}}">{{title}}</view>
   </view>
   <slot name="right"></slot>
 </view>

@@ -1,5 +1,5 @@
 <px-nav title="{{title}}" back />
-<view class="container">
+<view class="container no-tab">
   <!-- quest header: what this card is + retake -->
   <view class="card intro anim-slide">
     <view class="intro-top">
@@ -70,7 +70,7 @@
     <view class="slot {{item.pending ? 'slot-pending' : ''}} {{item.pending && !done ? 'slot-flash' : ''}} {{include[item.id] ? 'slot-on' : ''}}" bindtap="openEdit" data-index="{{index}}" hover-class="px-pressed">
       <view class="slot-cell">
         <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
-        <view wx:else class="avatar slot-avatar c-{{item.cat}}">{{item.initial}}</view>
+        <view wx:else class="avatar slot-avatar cat-{{item.cat}}">{{item.initial}}</view>
       </view>
 
       <view class="grow">
@@ -114,7 +114,7 @@
       </view>
 
       <!-- wide tap target: the rest of the slot opens the editor -->
-      <view class="check-hit" catchtap="toggleInclude" data-id="{{item.id}}" hover-class="check-hit-down" hover-stop-propagation="{{true}}">
+      <view class="check-hit" catchtap="toggleInclude" data-id="{{item.id}}" hover-class="px-pressed" hover-stop-propagation="{{true}}">
         <view class="check {{include[item.id] ? 'on' : ''}}"></view>
       </view>
     </view>
@@ -147,7 +147,7 @@
       <view wx:for="{{doneItems}}" wx:key="key" class="got-item anim-pop {{index < 6 ? 'd' + (index + 1) : ''}}">
         <view class="got-cell">
           <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
-          <view wx:else class="avatar got-avatar c-{{item.cat}}">{{item.initial}}</view>
+          <view wx:else class="avatar got-avatar cat-{{item.cat}}">{{item.initial}}</view>
         </view>
         <view class="got-name">{{item.name}}</view>
       </view>
@@ -185,7 +185,7 @@
         <view class="row">
           <view class="sheet-cell">
             <image wx:if="{{items[editIndex].icon}}" class="sheet-img" src="/assets/px/{{items[editIndex].icon}}.svg" />
-            <view wx:else class="avatar sheet-avatar c-{{items[editIndex].cat}}">{{items[editIndex].initial}}</view>
+            <view wx:else class="avatar sheet-avatar cat-{{items[editIndex].cat}}">{{items[editIndex].initial}}</view>
           </view>
           <text>修改条目</text>
         </view>

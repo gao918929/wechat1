@@ -3,13 +3,7 @@
 
 /* ================================================================ generating */
 .gen-head { padding: 24rpx 28rpx 22rpx; }
-/* failed: red status window */
-.card.feature.gen-fail {
-  background: var(--red); text-shadow: 2rpx 2rpx 0 var(--red-d);
-  box-shadow:
-    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--red-d), inset 4rpx 4rpx 0 0 var(--red-l), 8rpx 12rpx 0 0 var(--shadow);
-}
+/* failed: global red status window (.card.feature.red) */
 .gen-top { display: flex; align-items: center; }
 .gen-icon {
   width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx; box-sizing: border-box;
@@ -21,7 +15,7 @@
 .gen-warn { width: 64rpx; height: 64rpx; }
 .gen-title { font-size: 36rpx; line-height: 1.4; letter-spacing: 2rpx; color: #ffffff; }
 .gen-stage { margin-top: 4rpx; font-size: 24rpx; line-height: 1.5; color: #f1eaff; }
-.gen-fail .gen-stage { color: #ffe9e3; }
+.gen-head.red .gen-stage { color: #ffe9e3; }
 /* progress: sunken ink track + marching stripes (global .px-loading) */
 .gen-track {
   box-sizing: border-box; height: 24rpx; margin: 28rpx 4rpx 4rpx; padding: 4rpx; background: var(--ink-2);
@@ -31,7 +25,7 @@
 .gen-fill.px-loading { margin: 0; box-shadow: inset 0 4rpx 0 0 rgba(255, 255, 255, 0.35); }
 .gen-fill.is-fail { background: var(--red-l); }
 .gen-foot { display: flex; align-items: center; margin-top: 16rpx; font-size: 22rpx; color: #f1eaff; }
-.gen-fail .gen-foot { color: #ffe9e3; }
+.gen-head.red .gen-foot { color: #ffe9e3; }
 .gen-pct { flex-shrink: 0; margin-left: 16rpx; font-size: 24rpx; color: #ffffff; }
 
 /* ---------------------------------------------------------------- the 2 x 2 squad */
@@ -53,10 +47,6 @@
     0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.c-health { background: var(--green-l); }
-.c-iterative { background: #ddd0ff; }
-.c-inventory { background: var(--blue-l); }
-.c-budget { background: #ffd0e0; }
 .hero-id { flex: 1; min-width: 0; }
 /* RPG name plate */
 .nameplate {
@@ -91,16 +81,6 @@
 .stream-dishes { font-size: 24rpx; line-height: 1.7; color: var(--text-2); }
 .stream-dish { margin-right: 20rpx; }
 
-/* calendar page (shared by streamed days and day cards) */
-.cal {
-  width: 88rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx; text-align: center; background: #ffffff;
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 0 -4rpx 0 0 var(--paper-3);
-}
-.cal-top { font-size: 20rpx; line-height: 36rpx; color: #ffffff; background: var(--red); box-shadow: inset 0 -4rpx 0 0 var(--red-d); text-shadow: 2rpx 2rpx 0 var(--red-d); }
-.cal-day { font-size: 32rpx; line-height: 64rpx; color: var(--ink); }
-.cal-sm { width: 72rpx; margin-right: 20rpx; }
-.cal-sm .cal-top { line-height: 32rpx; }
-.cal-sm .cal-day { font-size: 24rpx; line-height: 48rpx; }
 
 /* ================================================================ result */
 /* summary window */
@@ -108,7 +88,7 @@
 .sum-head { display: flex; align-items: flex-start; justify-content: space-between; }
 .sum-title { flex: 1; min-width: 0; font-size: 36rpx; line-height: 1.4; letter-spacing: 2rpx; color: #ffffff; }
 .tag.sum-check { flex-shrink: 0; margin: 8rpx 4rpx 4rpx 16rpx; }
-.tag-icon { width: 24rpx; height: 24rpx; vertical-align: -4rpx; margin-right: 6rpx; }
+.tag-icon { width: 32rpx; height: 32rpx; vertical-align: -8rpx; margin-right: 6rpx; }
 .sum-trade { margin-top: 8rpx; font-size: 24rpx; line-height: 1.6; color: #eafbe6; }
 .sum-main {
   display: flex; align-items: center; margin: 24rpx 4rpx 4rpx; padding: 16rpx 20rpx; background: var(--green-d);
@@ -133,7 +113,8 @@
 .tag.near-tag { margin: 8rpx 16rpx 8rpx 2rpx; }
 .sum-btns { margin-top: 28rpx; }
 .sum-btns .btn { padding: 20rpx 12rpx; font-size: 28rpx; text-shadow: none; }
-.btn-icon { width: 40rpx; height: 40rpx; vertical-align: -10rpx; margin-right: 10rpx; }
+/* ui-back is 12px art: 24rpx keeps it 1:1 */
+.btn-icon.back-icon { width: 24rpx; height: 24rpx; vertical-align: -2rpx; }
 /* chosen variant: selection = yellow */
 .btn.light.is-chosen {
   background: var(--yellow); color: var(--ink);
@@ -150,7 +131,7 @@
     inset 8rpx 0 0 0 var(--orange), inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, 8rpx 12rpx 0 0 var(--shadow);
 }
 .note-title { display: flex; align-items: center; font-size: 28rpx; letter-spacing: 2rpx; margin-bottom: 12rpx; }
-.note-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.note-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .note-line { display: flex; align-items: flex-start; font-size: 26rpx; line-height: 1.6; color: var(--text-2); padding: 4rpx 0; }
 .bullet { width: 8rpx; height: 8rpx; flex-shrink: 0; margin: 16rpx 16rpx 0 8rpx; background: var(--ink); }
 .tip-icon { width: 16rpx; height: 16rpx; flex-shrink: 0; margin: 12rpx 12rpx 0 4rpx; }
@@ -200,7 +181,6 @@
 .k-one_pot { background: var(--orange); }
 .k-breakfast { background: var(--pink); }
 .dish-main { padding: 4rpx 0; }
-.dish-down { background: var(--paper-2); }
 .dish-top { display: flex; align-items: baseline; }
 .dish-name { font-size: 30rpx; color: var(--text); letter-spacing: 1rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dish-kind { flex-shrink: 0; margin-left: 12rpx; font-size: 20rpx; color: var(--text-3); }
@@ -221,7 +201,7 @@
 }
 .recipe-facts { display: flex; align-items: center; flex-wrap: wrap; font-size: 24rpx; color: var(--text-2); }
 .recipe-sep { margin: 0 10rpx; color: var(--text-3); }
-.recipe-icon { width: 28rpx; height: 28rpx; margin-right: 6rpx; }
+.recipe-icon { width: 32rpx; height: 32rpx; margin-right: 6rpx; }
 .recipe-ings { margin-top: 10rpx; }
 .recipe-steps { margin-top: 10rpx; font-size: 24rpx; line-height: 1.7; color: var(--text); }
 

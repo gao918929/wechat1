@@ -16,7 +16,7 @@
       <text class="party-name">{{group.name}}</text>
       <text class="party-count">{{group.members}} 人</text>
       <view class="party-sep"></view>
-      <view class="party-led {{llmOnline ? 'on' : ''}}"><view class="party-led-core {{llmOnline ? 'anim-blink' : ''}}"></view></view>
+      <view class="px-led sm party-led {{llmOnline ? 'on' : ''}}"><view class="px-led-core {{llmOnline ? 'anim-blink' : ''}}"></view></view>
       <text class="party-meta">{{llmOnline ? 'DeepSeek 在线' : '离线规则引擎'}}</text>
       <image class="party-caret" src="/assets/px/ui-next.svg" />
     </view>

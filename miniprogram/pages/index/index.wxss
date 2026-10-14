@@ -33,32 +33,17 @@
 .party-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 28rpx; color: var(--ink); }
 .party-count { flex-shrink: 0; margin-left: 12rpx; color: var(--text-2); }
 .party-sep { flex-shrink: 0; width: 4rpx; height: 24rpx; margin: 0 16rpx; background: var(--paper-3); }
-/* status LED: the ink frame stays put, only the lit core blinks */
-.party-led { width: 12rpx; height: 12rpx; margin: 0 14rpx 0 4rpx; flex-shrink: 0; background: var(--ink-2); box-shadow: 0 0 0 4rpx var(--ink); }
-.party-led-core { width: 12rpx; height: 12rpx; background: var(--text-3); }
-.party-led.on .party-led-core { background: var(--green-l); }
+/* status LED (global .px-led): only the spacing is local */
+.party-led { margin: 0 14rpx 0 4rpx; }
 .party-meta { flex-shrink: 0; color: var(--text-2); }
 .party-caret { width: 16rpx; height: 16rpx; margin-left: 16rpx; transform: rotate(90deg); flex-shrink: 0; }
 
-/* ---------------------------------------------------------------- mascot dialogue (RPG text box + name plate) */
+/* ---------------------------------------------------------------- mascot dialogue (RPG text box + global .name-plate) */
 .chef-say { position: relative; margin: 0 0 48rpx; }
-.name-plate {
-  position: absolute; left: 28rpx; top: -20rpx; z-index: 2; padding: 0 16rpx; height: 40rpx; line-height: 40rpx;
-  font-size: 22rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
 .chef-box { margin: 0 4rpx; padding: 36rpx 28rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
 
 /* ---------------------------------------------------------------- today: status window */
 .energy { margin-top: 0; padding: 40rpx 28rpx 24rpx; }
-.win-tab {
-  position: absolute; left: 24rpx; top: -20rpx; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
-  font-size: 22rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
-.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
 .en-top { display: flex; align-items: flex-end; justify-content: space-between; }
 .en-kcal { display: flex; align-items: baseline; min-width: 0; }
 .en-big { display: inline-block; font-size: 48rpx; line-height: 1.2; color: var(--ink); } /* inline-block so the over-target shake (transform) applies */

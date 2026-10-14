@@ -79,7 +79,7 @@
     <view class="member-hint" wx:if="{{!isAdmin}}">你是成员：可以标记消耗（如“今天用了两个鸡蛋”）；新增或修改库存需要管理员。</view>
   </view>
 
-  <view class="section-title"><text>食材背包</text><text class="muted">按到期先后</text></view>
+  <view class="section-title"><text>食材背包</text><text class="sec-hint">按到期先后</text></view>
 
   <view wx:if="{{!items.length}}" class="card empty-bag">
     <image class="empty-icon" src="/assets/px/tab-fridge-off.svg" />
@@ -90,7 +90,7 @@
     <view class="slot {{item.urgent ? 'slot-' + item.daysTone : ''}}" bindtap="itemActions" data-index="{{index}}" hover-class="px-pressed">
       <view class="slot-cell">
         <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
-        <view wx:else class="avatar slot-avatar c-{{item.cat}}">{{item.initial}}</view>
+        <view wx:else class="avatar slot-avatar cat-{{item.cat}}">{{item.initial}}</view>
       </view>
       <view class="grow">
         <view class="slot-head">

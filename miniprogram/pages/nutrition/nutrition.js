@@ -16,7 +16,7 @@ const GRADES = [
 const MACRO_STYLE = {
   能量: { icon: 'flame', color: 'yellow' },
   蛋白质: { icon: 'egg', color: 'green' },
-  脂肪: { icon: 'meat', color: 'orange' },
+  脂肪: { icon: 'oil', color: 'orange' },
   碳水: { icon: 'meal', color: 'blue' }
 };
 const MACRO_HINT = { 蛋白质: '鸡蛋、豆腐或瘦肉', 脂肪: '坚果或适量用油', 碳水: '米饭或杂粮' };
@@ -24,9 +24,9 @@ const MICRO_STYLE = {
   维生素C: { icon: 'tomato', tile: 'i-red' },
   钙: { icon: 'milk', tile: 'i-blue' },
   铁: { icon: 'leaf', tile: 'i-teal' },
-  食盐: { icon: 'pot', tile: 'i-yellow', limit: true }
+  食盐: { icon: 'salt', tile: 'i-yellow', limit: true }
 };
-const MEMBER_TONES = ['t-green', 't-blue', 't-orange', 't-purple', 't-pink'];
+const MEMBER_TONES = ['tone-green', 'tone-blue', 'tone-orange', 'tone-purple', 'tone-pink'];
 
 function gradeOf(score) {
   if (score === null || score === undefined) return { grade: '?', color: 'green', cls: 'g-none' };

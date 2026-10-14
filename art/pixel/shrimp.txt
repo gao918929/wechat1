@@ -1,18 +1,18 @@
 # name: shrimp
 # kind: icon
 ................
-......KKKKK.....
-....KKoWoooKK.K.
-...KoWoorooorKK.
-..KoWoorooKorrK.
-.KoooooroooRRRK.
-.KorooRKKKKKKK..
-.KrrrrK.........
-.KooooK.........
-.KorooRK....KK..
-..KRroooKK.KrrK.
-...KRRorroKrRRK.
-....KKRRoRRKRK..
-......KKKKKK.K..
-................
+.....KKKKKKK..K.
+...KKRWWRoRoKK..
+..KWoRooRoRKooK.
+.KWooRooRrRrrK..
+.KoooorrKKKKK...
+.KoooorK..R.R...
+.KRRRRK.....KK..
+.KooorK....KrRK.
+.KooorrKKKKrrRK.
+..KooRooRorrRK..
+...KrRrrRrrrRK..
+....KKKKKKKrrRK.
+...........KrRK.
+............KK..
 ................

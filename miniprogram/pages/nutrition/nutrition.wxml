@@ -1,5 +1,5 @@
 <px-nav title="营养分析" back />
-<view class="container">
+<view class="container no-tab">
   <view class="tabs view-tabs">
     <view class="tab {{view === 'me' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setView" data-v="me">个人</view>
     <view class="tab {{view === 'group' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setView" data-v="group">小组整体</view>
@@ -48,13 +48,13 @@
     <view class="doc-say anim-slide d1">
       <view class="doc-sprite"><px-sprite name="sprite-health" frames="2" size="96" duration="1000" /></view>
       <view class="doc-box">
-        <view class="name-plate">健康伙伴</view>
+        <view class="name-plate green">健康伙伴</view>
         <view class="px-dialog doc-dialog"><px-typewriter text="{{report.comment}}" speed="30" step="2" /></view>
       </view>
     </view>
 
     <!-- energy trend: stacked pixel blocks + dashed target -->
-    <view class="section-title"><text>能量趋势</text><text class="muted">最近 7 天 · kcal</text></view>
+    <view class="section-title"><text>能量趋势</text><text class="sec-hint">最近 7 天 · kcal</text></view>
     <view class="card chart-card anim-slide d2">
       <view class="plot" style="height:{{chart.plotH}}rpx">
         <view class="target-line" style="bottom:{{chart.targetBottom}}rpx"></view>
@@ -81,7 +81,7 @@
     </view>
 
     <!-- macros: HP bars -->
-    <view class="section-title"><text>日均摄入</text><text class="muted">对比目标</text></view>
+    <view class="section-title"><text>日均摄入</text><text class="sec-hint">对比目标</text></view>
     <view class="card macro-card anim-slide d3">
       <view wx:for="{{report.macros}}" wx:key="name" class="macro-row">
         <view class="mr-head">
@@ -99,7 +99,7 @@
     </view>
 
     <!-- vitamins & minerals: icon tiles -->
-    <view class="section-title"><text>维生素与矿物质</text><text class="muted">估算 · 日均</text></view>
+    <view class="section-title"><text>维生素与矿物质</text><text class="sec-hint">估算 · 日均</text></view>
     <view class="micro-grid">
       <view wx:for="{{report.micro}}" wx:key="name" class="micro anim-slide d{{index + 3}}">
         <view class="micro-top">

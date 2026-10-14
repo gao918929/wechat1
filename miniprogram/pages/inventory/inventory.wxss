@@ -115,10 +115,6 @@
 .slot-meta { display: flex; justify-content: space-between; align-items: center; margin: 8rpx 0; }
 .slot-amount { display: flex; align-items: center; min-width: 0; font-size: 24rpx; color: var(--text-2); white-space: nowrap; }
 .slot-amount.need { color: var(--orange-d); }
-.est-badge {
-  margin-left: 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 1.5; color: var(--orange-d); background: #ffe2b0;
-  box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d);
-}
 .slot-exp { flex-shrink: 0; margin-left: 12rpx; font-size: 20rpx; color: var(--text-3); }
 
 .empty-bag { display: flex; flex-direction: column; align-items: center; padding: 40rpx 28rpx; font-size: 24rpx; color: var(--text-3); }
@@ -126,13 +122,6 @@
 .notice { padding-top: 8rpx; }
 
 /* ---------------------------------------------------------------- add sheet */
-.sheet-icon { width: 40rpx; height: 40rpx; margin-right: 12rpx; }
-.sheet-close {
-  width: 56rpx; height: 56rpx; margin: 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--paper-3), 4rpx 6rpx 0 0 var(--shadow);
-}
-.sheet-close-img { width: 32rpx; height: 32rpx; }
+.sheet-icon { width: 32rpx; height: 32rpx; margin-right: 12rpx; }
 .sugg { padding: 12rpx 0 4rpx; }
 .next-icon { width: 32rpx; height: 32rpx; margin-left: 12rpx; }
-.btn .btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 12rpx; }

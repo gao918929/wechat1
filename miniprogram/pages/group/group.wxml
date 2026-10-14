@@ -1,5 +1,5 @@
 <px-nav title="小组管理" back />
-<view class="container">
+<view class="container no-tab">
   <!-- current party: name, stats and the invite "password" -->
   <view class="card hero party anim-slide" wx:if="{{detail}}">
     <view class="win-tab"><image class="win-tab-icon" src="/assets/px/users.svg" />当前队伍</view>
@@ -42,7 +42,7 @@
     <view class="section-title"><text>队伍名单</text><text class="sec-hint" wx:if="{{isAdmin}}">点成员可管理</text></view>
     <view class="card roster">
       <view wx:for="{{detail.member_list}}" wx:key="id" class="mem {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}"
-        hover-class="{{isAdmin && !item.isMe ? 'px-pressed' : 'none'}}" bindtap="memberActions" data-index="{{index}}">
+        hover-class="{{isAdmin && !item.isMe ? 'px-pressed-row' : 'none'}}" bindtap="memberActions" data-index="{{index}}">
         <view class="ava {{item.tone}}">
           <text class="ava-char">{{item.initial}}</text>
           <view wx:if="{{item.role === 'admin'}}" class="crown anim-pop"><image class="crown-img" src="/assets/px/trophy.svg" /></view>
@@ -91,7 +91,7 @@
   <!-- my groups (switch) -->
   <view class="section-title"><text>我的小组</text><text class="sec-hint">{{groups.length}} 支队伍</text></view>
   <view class="card flush glist">
-    <view wx:for="{{groups}}" wx:key="id" class="g-row {{current.id === item.id ? 'is-cur' : ''}}" hover-class="px-pressed" bindtap="switchTo" data-id="{{item.id}}">
+    <view wx:for="{{groups}}" wx:key="id" class="g-row {{current.id === item.id ? 'is-cur' : ''}}" hover-class="px-pressed-row" bindtap="switchTo" data-id="{{item.id}}">
       <view class="mini-icon {{current.id === item.id ? 'i-yellow' : ''}}"><image src="/assets/px/users.svg" /></view>
       <view class="grow">
         <view class="g-name ellipsis">{{item.name}}</view>

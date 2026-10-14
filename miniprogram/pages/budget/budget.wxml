@@ -42,10 +42,10 @@
       <text class="mix-total">共 ¥{{report.totalText}}</text>
     </view>
     <view class="stack">
-      <view wx:for="{{report.by_category}}" wx:key="category" class="seg c-{{item.category}}" style="flex-grow:{{item.pctText}}"></view>
+      <view wx:for="{{report.by_category}}" wx:key="category" class="seg cat-{{item.category}}" style="flex-grow:{{item.pctText}}"></view>
     </view>
     <view wx:for="{{report.by_category}}" wx:key="category" class="legend">
-      <view class="swatch c-{{item.category}}"></view>
+      <view class="swatch cat-{{item.category}}"></view>
       <text class="grow">{{item.label}}</text>
       <text class="px-num l-pct">{{item.pctText}}%</text>
       <text class="px-num l-amt">¥{{item.amountText}}</text>
@@ -83,13 +83,13 @@
   </view>
 
   <!-- ledger -->
-  <view class="section-title"><text>流水</text><text class="muted" wx:if="{{expenses.length}}">最近 {{expenses.length}} 笔</text></view>
+  <view class="section-title"><text>流水</text><text class="sec-hint" wx:if="{{expenses.length}}">最近 {{expenses.length}} 笔</text></view>
   <view class="card ledger">
     <view wx:if="{{!expenses.length}}" class="empty">
       <image class="empty-icon" src="/assets/px/receipt.svg" />
       <view>暂无记录</view>
     </view>
-    <view wx:for="{{expenses}}" wx:key="id" class="tx {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}" hover-class="px-pressed" bindtap="expenseActions" data-index="{{index}}">
+    <view wx:for="{{expenses}}" wx:key="id" class="tx {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}" hover-class="px-pressed-row" bindtap="expenseActions" data-index="{{index}}">
       <view class="mini-icon {{item.tone}}"><image src="/assets/px/{{item.icon}}.svg" /></view>
       <view class="grow">
         <view class="tx-name ellipsis">{{item.merchant || '未填商家'}}</view>
@@ -100,7 +100,7 @@
   </view>
 
   <!-- budget settings (admin) -->
-  <view class="section-title" wx:if="{{isAdmin}}"><text>预算设置</text><text class="muted">仅管理员</text></view>
+  <view class="section-title" wx:if="{{isAdmin}}"><text>预算设置</text><text class="sec-hint">仅管理员</text></view>
   <view class="card settings" wx:if="{{isAdmin}}">
     <view class="tabs set-tabs">
       <view class="tab {{budgetMode === 'per_person' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setMode" data-m="per_person">人均预算</view>

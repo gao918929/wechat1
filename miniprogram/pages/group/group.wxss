@@ -1,24 +1,15 @@
 /* 小组管理 · Pixel Kitchen — the group as a party roster. 1 art pixel = 4rpx; hard shadows only, no radius / blur / soft gradients. */
 
-/* ---------------------------------------------------------------- window label tab (same look as the home page) */
-.win-tab {
-  position: absolute; left: 24rpx; top: -20rpx; z-index: 2; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
-  font-size: 22rpx; line-height: 40rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
-.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
-
 /* ---------------------------------------------------------------- current party window */
 .card.party { margin-top: 36rpx; padding: 44rpx 28rpx 32rpx; }
 .party-head { display: flex; align-items: center; }
 .party-icon {
-  width: 112rpx; height: 112rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
   display: flex; align-items: center; justify-content: center; background: var(--green-l);
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.party-img { width: 80rpx; height: 80rpx; }
+.party-img { width: 64rpx; height: 64rpx; }
 .party-name { font-size: 40rpx; line-height: 1.4; letter-spacing: 2rpx; color: var(--ink); }
 .party-meta { font-size: 24rpx; color: var(--text-3); margin-top: 4rpx; }
 
@@ -50,7 +41,6 @@
 .card.roster { padding: 4rpx 28rpx; }
 .mem { display: flex; align-items: flex-start; margin: 0 -12rpx; padding: 36rpx 12rpx 24rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .mem:last-child { border-bottom: none; }
-.mem.px-pressed { background: var(--paper-2); }
 .ava {
   position: relative; width: 88rpx; height: 88rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
   display: flex; align-items: center; justify-content: center; background: var(--green);
@@ -58,11 +48,6 @@
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.25), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.45);
 }
 .ava-char { font-size: 36rpx; color: #fff; text-shadow: 2rpx 2rpx 0 rgba(43, 35, 64, 0.45); }
-.ava.t-green { background: var(--green); }
-.ava.t-blue { background: var(--blue); }
-.ava.t-orange { background: var(--orange); }
-.ava.t-purple { background: var(--purple); }
-.ava.t-pink { background: var(--pink); }
 /* admin wears the trophy badge on the avatar corner */
 .crown { position: absolute; left: 20rpx; top: -36rpx; width: 48rpx; height: 48rpx; }
 .crown-img { width: 48rpx; height: 48rpx; display: block; }
@@ -75,10 +60,6 @@
 }
 .mem-tags { margin-top: 4rpx; }
 .mem-tags .tag, .diet .tag { margin: 6rpx 12rpx 6rpx 4rpx; }
-.tag.gold { background: var(--yellow); color: var(--ink);
-  box-shadow: 0 -2rpx 0 0 var(--yellow-d), 0 2rpx 0 0 var(--yellow-d), -2rpx 0 0 0 var(--yellow-d), 2rpx 0 0 0 var(--yellow-d); }
-.tag.purple { background: #ddd0ff; color: var(--purple-d);
-  box-shadow: 0 -2rpx 0 0 var(--purple-d), 0 2rpx 0 0 var(--purple-d), -2rpx 0 0 0 var(--purple-d), 2rpx 0 0 0 var(--purple-d); }
 .diet { display: flex; flex-wrap: wrap; align-items: center; margin-top: 4rpx; }
 .diet-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 0 6rpx 0 2rpx; }
 .mem-go { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 28rpx 0 0 12rpx; }
@@ -92,14 +73,12 @@
 .sub-head { display: flex; align-items: center; font-size: 28rpx; color: var(--ink); margin-bottom: 20rpx; letter-spacing: 1rpx; }
 .sub-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .vis-tabs { margin: 12rpx 4rpx 4rpx; gap: 16rpx; }
-.vis-tabs .tab { font-size: 24rpx; }
 .btn.leave { margin: 32rpx 4rpx 4rpx; }
 
 /* ---------------------------------------------------------------- my groups */
 .card.glist { padding: 4rpx 28rpx; }
 .g-row { display: flex; align-items: center; margin: 0 -12rpx; padding: 20rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .g-row:last-child { border-bottom: none; }
-.g-row.px-pressed { background: var(--paper-2); }
 .g-row .mini-icon { box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
   inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6); }
 .g-name { font-size: 30rpx; line-height: 1.5; color: var(--ink); }
@@ -129,6 +108,3 @@
     inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8, 4rpx 8rpx 0 0 var(--shadow);
 }
 .kind-icon { width: 48rpx; height: 48rpx; margin-right: 12rpx; }
-
-/* section hint (not a link) */
-.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); }

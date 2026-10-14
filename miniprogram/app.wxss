@@ -48,6 +48,7 @@ page {
 }
 
 .container { padding: 8rpx 36rpx; padding-bottom: calc(env(safe-area-inset-bottom) + 220rpx); }
+.container.no-tab { padding-bottom: calc(env(safe-area-inset-bottom) + 80rpx); } /* secondary pages: no tab bar to clear */
 
 /* ------------------------------------------------------------------ pixel window (card) */
 .card {
@@ -76,13 +77,31 @@ page {
 .card.feature.blue { background: var(--blue); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--blue-d), inset 4rpx 4rpx 0 0 var(--blue-l), 8rpx 12rpx 0 0 var(--shadow); text-shadow: 2rpx 2rpx 0 var(--blue-d); }
 .card.feature.orange { background: var(--orange); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--orange-d), inset 4rpx 4rpx 0 0 #ffd08a, 8rpx 12rpx 0 0 var(--shadow); text-shadow: 2rpx 2rpx 0 var(--orange-d); }
 .card.feature.purple { background: var(--purple); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--purple-d), inset 4rpx 4rpx 0 0 #c5b0f5, 8rpx 12rpx 0 0 var(--shadow); text-shadow: 2rpx 2rpx 0 var(--purple-d); }
+/* red window: failed / over budget / errors */
+.card.feature.red { background: var(--red); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--red-d), inset 4rpx 4rpx 0 0 var(--red-l), 8rpx 12rpx 0 0 var(--shadow); text-shadow: 2rpx 2rpx 0 var(--red-d); }
+.card.feature.red .muted, .card.feature.red .lbl, .card.feature.red .small { color: #ffe9e3; }
 /* dark RPG dialogue box */
 .px-dialog {
-  background: var(--ink); color: #fffaf0; padding: 24rpx 28rpx; margin: 4rpx 4rpx 32rpx;
+  position: relative; background: var(--ink); color: #fffaf0; padding: 24rpx 28rpx; margin: 4rpx 4rpx 32rpx;
   box-shadow:
     0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset 0 0 0 4rpx #fffaf0, inset 0 0 0 8rpx var(--ink), 8rpx 12rpx 0 0 var(--shadow);
 }
+/* yellow name tab on a window's top edge (the parent must be position: relative — .card and .px-dialog are).
+   <view class="win-tab"><image class="win-tab-icon" src="/assets/px/flame.svg" />今日能量</view>
+   Give the window ~40rpx top padding and ≥36rpx top margin so the tab clears what is above it.
+   .name-plate is the same plate for a speaker's name on a .px-dialog (text only; .green / .purple tints). */
+.win-tab, .name-plate {
+  position: absolute; top: -20rpx; z-index: 2; display: flex; align-items: center; height: 40rpx;
+  font-size: 24rpx; line-height: 40rpx; letter-spacing: 1rpx; white-space: nowrap; color: var(--ink); text-shadow: none; background: var(--yellow);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
+}
+.win-tab { left: 24rpx; padding: 0 16rpx 0 8rpx; }
+.win-tab-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 8rpx; }
+.name-plate { left: 28rpx; padding: 0 16rpx; }
+.name-plate.green { background: var(--green-l); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--green), inset 4rpx 4rpx 0 0 #eafbe6; }
+.name-plate.purple { background: #ddd0ff; box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--purple), inset 4rpx 4rpx 0 0 #ffffff; }
 
 .card-title {
   display: flex; justify-content: space-between; align-items: center;
@@ -97,7 +116,8 @@ page {
   clip-path: polygon(0 0, 100% 50%, 0 100%); }
 .section-title > :first-child { flex: 1; }
 .section-title .link { font-size: 24rpx; color: var(--green-d); }
-.large-title { font-size: 52rpx; letter-spacing: 2rpx; }
+.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); } /* muted right-side note that is not tappable */
+.large-title { font-size: 48rpx; letter-spacing: 2rpx; }
 
 /* ------------------------------------------------------------------ helpers */
 .row { display: flex; align-items: center; }
@@ -105,7 +125,7 @@ page {
 .wrap { flex-wrap: wrap; }
 .grow { flex: 1; min-width: 0; }
 .muted { color: var(--text-3); font-size: 24rpx; }
-.small { font-size: 26rpx; color: var(--text-2); }
+.small { font-size: 24rpx; color: var(--text-2); }
 .bold { color: var(--text); letter-spacing: 1rpx; }
 .card.feature .bold { color: #fff; }
 .mt { margin-top: 16rpx; }
@@ -114,10 +134,12 @@ page {
 .center { text-align: center; }
 .ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .px-num, .num { font-family: "PixelNum", "Pixel", monospace; letter-spacing: 0; }
+/* PixelNum glyphs sit high in their em box: nudge 20–24rpx digits down onto the Chinese baseline */
+.px-num.inline { position: relative; top: 4rpx; line-height: 1; }
 
 /* ------------------------------------------------------------------ tags & chips */
 .tag {
-  display: inline-block; padding: 2rpx 14rpx; margin: 6rpx 14rpx 6rpx 4rpx; font-size: 22rpx; line-height: 1.6;
+  display: inline-block; padding: 2rpx 14rpx; margin: 6rpx 14rpx 6rpx 4rpx; font-size: 24rpx; line-height: 1.6;
   background: var(--green-l); color: var(--green-d);
   box-shadow: 0 -2rpx 0 0 var(--green-d), 0 2rpx 0 0 var(--green-d), -2rpx 0 0 0 var(--green-d), 2rpx 0 0 0 var(--green-d);
 }
@@ -126,6 +148,14 @@ page {
 .tag.gray { background: var(--paper-2); color: var(--text-2); box-shadow: 0 -2rpx 0 0 var(--paper-3), 0 2rpx 0 0 var(--paper-3), -2rpx 0 0 0 var(--paper-3), 2rpx 0 0 0 var(--paper-3); }
 .tag.glass { background: rgba(255, 255, 255, 0.25); color: #fff; box-shadow: 0 -2rpx 0 0 #fff, 0 2rpx 0 0 #fff, -2rpx 0 0 0 #fff, 2rpx 0 0 0 #fff; text-shadow: none; }
 .tag.blue { background: var(--blue-l); color: var(--blue-d); box-shadow: 0 -2rpx 0 0 var(--blue-d), 0 2rpx 0 0 var(--blue-d), -2rpx 0 0 0 var(--blue-d), 2rpx 0 0 0 var(--blue-d); }
+.tag.gold { background: var(--yellow); color: var(--ink); box-shadow: 0 -2rpx 0 0 var(--yellow-d), 0 2rpx 0 0 var(--yellow-d), -2rpx 0 0 0 var(--yellow-d), 2rpx 0 0 0 var(--yellow-d); }
+.tag.purple { background: #ddd0ff; color: var(--purple-d); box-shadow: 0 -2rpx 0 0 var(--purple-d), 0 2rpx 0 0 var(--purple-d), -2rpx 0 0 0 var(--purple-d), 2rpx 0 0 0 var(--purple-d); }
+/* small orange "估算" badge after an estimated value */
+.est-badge {
+  display: inline-block; flex-shrink: 0; margin: 2rpx 0 2rpx 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 32rpx; white-space: nowrap;
+  color: var(--orange-d); background: #ffe2b0; text-shadow: none;
+  box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d);
+}
 
 .chips { white-space: nowrap; margin: 0 -36rpx 28rpx; padding: 8rpx 40rpx 16rpx; box-sizing: border-box; width: auto; }
 .chip {
@@ -137,13 +167,13 @@ page {
 .chip .dot.warn { background: var(--orange); }
 .chip .dot.danger { background: var(--red); }
 .chip-main { font-size: 28rpx; }
-.chip-sub { font-size: 22rpx; color: var(--text-3); margin-left: 10rpx; }
+.chip-sub { font-size: 24rpx; color: var(--text-3); margin-left: 10rpx; }
 
 /* ------------------------------------------------------------------ buttons
    Add hover-class="px-pressed" in WXML for the press-down effect. */
 .btn {
   position: relative; display: block; text-align: center;
-  padding: 22rpx 32rpx; margin: 4rpx; font-size: 30rpx; letter-spacing: 2rpx; line-height: 1.4;
+  padding: 22rpx 32rpx; margin: 4rpx; font-size: 32rpx; letter-spacing: 2rpx; line-height: 1.4;
   background: var(--green); color: #fff; text-shadow: 2rpx 2rpx 0 var(--green-d);
   box-shadow:
     0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
@@ -174,9 +204,11 @@ button.btn { line-height: 1.4; border-radius: 0; }
 button.btn::after { border: none; }
 .btn-row { display: flex; gap: 24rpx; margin-top: 24rpx; }
 .btn-row .btn { flex: 1; }
-.btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 10rpx; }
+.btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 12rpx; } /* 16px art at 1:1 */
 /* pressed: sink into the shadow */
 .px-pressed { transform: translate(4rpx, 6rpx); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink) !important; }
+/* pressed list row inside a window: paper-2 tint + top inner shade, no ink outline, no movement */
+.px-pressed-row { background-color: var(--paper-2); box-shadow: inset 0 4rpx 0 0 var(--paper-3); }
 
 /* ------------------------------------------------------------------ inputs (inset, old-school) */
 .input {
@@ -213,24 +245,18 @@ button.btn::after { border: none; }
 .chevron { color: var(--text-3); font-size: 28rpx; margin-left: 12rpx; }
 .avatar {
   width: 80rpx; height: 80rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
-  display: flex; align-items: center; justify-content: center; font-size: 34rpx; color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 32rpx; color: #fff;
   background: var(--green); text-shadow: 2rpx 2rpx 0 rgba(43, 35, 64, 0.4);
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.25), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.45);
 }
 .avatar.round { }
-.avatar.c-vegetables { background: var(--green); }
-.avatar.c-meat_eggs { background: var(--red); }
-.avatar.c-seafood { background: var(--blue); }
-.avatar.c-staples { background: var(--yellow); color: var(--ink); text-shadow: none; }
-.avatar.c-soy_dairy { background: var(--purple); }
-.avatar.c-seasonings { background: #a89fb8; }
 
 /* ------------------------------------------------------------------ stats & pixel bars */
 .stat { flex: 1; text-align: center; }
-.stat .num { font-size: 30rpx; line-height: 1.5; color: var(--green-d); }
+.stat .num { font-size: 32rpx; line-height: 1.5; color: var(--green-d); }
 .card.feature .stat .num { color: #fff; }
-.stat .lbl { font-size: 22rpx; color: var(--text-3); margin-top: 6rpx; }
+.stat .lbl { font-size: 24rpx; color: var(--text-3); margin-top: 6rpx; }
 /* segmented pixel bar (HP bar). Prefer the <px-meter> component for animated meters. */
 .bar {
   height: 20rpx; background: #fff; overflow: hidden; margin: 4rpx;
@@ -258,7 +284,7 @@ button.btn::after { border: none; }
 }
 .grid-item .icon { width: 104rpx; height: 104rpx; margin: 4rpx auto 16rpx; }
 .grid-item .icon image { width: 64rpx; height: 64rpx; }
-.mini-icon { width: 68rpx; height: 68rpx; flex-shrink: 0; margin: 4rpx 22rpx 4rpx 4rpx; }
+.mini-icon { width: 64rpx; height: 64rpx; flex-shrink: 0; margin: 4rpx 22rpx 4rpx 4rpx; }
 .mini-icon image { width: 48rpx; height: 48rpx; }
 .i-blue { background: var(--blue-l) !important; }
 .i-orange { background: #ffe2b0 !important; }
@@ -267,6 +293,28 @@ button.btn::after { border: none; }
 .i-teal { background: #c8f2e6 !important; }
 .i-yellow { background: #fff1b0 !important; }
 .i-red { background: var(--red-l) !important; }
+
+/* ------------------------------------------------------------------ colour utilities
+   Agent cells (light fills behind the four agent sprites). Key = agent key from the backend. */
+.agent-health { background-color: var(--green-l); }
+.agent-iterative { background-color: #ddd0ff; }
+.agent-inventory { background-color: var(--blue-l); }
+.agent-budget { background-color: #ffd0e0; }
+/* Food categories (inventory / shopping / budget / recognize): class="cat-{{item.category}}".
+   Solid fills; staples and other carry ink text. !important so they win over page-level fills and text colours. */
+.cat-vegetables { background-color: var(--green) !important; }
+.cat-meat_eggs { background-color: var(--red) !important; }
+.cat-seafood { background-color: var(--blue) !important; }
+.cat-staples { background-color: var(--yellow) !important; color: var(--ink) !important; text-shadow: none !important; }
+.cat-soy_dairy { background-color: var(--purple) !important; }
+.cat-seasonings { background-color: #a89fb8 !important; }
+.cat-other { background-color: #c9c3d6 !important; color: var(--ink) !important; text-shadow: none !important; }
+/* Rotating member tones for avatars / roster tiles (white text). */
+.tone-green { background-color: var(--green) !important; }
+.tone-blue { background-color: var(--blue) !important; }
+.tone-orange { background-color: var(--orange) !important; }
+.tone-purple { background-color: var(--purple) !important; }
+.tone-pink { background-color: var(--pink) !important; }
 
 /* ------------------------------------------------------------------ pixel checkbox */
 .check {
@@ -280,10 +328,27 @@ button.btn::after { border: none; }
   box-shadow: 4rpx 4rpx 0 0 #fff, 8rpx 8rpx 0 0 #fff, 12rpx 4rpx 0 0 #fff, 16rpx 0 0 0 #fff, 20rpx -4rpx 0 0 #fff, 24rpx -8rpx 0 0 #fff;
 }
 
+/* ------------------------------------------------------------------ pixel ON / OFF switch (native <switch> stays round)
+   <view class="px-toggle {{on ? 'on' : ''}}" bindtap="…" hover-class="px-pressed">
+     <view class="px-toggle-knob"></view><text class="px-num px-toggle-txt">{{on ? 'ON' : 'OFF'}}</text>
+   </view> */
+.px-toggle {
+  position: relative; width: 136rpx; height: 48rpx; flex-shrink: 0; margin: 4rpx; background: var(--paper-3);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 4rpx 4rpx 0 0 rgba(43, 35, 64, 0.18);
+}
+.px-toggle.on { background: var(--green); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 4rpx 4rpx 0 0 var(--green-d); }
+.px-toggle-knob {
+  position: absolute; top: 4rpx; left: 4rpx; width: 40rpx; height: 40rpx; background: var(--paper); transition: left 0.12s steps(2);
+  box-shadow: inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, 4rpx 0 0 0 var(--ink);
+}
+.px-toggle.on .px-toggle-knob { left: 92rpx; box-shadow: inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, -4rpx 0 0 0 var(--ink); }
+.px-toggle-txt { position: absolute; top: 0; left: 48rpx; right: 0; text-align: center; font-size: 20rpx; line-height: 48rpx; color: var(--text-2); }
+.px-toggle.on .px-toggle-txt { left: 0; right: 48rpx; color: #ffffff; text-shadow: 2rpx 2rpx 0 var(--green-d); }
+
 /* ------------------------------------------------------------------ pixel tabs */
 .tabs { display: flex; margin: 8rpx 4rpx 32rpx; gap: 12rpx; }
 .tabs .tab {
-  flex: 1; text-align: center; padding: 14rpx 0; font-size: 26rpx; color: var(--text-2); background: var(--paper-2);
+  flex: 1; text-align: center; padding: 14rpx 0; font-size: 24rpx; color: var(--text-2); background: var(--paper-2);
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--paper-3);
 }
 .tabs .tab.active {
@@ -293,9 +358,27 @@ button.btn::after { border: none; }
 }
 
 /* ------------------------------------------------------------------ misc */
-.empty { text-align: center; color: var(--text-3); padding: 40rpx 0; font-size: 26rpx; }
-.notice { font-size: 22rpx; color: var(--text-3); line-height: 1.8; padding: 0 8rpx 28rpx; }
-.est { color: var(--orange-d); font-size: 22rpx; }
+.empty { text-align: center; color: var(--text-3); padding: 40rpx 0; font-size: 24rpx; }
+.notice { font-size: 24rpx; color: var(--text-3); line-height: 1.8; padding: 0 8rpx 28rpx; }
+.est { color: var(--orange-d); font-size: 24rpx; }
+/* calendar date plate: red band (month or weekday) over a big pixel day number; .sm for compact rows
+   <view class="px-cal"><view class="px-cal-top">10月</view><view class="px-num px-cal-day">14</view></view> */
+.px-cal {
+  width: 88rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx; text-align: center; background: #ffffff;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 0 -4rpx 0 0 var(--paper-3);
+}
+.px-cal-top { font-size: 20rpx; line-height: 36rpx; white-space: nowrap; color: #ffffff; background: var(--red); box-shadow: inset 0 -4rpx 0 0 var(--red-d); text-shadow: 2rpx 2rpx 0 var(--red-d); }
+.px-cal-day { font-family: "PixelNum", "Pixel", monospace; font-size: 32rpx; line-height: 64rpx; color: var(--ink); text-shadow: none; }
+.px-cal.sm { width: 72rpx; margin-right: 20rpx; }
+.px-cal.sm .px-cal-top { line-height: 32rpx; }
+.px-cal.sm .px-cal-day { font-size: 24rpx; line-height: 48rpx; }
+/* status light: the ink frame stays put, only the core lights / blinks (put .anim-blink on the core, not the frame)
+   <view class="px-led on"><view class="px-led-core anim-blink"></view></view>   .on = green, .red = red, none = off (grey); .sm = 12rpx */
+.px-led { width: 16rpx; height: 16rpx; flex-shrink: 0; margin: 4rpx; background: var(--ink-2); box-shadow: 0 0 0 4rpx var(--ink); }
+.px-led.sm { width: 12rpx; height: 12rpx; }
+.px-led-core { width: 100%; height: 100%; background: var(--text-3); }
+.px-led.on .px-led-core { background: var(--green-l); }
+.px-led.red .px-led-core { background: var(--red); box-shadow: inset 4rpx 4rpx 0 0 var(--red-l); }
 .mask { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 100; display: flex; align-items: flex-end;
   background-color: rgba(43, 35, 64, 0.45);
   background-image: repeating-linear-gradient(0deg, rgba(43, 35, 64, 0.12) 0, rgba(43, 35, 64, 0.12) 4rpx, transparent 4rpx, transparent 8rpx); }
@@ -304,6 +387,13 @@ button.btn::after { border: none; }
   background: var(--paper); animation: px-slide-up 0.24s steps(4) both;
   box-shadow: 0 -8rpx 0 0 var(--ink), inset 0 4rpx 0 0 #fff, inset 0 -4rpx 0 0 var(--paper-3);
 }
+/* square close key for a sheet header: <view class="sheet-close" bindtap="…" hover-class="px-pressed"><image src="/assets/px/cross.svg" /></view> */
+.sheet-close {
+  width: 56rpx; height: 56rpx; margin: 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), 4rpx 6rpx 0 0 var(--shadow);
+}
+.sheet-close image { width: 32rpx; height: 32rpx; }
 
 /* ==================================================================
    Animation library — stepped motion only (see docs/PIXEL_STYLE.md)

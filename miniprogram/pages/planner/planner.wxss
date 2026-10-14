@@ -28,7 +28,7 @@
 /* ---------------------------------------------------------------- brief (textarea window) */
 .brief { padding: 24rpx 28rpx 28rpx; }
 .brief-head { display: flex; align-items: center; margin-bottom: 18rpx; }
-.brief-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.brief-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .brief-title { flex: 1; font-size: 28rpx; color: var(--text); letter-spacing: 2rpx; }
 .brief-count { font-size: 20rpx; color: var(--text-3); }
 .prompt { display: block; box-sizing: border-box; width: calc(100% - 8rpx); min-height: 200rpx; font-size: 28rpx; }
@@ -47,7 +47,7 @@
   display: flex; align-items: center; padding: 12rpx 20rpx 14rpx; background: var(--yellow);
   box-shadow: inset 0 -4rpx 0 0 var(--ink), inset 4rpx 4rpx 0 0 #fff4b8, inset -4rpx 0 0 0 var(--yellow-d);
 }
-.quest-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.quest-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .quest-title { flex: 1; min-width: 0; font-size: 28rpx; color: var(--ink); letter-spacing: 1rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .quest-body { padding: 16rpx 20rpx 18rpx; }
 .quest-meta { font-size: 22rpx; color: var(--purple-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -63,7 +63,6 @@
 .opt { display: flex; align-items: center; min-height: 56rpx; padding: 22rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
 .opt-last { border-bottom: none; }
 .opt-top { align-items: flex-start; }
-.opt-down { background: var(--paper-2); }
 .opt-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 20rpx; }
 .opt-label { width: 160rpx; flex-shrink: 0; font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
 .opt-top .opt-label, .opt .grow .opt-label { width: auto; }
@@ -71,7 +70,7 @@
 .opt-value { display: flex; align-items: baseline; justify-content: flex-end; }
 .opt-num { font-size: 32rpx; color: var(--green-d); }
 .opt-unit { flex-shrink: 0; margin-left: 10rpx; font-size: 24rpx; color: var(--text-2); }
-.opt-next { width: 24rpx; height: 24rpx; flex-shrink: 0; margin-left: 18rpx; }
+.opt-next { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 18rpx; }
 
 /* meal toggles: raised pixel keys, yellow = selected */
 .seg { display: flex; justify-content: flex-end; }
@@ -92,26 +91,8 @@
 .input.people { box-sizing: border-box; width: 168rpx; min-height: 52rpx; padding: 6rpx 14rpx; margin: 4rpx; font-size: 28rpx; text-align: right; flex-shrink: 0; }
 .people-ph { color: var(--text-3); font-size: 24rpx; }
 
-/* ON / OFF pixel switch */
-.toggle {
-  position: relative; width: 136rpx; height: 48rpx; flex-shrink: 0; margin: 4rpx 4rpx 4rpx 16rpx; background: var(--paper-3);
-  box-shadow:
-    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset 4rpx 4rpx 0 0 rgba(43, 35, 64, 0.18);
-}
-.toggle.on {
-  background: var(--green);
-  box-shadow:
-    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset 4rpx 4rpx 0 0 var(--green-d);
-}
-.toggle-knob {
-  position: absolute; top: 4rpx; left: 4rpx; width: 40rpx; height: 40rpx; background: var(--paper);
-  box-shadow: inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, 4rpx 0 0 0 var(--ink);
-}
-.toggle.on .toggle-knob { left: 92rpx; box-shadow: inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, -4rpx 0 0 0 var(--ink); }
-.toggle-txt { position: absolute; top: 0; left: 48rpx; right: 0; text-align: center; font-size: 20rpx; line-height: 48rpx; color: var(--text-2); }
-.toggle.on .toggle-txt { left: 0; right: 48rpx; color: #ffffff; text-shadow: 2rpx 2rpx 0 var(--green-d); }
+/* ON / OFF: global .px-toggle; only the gap to the label is local */
+.alt-toggle { margin-left: 16rpx; }
 
 /* soft avoidances that can be lifted for this plan */
 .avoid-row { display: flex; flex-wrap: wrap; margin-top: 14rpx; }
@@ -145,10 +126,6 @@
     0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.c-health { background: var(--green-l); }
-.c-iterative { background: #ddd0ff; }
-.c-inventory { background: var(--blue-l); }
-.c-budget { background: #ffd0e0; }
 .member-name { font-size: 22rpx; color: var(--text-2); white-space: nowrap; }
 .go-btn { padding: 26rpx 32rpx; font-size: 32rpx; }
 .go-icon { width: 48rpx; height: 48rpx; vertical-align: -12rpx; margin-right: 14rpx; }
@@ -162,23 +139,16 @@
     0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #ffffff, 6rpx 8rpx 0 0 var(--shadow);
 }
-/* calendar page: red header with the month, big pixel day number */
-.cal {
-  width: 88rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx; text-align: center; background: #ffffff;
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 0 -4rpx 0 0 var(--paper-3);
-}
-.cal-top { font-size: 20rpx; line-height: 36rpx; color: #ffffff; background: var(--red); box-shadow: inset 0 -4rpx 0 0 var(--red-d); text-shadow: 2rpx 2rpx 0 var(--red-d); }
-.cal-day { font-size: 28rpx; line-height: 60rpx; color: var(--ink); }
 .log-text { font-size: 28rpx; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .log-meta { display: flex; align-items: center; margin-top: 6rpx; min-width: 0; }
 .tag.log-state { flex-shrink: 0; margin: 4rpx 14rpx 4rpx 2rpx; }
-.log-state-icon { width: 24rpx; height: 24rpx; vertical-align: -4rpx; margin-right: 6rpx; }
+.log-state-icon { width: 32rpx; height: 32rpx; vertical-align: -8rpx; margin-right: 6rpx; }
 .log-title { flex: 1; min-width: 0; font-size: 24rpx; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .log-cost { display: flex; align-items: center; margin-top: 8rpx; }
 .log-coin { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 10rpx; }
 .log-total { font-size: 24rpx; color: var(--orange-d); }
 .log-per { margin-left: 20rpx; font-size: 22rpx; color: var(--text-3); }
 .log-per-num { margin-left: 8rpx; font-size: 20rpx; color: var(--text-2); }
-.log-next { width: 24rpx; height: 24rpx; flex-shrink: 0; margin-left: 16rpx; }
+.log-next { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 16rpx; }
 .log-empty { display: flex; flex-direction: column; align-items: center; padding: 36rpx 28rpx 8rpx; }
 .log-empty-icon { width: 64rpx; height: 64rpx; }

@@ -11,25 +11,16 @@
 .err-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 20rpx; }
 .err-text { flex: 1; font-size: 26rpx; line-height: 1.6; color: var(--orange-d); }
 
-/* ---------------------------------------------------------------- window label tab (same look as the home page) */
-.win-tab {
-  position: absolute; left: 24rpx; top: -20rpx; z-index: 2; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
-  font-size: 22rpx; line-height: 40rpx; color: var(--ink); background: var(--yellow);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
-}
-.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
-
 /* ---------------------------------------------------------------- memory dex status window */
 .card.dex { margin-top: 40rpx; padding: 44rpx 28rpx 28rpx; }
 .dex-head { display: flex; align-items: center; }
 .dex-portrait {
-  width: 112rpx; height: 112rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
   display: flex; align-items: center; justify-content: center; background: #ddd0ff;
   box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
     inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
 }
-.dex-img { width: 80rpx; height: 80rpx; display: block; }
+.dex-img { width: 64rpx; height: 64rpx; display: block; }
 .dex-kicker { display: flex; align-items: center; font-size: 24rpx; color: var(--text-3); letter-spacing: 1rpx; }
 .ver { margin-left: 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 32rpx; color: #fff; background: var(--purple);
   box-shadow: 0 0 0 2rpx var(--purple-d); }
@@ -66,19 +57,14 @@
 .hint-text { font-size: 24rpx; color: var(--text-3); }
 
 /* group summary — RPG dialogue with a name plate */
-.px-dialog.note { position: relative; margin: 40rpx 4rpx 36rpx; padding: 40rpx 28rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
-.note-plate {
-  position: absolute; left: 28rpx; top: -20rpx; padding: 0 16rpx; height: 40rpx; line-height: 40rpx; font-size: 22rpx; color: var(--ink); background: #ddd0ff;
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--purple), inset 4rpx 4rpx 0 0 #fff;
-}
+.px-dialog.note { margin: 40rpx 4rpx 36rpx; padding: 40rpx 28rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
 
 /* ---------------------------------------------------------------- taste dex pages */
 .card.pages { padding: 4rpx 28rpx 8rpx; }
 .pg { padding: 24rpx 0 20rpx; border-bottom: 4rpx dashed var(--paper-3); }
 .pg:last-child { border-bottom: none; }
 .pg-head { display: flex; align-items: center; font-size: 28rpx; color: var(--ink); letter-spacing: 1rpx; margin-bottom: 12rpx; }
-.pg-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.pg-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
 .pg-count { min-width: 24rpx; padding: 0 10rpx; margin: 4rpx; font-size: 20rpx; line-height: 36rpx; text-align: center; color: var(--text-2); background: var(--paper-2);
   box-shadow: 0 0 0 4rpx var(--paper-3); }
 
@@ -96,10 +82,10 @@
   box-shadow: 0 -4rpx 0 0 var(--orange-d), 0 4rpx 0 0 var(--orange-d), -4rpx 0 0 0 var(--orange-d), 4rpx 0 0 0 var(--orange-d), inset 0 -4rpx 0 0 #f5c784; }
 .badge.info { background: var(--blue-l); color: var(--blue-d);
   box-shadow: 0 -4rpx 0 0 var(--blue-d), 0 4rpx 0 0 var(--blue-d), -4rpx 0 0 0 var(--blue-d), 4rpx 0 0 0 var(--blue-d), inset 0 -4rpx 0 0 #8ccbf2; }
-/* PixelNum glyphs sit high in their em box: nudge down onto the Chinese baseline */
-.sc { position: relative; top: 4rpx; margin-left: 10rpx; font-size: 20rpx; line-height: 1; }
+/* score digits: global .px-num.inline does the baseline nudge */
+.sc { margin-left: 10rpx; font-size: 20rpx; }
 .badge-star { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 0 6rpx 0 -4rpx; }
-.swap-arrow { width: 24rpx; height: 24rpx; flex-shrink: 0; margin: 0 6rpx; }
+.swap-arrow { width: 16rpx; height: 16rpx; flex-shrink: 0; margin: 0 6rpx; }
 .none { font-size: 24rpx; color: var(--text-3); margin: 8rpx 4rpx; }
 
 /* ---------------------------------------------------------------- manual edits */
@@ -107,6 +93,3 @@
 .field .lbl { display: flex; align-items: center; width: 176rpx; flex-shrink: 0; }
 .lbl-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 10rpx; }
 .btn.save { margin: 28rpx 4rpx 4rpx; }
-
-/* section hint (not a link) */
-.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); }

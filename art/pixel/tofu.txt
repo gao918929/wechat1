@@ -1,18 +1,18 @@
 # name: tofu
 # kind: icon
 ................
-.....KKKKKKKKK..
-....KWWwwwwwKK..
-...KWwwwwwwKqK..
-..KKKKKKKKKqqK..
-..KwwwwwwwKqqK..
-..KwwwwwwwKqqK..
-..KwwwwwwwKqqK..
-..KwwwwwwwKqqK..
-..KwwwwwwwKqK...
-..KqwwwwwqKK....
+................
+................
+....KKKKKKKKKK..
+...KWWwgwwgwKK..
+..KWwgwwwgwKqK..
+.KKKKKKKKKKqqK..
+.KwwwwwwwwKqqK..
+.KwwwwwwwwKqqK..
+.KwwwwwwwwKqqK..
+.KqwwwwwwqKqK...
+.KqqqqqqqqKK....
 .KKKKKKKKKKKKKK.
-.KccccccccccccK.
-..KbbbbbbbbbbK..
-...KKKKKKKKKK...
+.KWbbbbbbbbbbbK.
+..KKKKKKKKKKKK..
 ................

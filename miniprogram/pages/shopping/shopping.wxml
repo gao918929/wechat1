@@ -1,5 +1,5 @@
 <px-nav title="购物清单" back />
-<view class="container" wx:if="{{shopping}}">
+<view class="container no-tab" wx:if="{{shopping}}">
   <!-- quest window: total (cart + coin), budget, progress -->
   <view class="card feature quest anim-slide">
     <view class="q-head">
@@ -50,15 +50,19 @@
 
   <!-- one window per section -->
   <view wx:for="{{shopping.sections}}" wx:for-item="sec" wx:key="section" class="card sec {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}">
-    <view class="sec-bar c-{{sec.section}}">
+    <view class="sec-bar cat-{{sec.section}}">
       <view class="sec-icon"><image src="/assets/px/{{sec.icon}}.svg" /></view>
       <text class="sec-name">{{sec.label}}</text>
       <image wx:if="{{secDone[sec.section] === sec.items.length}}" class="sec-done anim-pop" src="/assets/px/star.svg" />
       <text class="px-num sec-count">{{secDone[sec.section] || 0}}/{{sec.items.length}}</text>
     </view>
     <view class="sec-list">
-      <view wx:for="{{sec.items}}" wx:key="name" class="it {{checked[item.name] ? 'done' : ''}}" hover-class="px-pressed" bindtap="toggle" data-name="{{item.name}}">
+      <view wx:for="{{sec.items}}" wx:key="name" class="it {{checked[item.name] ? 'done' : ''}}" hover-class="px-pressed-row" bindtap="toggle" data-name="{{item.name}}">
         <view class="check {{checked[item.name] ? 'on anim-pop' : ''}}"></view>
+        <view class="it-cell">
+          <image wx:if="{{item.icon}}" class="it-img" src="/assets/px/{{item.icon}}.svg" />
+          <text wx:else class="it-initial">{{item.initial}}</text>
+        </view>
         <view class="grow">
           <view class="it-name">{{item.name}}</view>
           <view class="it-qty">{{item.qty_text}}<text wx:if="{{item.have_g}}" class="it-have"> · 库存已有 {{item.have_g}}g</text></view>
@@ -88,7 +92,7 @@
   </view>
   <canvas type="2d" id="shot" style="width:360px;height:{{canvasH}}px;position:fixed;left:-2000px;top:0"></canvas>
 </view>
-<view class="container loading" wx:else>
+<view class="container no-tab loading" wx:else>
   <px-sprite name="sprite-pot" frames="4" size="128" duration="800" />
   <view class="loading-text">清单整理中…</view>
   <view class="px-loading loading-bar"></view>

@@ -1,18 +1,18 @@
 # name: rice
 # kind: icon
 ................
-................
 .....KKKKKK.....
 ...KKWWwWwwKK...
-..KWwWwwwqwwqK..
+..KWWwwwqwwwqK..
 .KKKKKKKKKKKKKK.
-.KqwqqqqqqqqqnK.
+.KqqqqqqqqqqqnK.
 .KKnnnnnnnnnnKK.
-..KqqwqqqqqqnK..
-.KqqwqqqqqqqqnK.
-.KqwqrrrrrrqqnK.
-.KqwqqqqqqqqqnK.
-.KqqqqqqqqqqnnK.
-..KnqqqqqqqnnK..
+..KwwwwwwwwwqK..
+..KwrwwrwwrwqK..
+.KwwwrwrwrwwqqK.
+.KwrrrrrrrrrqqK.
+.KwwwrwrwrwwqqK.
+.KwwrwwrwwrwqqK.
+..KqwwwwwwwqqK..
 ...KKKKKKKKKK...
 ................

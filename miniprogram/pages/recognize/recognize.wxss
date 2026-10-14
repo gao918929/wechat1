@@ -7,7 +7,6 @@
 .intro-num { font-size: 28rpx; color: var(--green-d); margin: 0 4rpx; }
 .intro-sub { font-size: 22rpx; color: var(--text-3); }
 .btn.retake { flex-shrink: 0; margin-left: 16rpx; padding: 10rpx 20rpx; }
-.btn .btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 10rpx; }
 .intro-note { margin-top: 20rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); font-size: 22rpx; line-height: 1.8; color: var(--text-3); }
 
 /* ---------------------------------------------------------------- chef dialogue */
@@ -21,7 +20,7 @@
 
 /* ---------------------------------------------------------------- meta windows */
 .meta { padding: 24rpx 28rpx 12rpx; }
-.title-icon { width: 40rpx; height: 40rpx; margin-right: 12rpx; }
+.title-icon { width: 32rpx; height: 32rpx; margin-right: 12rpx; }
 .next-icon { width: 32rpx; height: 32rpx; margin-left: 12rpx; }
 .ctx-tabs { margin: 16rpx 4rpx 20rpx; gap: 20rpx; }
 .ctx-tabs .tab { font-size: 26rpx; line-height: 1.5; padding: 14rpx 0 12rpx; }
@@ -73,10 +72,6 @@
 .line-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 8rpx; }
 .est-val { color: var(--orange-d); }
 .need { color: var(--orange-d); }
-.est-badge {
-  margin: 2rpx 0 2rpx 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 1.5; color: var(--orange-d); background: #ffe2b0;
-  box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d);
-}
 .price { font-size: 22rpx; color: var(--text); margin-right: 12rpx; }
 .unit { font-size: 22rpx; color: var(--text-3); }
 .unit.portion { margin-left: 12rpx; }
@@ -143,9 +138,3 @@
 }
 .sheet-img { width: 48rpx; height: 48rpx; }
 .avatar.sheet-avatar { width: 48rpx; height: 48rpx; margin: 0; font-size: 24rpx; }
-.sheet-close {
-  width: 56rpx; height: 56rpx; margin: 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper);
-  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
-    inset -4rpx -4rpx 0 0 var(--paper-3), 4rpx 6rpx 0 0 var(--shadow);
-}
-.sheet-close image { width: 32rpx; height: 32rpx; }

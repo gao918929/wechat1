@@ -71,6 +71,7 @@ CSS 变量见 `app.wxss`；像素画字符代码见 `tools/pixelart.py` 中的 `
 
 - `title`、`subtitle`、`back`（返回箭头）、`large`（页面内大标题牌，带纸影投影字）、`slot="right"`。
 - tab 页用 `large`，二级页用 `back`。
+- 大标题按字数自动降一档字号，不会过早截断（组件 JS 按标题宽度算 `titleSize`，中文算 1 个字，ASCII 算半个）：≤ 7 个字 56rpx；8 个字 `.long` 48rpx；更长 `.xlong` 40rpx（约 9–10 个字），再长才出现省略号。行高固定，标题牌不会跳动。阈值按首页右侧插槽（小厨 + 头像，约 260rpx）定的。
 
 ### `<px-sprite>` 像素角色动画
 
@@ -100,21 +101,42 @@ CSS 变量见 `app.wxss`；像素画字符代码见 `tools/pixelart.py` 中的 `
 
 | 类 | 说明 |
 |---|---|
-| `.card`（`.flush` / `.hero` / `.feature` + `.blue` / `.orange` / `.purple`） | 像素窗口；`feature` 是彩色状态窗口（白字） |
-| `.px-dialog` | 深色 RPG 对话框（双描边） |
-| `.section-title` | ▶ 分区标题；右侧 `.link` |
-| `.btn`（`.ghost` / `.warn` / `.danger` / `.small`） | 像素按钮，**必须加** `hover-class="px-pressed"`（按下下沉） |
-| `.tag`（`.warn` / `.danger` / `.gray` / `.blue` / `.glass`） | 像素徽章 |
+| `.container`（`.no-tab`） | 页面容器；默认底部留出标签栏的 220rpx，二级页（没有标签栏）加 `.no-tab`，只留 80rpx + 安全区 |
+| `.card`（`.flush` / `.hero` / `.feature` + `.blue` / `.orange` / `.purple` / `.red`） | 像素窗口；`feature` 是彩色状态窗口（白字）；`.feature.red` 用于失败 / 超预算 / 错误 |
+| `.px-dialog` | 深色 RPG 对话框（双描边，`position: relative`，可直接放 `.name-plate`） |
+| `.win-tab` + `.win-tab-icon` | 窗口上沿的黄色名牌：`<view class="win-tab"><image class="win-tab-icon" src="/assets/px/flame.svg" />今日能量</view>`。放在 `.card` 里；窗口上内边距约 40rpx、上外边距 ≥ 36rpx，名牌才不压到上方内容 |
+| `.name-plate`（`.green` / `.purple`） | 对话框说话人名牌（纯文字，默认黄色）；父元素需 `position: relative`（`.card`、`.px-dialog` 已是） |
+| `.section-title` | ▶ 分区标题；右侧 `.link`（绿色，可点）或 `.sec-hint`（灰色说明，不可点） |
+| `.btn`（`.ghost` / `.warn` / `.danger` / `.small`）+ `.btn-icon` | 像素按钮，**必须加** `hover-class="px-pressed"`（按下下沉）；按钮图标 32rpx |
+| `.px-pressed-row` | 窗口内列表行的轻按下态（纸影底 + 顶部内阴影，无墨色描边、不位移）：菜单行、选择器行、名单行、流水行用 `hover-class="px-pressed-row"`；独立的按钮 / 卡片仍用 `px-pressed` |
+| `.tag`（`.warn` / `.danger` / `.gray` / `.blue` / `.glass` / `.gold` / `.purple`） | 像素徽章；`.gold` = 管理员 / 奖励，`.purple` = AI / 孪生 |
+| `.est-badge` | 估算值后面的橙色小“估算”徽章 |
 | `.chip`、`.chips` | 横向像素胶囊 |
 | `.input`、`.textarea`、`.field`、`.chat-bar`、`.send` | 凹陷输入框 |
-| `.avatar`（`.c-<分区>`） | 方形像素头像 |
-| `.grid` / `.grid-item .icon`、`.mini-icon` + `.i-blue` / `-orange` / `-purple` / `-pink` / `-teal` / `-yellow` / `-red` | 图标格 |
+| `.px-toggle`（`.on`）+ `.px-toggle-knob` + `.px-toggle-txt` | 像素 ON / OFF 开关（原生 `<switch>` 是圆的）：`<view class="px-toggle {{on ? 'on' : ''}}" bindtap="…" hover-class="px-pressed"><view class="px-toggle-knob"></view><text class="px-num px-toggle-txt">{{on ? 'ON' : 'OFF'}}</text></view>`，旋钮逐格滑动 |
+| `.px-cal` + `.px-cal-top` + `.px-num .px-cal-day`（`.sm`） | 日历日期牌：红色顶条（月份或星期）+ 大号像素日期；`.sm` 是紧凑版 |
+| `.px-led`（`.on` 绿 / `.red` 红 / 默认灰；`.sm` 12rpx）+ `.px-led-core` | 状态灯：墨色灯框固定不动，只让灯芯闪（把 `.anim-blink` 加在 `.px-led-core` 上，不要加在灯框上，否则描边也会消失） |
+| `.avatar` | 方形像素头像（颜色用下面的颜色工具类） |
+| `.cat-<分区>` | 食材分区色块：`vegetables` 绿、`meat_eggs` 红、`seafood` 蓝、`staples` 黄（墨色字）、`soy_dairy` 紫、`seasonings` 灰紫、`other` 浅灰（墨色字）。冰箱 / 识别的首字头像、购物清单分区条、账本构成条与图例共用 |
+| `.agent-health` / `-iterative` / `-inventory` / `-budget` | 四位智能体精灵格的浅色底（绿 / 紫 / 蓝 / 粉） |
+| `.tone-green` / `-blue` / `-orange` / `-purple` / `-pink` | 成员头像轮换色（小组名单、营养小组视图） |
+| `.grid` / `.grid-item .icon`、`.mini-icon` + `.i-blue` / `-orange` / `-purple` / `-pink` / `-teal` / `-yellow` / `-red` | 图标格；`.mini-icon` 是 64rpx 格 + 48rpx 图标 |
 | `.check` / `.check.on` | 像素复选框（带像素对勾） |
 | `.tabs .tab.active` | 像素页签（选中抬起变黄） |
 | `.bar .fill` | 静态像素条（动画请用 `<px-meter>`） |
-| `.stat .num .lbl`、`.px-num` | 数字统计 |
+| `.stat .num .lbl`、`.px-num`、`.px-num.inline` | 数字统计；`.px-num.inline` 把夹在中文里的 20–24rpx 像素数字下移 4rpx，对齐中文基线 |
 | `.px-loading` | 行进条纹加载条 |
-| `.mask` + `.sheet` | 底部弹出窗口（像素滑入） |
+| `.mask` + `.sheet`、`.sheet-close` | 底部弹出窗口（像素滑入）；`.sheet-close` 是标题栏右侧的方形关闭键（内放 32rpx `cross` 图标） |
+
+**尺寸约定**：全局文字只用 20 / 24 / 28 / 32rpx（24rpx = 字体原生 12px，最清晰；`.tag`、`.notice`、`.small`、`.tabs .tab`、`.chip-sub`、`.stat .lbl`、`.empty` 都是 24rpx，`.btn` 32rpx）。16px 图标只用 16 的倍数显示：32rpx（1:1）、48rpx、64rpx；8px 的 `ui-next` 用 16rpx，12px 的 `ui-back` 用 24 / 48rpx。
+
+### 共享 JS 工具（`utils/util.js`）
+
+| 函数 | 说明 |
+|---|---|
+| `iconFor(name)` | 食材 / 菜名 → 像素图标名（`/assets/px/<icon>.svg`），没有对应图标时返回 `''`。规则表 `ICON_RULES`：名字里**最早出现**的关键词胜出（番茄炒蛋 → tomato，鸡蛋 → egg），同一位置时**更长**的关键词胜出（油菜 → cabbage，米粉 → noodle）。图标为 `''` 的“拦截规则”专门挡住会误配的词（酱油 / 蚝油 / 玉米 / 花生 / 面包 / 面粉 / 蛋糕…）。新增食材图标时只改这张表 |
+| `initialOf(name)` | 没有图标时首字头像用的字，跳过“大 / 小”前缀（大白菜 → 白，大米 → 米） |
+| `metaLabel(kind, key, fallback)` / `metaLabels(kind, keys)` | 把 `app.globalData.meta` 里的选项 key 转成中文（`metaLabel('avoid_options', 'spicy')` → 辣；`kind` 可以是 `allergen_options`、`avoid_options`、`goals`、`activity_levels` 等）。找不到时返回 `fallback`，默认原样返回 key |
 
 ## 5. 动效规范与提示词
 
@@ -197,6 +219,16 @@ CSS 变量见 `app.wxss`；像素画字符代码见 `tools/pixelart.py` 中的 `
 | `broccoli` | 西兰花：深浅绿花冠（g / G / l）、浅绿茎 |
 | `milk` | 牛奶盒：白蓝相间（w / c / b），尖顶 |
 | `chili` | 红辣椒（r / R）弯曲，顶部绿蒂（不吃辣 / 辣度） |
+| `cabbage` | 叶菜（白菜 / 青菜 / 菠菜 / 生菜 / 油菜）：直立的大白菜头，上半部褶皱绿叶（g / G，左上 l 受光），下半部白色菜帮（w / q）带浅绿叶脉（l）；矮胖桶形，别画成西兰花的“树冠 + 细茎” |
+| `rice` | 大米：白色米袋（w / q 阴影）印红色“米”字（r），翻边袋口（q / n），袋口露出一堆白米（W / w）；不要画成碗，避免与 `meal` 混淆 |
+| `tofu` | 豆腐：3/4 视角的扁方块（顶面 w + W 高光、正面 w、侧面 q，面与面之间墨线），顶上几粒葱花（g），放在蓝色浅碟（b）上 |
+| `salt` | 盐：盐罐，圆顶灰盖（e / E）上一排三个墨色小孔（别排成“两只眼睛”），玻璃瓶身上部冰蓝（c）、下部白盐（w），右上飘几粒盐（W） |
+| `oil` | 食用油：金黄油瓶（y / Y），左侧白色高光条（W），细瓶颈、红色小瓶盖（r / R） |
+| `potato` | 土豆：横放的疙瘩椭圆（n，右下 N 阴影），左上橙色受光（o）和 W 高光，几个深棕芽眼（N） |
+| `mushroom` | 蘑菇：棕色圆伞盖（n / N）带奶白斑点（w），下沿一排浅色菌褶（q），粗短奶白菌柄（w / q） |
+| `shrimp` | 虾 / 海鲜：C 形弯曲的熟虾（o / r / R），深红分节线，头在右上带墨色眼睛和一根触须，尾端像鱼尾一样分叉成扇形 |
+| `noodle` | 面条：红碗（r / R）带一圈黄色圆点花纹（y），碗里黄面条（y / Y 斜纹），一双筷子（N）夹起一缕面；与蓝碗米饭 `meal` 区分 |
+| `apple` | 水果：红苹果（r / R，左上 W 高光），顶部凹窝伸出棕色果柄（n），旁边一片绿叶（g）；与带绿萼的 `tomato` 区分 |
 | `pot` | 汤锅：灰色锅身（E / e）、两只把手、锅盖、蒸汽 |
 
 ### 6.3 角色精灵（各帧从左到右排列，帧间用 `---` 分隔，`# kind: sprite`）

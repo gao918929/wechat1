@@ -1,4 +1,5 @@
 const api = require('../../utils/api');
+const { metaLabel } = require('../../utils/util');
 const app = getApp();
 
 const SEX = [{ key: '', label: '未填' }, { key: 'male', label: '男' }, { key: 'female', label: '女' }];
@@ -52,8 +53,8 @@ Page({
       extraAvoid: (u.avoidances || []).filter((a) => knownAvoid.indexOf(a) < 0),
       extraAllergens: (u.allergens || []).filter((a) => knownAllergen.indexOf(a) < 0),
       likesText: (u.likes || []).join('、'),
-      goalText: [((meta.goals.find((g) => g.key === u.goal) || {}).label || '保持'),
-        (meta.activity_levels.find((a) => a.key === u.activity_level) || {}).label,
+      goalText: [metaLabel('goals', u.goal, '') || '保持',
+        metaLabel('activity_levels', u.activity_level, ''),
         u.height_cm && u.weight_kg ? u.height_cm + 'cm / ' + u.weight_kg + 'kg' : '未填身高体重'].filter(Boolean).join(' · ')
     });
   },

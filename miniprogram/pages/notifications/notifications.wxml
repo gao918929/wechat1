@@ -1,5 +1,5 @@
 <px-nav title="消息通知" back />
-<view class="container">
+<view class="container no-tab">
   <!-- mailbox header -->
   <view class="card hero mailbox anim-slide">
     <view class="mb-bell {{unread ? 'has' : ''}}">
@@ -25,7 +25,7 @@
     <view class="grow lt-main">
       <view class="lt-top">
         <text class="lt-title">{{item.title}}</text>
-        <view wx:if="{{!item.read}}" class="lt-led"><view class="lt-dot {{item.blink ? 'anim-blink' : ''}}"></view></view>
+        <view wx:if="{{!item.read}}" class="px-led red lt-led"><view class="px-led-core {{item.blink ? 'anim-blink' : ''}}"></view></view>
       </view>
       <view class="lt-body">{{item.body}}</view>
       <view class="lt-foot">

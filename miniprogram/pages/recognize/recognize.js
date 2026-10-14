@@ -1,37 +1,12 @@
 const api = require('../../utils/api');
 const config = require('../../config');
-const { chooseImage, MEAL } = require('../../utils/util');
+// ingredient → /assets/px/<icon>.svg (iconFor) or category-coloured initial tile (initialOf): utils/util.js
+const { chooseImage, MEAL, iconFor, initialOf } = require('../../utils/util');
 const app = getApp();
 
 const TITLES = { ingredients: '食材识别', receipt: '小票 / 价签记账', meal: '餐后拍照复盘' };
 
 // ---- pixel display helpers (presentation only)
-// Ingredient → /assets/px/<icon>.svg; no match → category-coloured initial tile.
-const ICON_RULES = [
-  ['egg', ['蛋']],
-  ['tomato', ['番茄', '西红柿', '圣女果']],
-  ['carrot', ['胡萝卜', '红萝卜']],
-  ['broccoli', ['西兰花', '西蓝花', '花椰菜', '花菜']],
-  ['milk', ['牛奶', '酸奶', '奶粉']],
-  ['fish', ['鱼']],
-  ['chili', ['辣椒']],
-  ['meat', ['肉', '排骨', '鸡腿', '鸡翅', '牛排', '五花', '里脊']]
-];
-// The keyword that appears earliest in the name wins ("番茄炒蛋" → tomato, "鸡蛋" → egg).
-function iconFor(name) {
-  const n = name || '';
-  let best = ''; let at = Infinity;
-  ICON_RULES.forEach((r) => r[1].forEach((k) => {
-    const p = n.indexOf(k);
-    if (p >= 0 && p < at) { at = p; best = r[0]; }
-  }));
-  return best;
-}
-// Initial for the fallback tile; skip a size prefix so 大白菜 / 大米 do not both read "大".
-function initialOf(name) {
-  const n = name || '?';
-  return n.length > 1 && /^[大小]/.test(n) ? n.charAt(1) : n.charAt(0);
-}
 // Adds display-only fields to a card item; the original fields are untouched.
 function decorate(i, kind) {
   const q = Number(i.quantity);
