@@ -1,0 +1,4 @@
+<view class="pxs" style="width:{{size}}rpx;height:{{height || size}}rpx">
+  <image class="pxs-sheet {{playing && frames > 1 ? 'pxs-play' : ''}}" src="/assets/px/{{name}}.svg"
+    style="width:{{size * frames}}rpx;height:{{height || size}}rpx;animation-duration:{{duration}}ms;animation-timing-function:steps({{frames}})" />
+</view>

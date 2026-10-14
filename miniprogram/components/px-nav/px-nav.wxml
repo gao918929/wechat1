@@ -1,0 +1,16 @@
+<view class="pn-bar" style="padding-top:{{statusBar}}px;height:{{barHeight}}px">
+  <view class="pn-inner" style="height:{{barHeight}}px;padding:0 {{capsuleSpace}}px">
+    <view wx:if="{{back}}" class="pn-back" hover-class="pn-back-down" bindtap="goBack">
+      <image class="pn-back-icon" src="/assets/px/ui-back.svg" />
+    </view>
+    <view class="pn-title">{{title}}</view>
+  </view>
+</view>
+<view style="height:{{total}}px"></view>
+<view wx:if="{{large}}" class="pn-large">
+  <view class="pn-large-text">
+    <view class="pn-sub" wx:if="{{subtitle}}">{{subtitle}}</view>
+    <view class="pn-large-title">{{title}}</view>
+  </view>
+  <slot name="right"></slot>
+</view>

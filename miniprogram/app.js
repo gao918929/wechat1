@@ -14,7 +14,26 @@ App({
   },
 
   onLaunch() {
+    this.loadFonts();
     this.readyPromise = this.login().then(() => this.loadMeta());
+  },
+
+  // Pixel fonts are served by the backend (kept out of the 2 MB package). Until they load,
+  // text falls back to the system font, so a missing font never blocks the UI.
+  loadFonts() {
+    const fonts = [
+      { family: 'Pixel', file: 'fusion-pixel-12px-sc.woff' },
+      { family: 'PixelNum', file: 'press-start-2p.woff' }
+    ];
+    fonts.forEach((f) => {
+      wx.loadFontFace({
+        global: true,
+        family: f.family,
+        source: 'url("' + config.baseUrl + '/static/fonts/' + f.file + '")',
+        scopes: ['webview', 'native'],
+        fail: (err) => console.warn('font load failed', f.family, err)
+      });
+    });
   },
 
   ready() {

@@ -1,0 +1,4 @@
+<view class="pxm {{over ? 'pxm-over' : ''}}" style="height:{{height}}rpx">
+  <view wx:for="{{cells}}" wx:key="index" class="pxm-cell {{item.on ? 'pxm-on pxm-' + tone : ''}} {{item.on && animate ? 'pxm-anim' : ''}}"
+    style="animation-delay:{{item.delay}}ms"></view>
+</view>

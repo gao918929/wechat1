@@ -1,21 +1,20 @@
-/* The blurred element itself must be the fixed layer: a backdrop-filter nested inside a
-   fixed wrapper only sees the wrapper's own layer and would not blur the page behind it. */
+/* the fixed element itself is the window (see note in docs/PIXEL_STYLE.md) */
 .tb {
-  position: fixed; z-index: 95; left: 28rpx; right: 28rpx;
-  bottom: calc(env(safe-area-inset-bottom) + 16rpx);
-  display: flex; height: 120rpx; padding: 0 10rpx; align-items: center;
-  border-radius: 60rpx;
-  background: rgba(255, 255, 255, 0.62);
-  -webkit-backdrop-filter: saturate(180%) blur(30px);
-  backdrop-filter: saturate(180%) blur(30px);
-  border: 1rpx solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 16rpx 48rpx rgba(31, 60, 45, 0.14), inset 0 1rpx 0 rgba(255, 255, 255, 0.8);
+  position: fixed; z-index: 95; left: 32rpx; right: 32rpx;
+  bottom: calc(env(safe-area-inset-bottom) + 20rpx);
+  display: flex; align-items: center; height: 124rpx; padding: 0 12rpx; gap: 8rpx;
+  background: #fffaf0;
+  box-shadow:
+    0 -4rpx 0 0 #2b2340, 0 4rpx 0 0 #2b2340, -4rpx 0 0 0 #2b2340, 4rpx 0 0 0 #2b2340,
+    inset -4rpx -4rpx 0 0 #e2d3b1, inset 4rpx 4rpx 0 0 #ffffff, 8rpx 12rpx 0 0 rgba(43, 35, 64, 0.2);
 }
-.tb-item {
-  flex: 1; height: 100rpx; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  border-radius: 50rpx; transition: background 0.2s;
+.tb-item { flex: 1; height: 100rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tb-item.on {
+  background: #f8d24b;
+  box-shadow: 0 -4rpx 0 0 #2b2340, 0 4rpx 0 0 #2b2340, -4rpx 0 0 0 #2b2340, 4rpx 0 0 0 #2b2340,
+    inset -4rpx -4rpx 0 0 #c79a1e, inset 4rpx 4rpx 0 0 #fff4b8;
 }
-.tb-item.on { background: rgba(29, 158, 108, 0.12); }
-.tb-icon { width: 46rpx; height: 46rpx; }
-.tb-text { font-size: 20rpx; margin-top: 4rpx; color: #8b918d; }
-.tb-item.on .tb-text { color: #1d9e6c; font-weight: 600; }
+.tb-down { transform: translateY(4rpx); }
+.tb-icon { width: 52rpx; height: 52rpx; }
+.tb-text { font-family: "Pixel", sans-serif; font-size: 20rpx; margin-top: 2rpx; color: #958aa6; letter-spacing: 1rpx; }
+.tb-item.on .tb-text { color: #2b2340; }

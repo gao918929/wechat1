@@ -1,0 +1,15 @@
+.pn-bar {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 90; box-sizing: content-box;
+  background: #fffaf0;
+  /* ink rule + dithered shade under the bar */
+  box-shadow: 0 4rpx 0 0 #2b2340, 0 8rpx 0 0 rgba(43, 35, 64, 0.12);
+}
+.pn-inner { position: relative; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.pn-title { font-family: "Pixel", sans-serif; font-size: 32rpx; color: #2b2340; letter-spacing: 2rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pn-back { position: absolute; left: 20rpx; top: 50%; margin-top: -32rpx; width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; }
+.pn-back-icon { width: 48rpx; height: 48rpx; }
+.pn-back-down { transform: translateX(-4rpx); }
+.pn-large { display: flex; align-items: flex-end; justify-content: space-between; padding: 24rpx 40rpx 28rpx; }
+.pn-large-text { flex: 1; min-width: 0; }
+.pn-sub { font-family: "Pixel", sans-serif; font-size: 24rpx; color: #958aa6; letter-spacing: 1rpx; margin-bottom: 8rpx; }
+.pn-large-title { font-family: "Pixel", sans-serif; font-size: 56rpx; line-height: 1.2; color: #2b2340; letter-spacing: 2rpx; text-shadow: 4rpx 4rpx 0 #e2d3b1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

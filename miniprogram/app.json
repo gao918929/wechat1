@@ -17,14 +17,14 @@
     "navigationStyle": "custom",
     "navigationBarTitleText": "MealAgent",
     "navigationBarTextStyle": "black",
-    "navigationBarBackgroundColor": "#f2f5f4",
-    "backgroundColor": "#f2f5f4",
+    "navigationBarBackgroundColor": "#fffaf0",
+    "backgroundColor": "#f4ecd8",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#8e8e93",
-    "selectedColor": "#2f9e54",
-    "backgroundColor": "#ffffff",
+    "color": "#958aa6",
+    "selectedColor": "#2b2340",
+    "backgroundColor": "#fffaf0",
     "borderStyle": "white",
     "list": [
       {
@@ -54,6 +54,10 @@
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
-    "glass-nav": "/components/glass-nav/glass-nav"
+    "glass-nav": "/components/glass-nav/glass-nav",
+    "px-nav": "/components/px-nav/px-nav",
+    "px-sprite": "/components/px-sprite/px-sprite",
+    "px-meter": "/components/px-meter/px-meter",
+    "px-typewriter": "/components/px-typewriter/px-typewriter"
   }
 }

@@ -1,0 +1,4 @@
+.pxs { display: inline-block; overflow: hidden; vertical-align: middle; }
+.pxs-sheet { display: block; }
+.pxs-play { animation-name: pxs-play; animation-iteration-count: infinite; }
+@keyframes pxs-play { from { transform: translateX(0); } to { transform: translateX(-100%); } }

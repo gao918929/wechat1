@@ -1,0 +1,1 @@
+<text class="ptw" bindtap="finish">{{shown}}<text wx:if="{{cursor && done}}" class="ptw-cursor">▼</text></text>

@@ -15,3 +15,6 @@ backend/data/
 miniprogram/project.private.config.json
 node_modules/
 .DS_Store
+
+# preview tool output
+tools/preview/out/

@@ -1,0 +1,3 @@
+.ptw { white-space: pre-wrap; word-break: break-all; }
+.ptw-cursor { display: inline-block; margin-left: 6rpx; font-size: 0.8em; animation: ptw-blink 0.8s linear infinite; }
+@keyframes ptw-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
