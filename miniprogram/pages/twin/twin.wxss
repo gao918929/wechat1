@@ -21,7 +21,7 @@
 .win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
 
 /* ---------------------------------------------------------------- memory dex status window */
-.card.dex { margin-top: 28rpx; padding: 44rpx 28rpx 28rpx; }
+.card.dex { margin-top: 40rpx; padding: 44rpx 28rpx 28rpx; }
 .dex-head { display: flex; align-items: center; }
 .dex-portrait {
   width: 112rpx; height: 112rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
@@ -40,7 +40,7 @@
 .dex-stats { display: flex; margin-top: 28rpx; padding: 20rpx 0 4rpx; border-top: 4rpx dashed var(--paper-3); }
 .ds { flex: 1; min-width: 0; text-align: center; }
 .ds.sep { border-left: 4rpx dashed var(--paper-3); }
-.ds-num { font-size: 32rpx; line-height: 1.5; color: var(--text-2); }
+.ds-num { font-size: 32rpx; line-height: 1.5; color: var(--text-3); }
 .ds-num.good { color: var(--green-d); }
 .ds-num.bad { color: var(--red); }
 .ds-num.warn { color: var(--orange-d); }
@@ -106,3 +106,6 @@
 .field .lbl { display: flex; align-items: center; width: 176rpx; flex-shrink: 0; }
 .lbl-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 10rpx; }
 .btn.save { margin: 28rpx 4rpx 4rpx; }
+
+/* section hint (not a link) */
+.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); }

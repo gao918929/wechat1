@@ -129,3 +129,6 @@
     inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8, 4rpx 8rpx 0 0 var(--shadow);
 }
 .kind-icon { width: 48rpx; height: 48rpx; margin-right: 12rpx; }
+
+/* section hint (not a link) */
+.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); }

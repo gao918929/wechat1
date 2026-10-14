@@ -45,3 +45,6 @@
 .lt-next { width: 24rpx; height: 24rpx; margin-left: 6rpx; }
 
 .notice.foot { margin-top: 12rpx; }
+
+/* section hint (not a link) */
+.section-title .sec-hint { font-size: 24rpx; color: var(--text-3); }

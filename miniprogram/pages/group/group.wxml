@@ -39,7 +39,7 @@
 
   <!-- roster -->
   <block wx:if="{{detail}}">
-    <view class="section-title"><text>队伍名单</text><text class="link" wx:if="{{isAdmin}}">点成员可管理</text></view>
+    <view class="section-title"><text>队伍名单</text><text class="sec-hint" wx:if="{{isAdmin}}">点成员可管理</text></view>
     <view class="card roster">
       <view wx:for="{{detail.member_list}}" wx:key="id" class="mem {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}"
         hover-class="{{isAdmin && !item.isMe ? 'px-pressed' : 'none'}}" bindtap="memberActions" data-index="{{index}}">
@@ -89,7 +89,7 @@
   </block>
 
   <!-- my groups (switch) -->
-  <view class="section-title"><text>我的小组</text><text class="link">{{groups.length}} 支队伍</text></view>
+  <view class="section-title"><text>我的小组</text><text class="sec-hint">{{groups.length}} 支队伍</text></view>
   <view class="card flush glist">
     <view wx:for="{{groups}}" wx:key="id" class="g-row {{current.id === item.id ? 'is-cur' : ''}}" hover-class="px-pressed" bindtap="switchTo" data-id="{{item.id}}">
       <view class="mini-icon {{current.id === item.id ? 'i-yellow' : ''}}"><image src="/assets/px/users.svg" /></view>

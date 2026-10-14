@@ -27,10 +27,10 @@
       </view>
 
       <view class="dex-stats">
-        <view class="ds"><view class="px-num ds-num good">{{vm.favor.length}}</view><view class="ds-lbl">偏爱</view></view>
-        <view class="ds sep"><view class="px-num ds-num bad">{{vm.avoid.length}}</view><view class="ds-lbl">不爱</view></view>
-        <view class="ds sep"><view class="px-num ds-num warn">{{vm.subs.length}}</view><view class="ds-lbl">替换</view></view>
-        <view class="ds sep"><view class="px-num ds-num info">{{vm.calibration.length}}</view><view class="ds-lbl">校准</view></view>
+        <view class="ds"><view class="px-num ds-num {{vm.favor.length ? 'good' : ''}}">{{vm.favor.length}}</view><view class="ds-lbl">偏爱</view></view>
+        <view class="ds sep"><view class="px-num ds-num {{vm.avoid.length ? 'bad' : ''}}">{{vm.avoid.length}}</view><view class="ds-lbl">不爱</view></view>
+        <view class="ds sep"><view class="px-num ds-num {{vm.subs.length ? 'warn' : ''}}">{{vm.subs.length}}</view><view class="ds-lbl">替换</view></view>
+        <view class="ds sep"><view class="px-num ds-num {{vm.calibration.length ? 'info' : ''}}">{{vm.calibration.length}}</view><view class="ds-lbl">校准</view></view>
       </view>
 
       <view class="dex-vis">
@@ -44,7 +44,7 @@
 
     <!-- group: member union / intersection -->
     <block wx:if="{{view === 'group'}}">
-      <view class="section-title"><text>成员画像</text><text class="link">并集 / 交集</text></view>
+      <view class="section-title"><text>成员画像</text><text class="sec-hint">并集 / 交集</text></view>
       <view class="card entries anim-slide d1">
         <view class="entry">
           <view class="mini-icon i-orange"><image src="/assets/px/chili.svg" /></view>
@@ -146,7 +146,7 @@
 
     <!-- manual edits (me only) -->
     <block wx:if="{{view === 'me'}}">
-      <view class="section-title"><text>手动调整</text><text class="link">仅本人可见</text></view>
+      <view class="section-title"><text>手动调整</text><text class="sec-hint">仅本人可见</text></view>
       <view class="card manual anim-slide d4">
         <view class="field">
           <view class="label lbl"><image class="lbl-icon" src="/assets/px/heart.svg" /><text>喜欢</text></view>
