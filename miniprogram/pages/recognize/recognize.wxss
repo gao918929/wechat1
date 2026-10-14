@@ -78,8 +78,8 @@
   box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d);
 }
 .price { font-size: 22rpx; color: var(--text); margin-right: 12rpx; }
-.unit { font-size: 22rpx; color: var(--text-3); margin-left: 12rpx; }
-.price + .unit { margin-left: 0; }
+.unit { font-size: 22rpx; color: var(--text-3); }
+.unit.portion { margin-left: 12rpx; }
 .slot-method { margin-top: 6rpx; font-size: 22rpx; line-height: 1.6; color: var(--text-3); }
 .slot-tags { margin-top: 8rpx; }
 .slot-tags .tag { margin: 6rpx 14rpx 2rpx 2rpx; }

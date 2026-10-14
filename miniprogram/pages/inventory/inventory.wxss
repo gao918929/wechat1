@@ -24,7 +24,7 @@
 }
 .bag-stats { flex: 1; min-width: 0; display: flex; }
 .bag-stat { flex: 1; min-width: 0; text-align: center; padding: 4rpx 0; }
-.bag-stat + .bag-stat { border-left: 4rpx dashed var(--paper-3); }
+.bag-stat.sep { border-left: 4rpx dashed var(--paper-3); }
 .bag-num { font-size: 40rpx; line-height: 1.4; color: var(--green-d); }
 .bag-num.is-warn { color: var(--orange-d); }
 .bag-num.is-blue { color: var(--blue-d); }

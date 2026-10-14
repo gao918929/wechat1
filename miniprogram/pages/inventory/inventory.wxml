@@ -16,11 +16,11 @@
           <view class="px-num bag-num">{{stats.total}}</view>
           <view class="bag-lbl">种食材</view>
         </view>
-        <view class="bag-stat">
+        <view class="bag-stat sep">
           <view class="px-num bag-num {{stats.urgent ? 'is-warn' : ''}}">{{stats.urgent}}</view>
           <view class="bag-lbl">需尽快处理</view>
         </view>
-        <view class="bag-stat">
+        <view class="bag-stat sep">
           <view class="px-num bag-num {{stats.needsWeight ? 'is-blue' : ''}}">{{stats.needsWeight}}</view>
           <view class="bag-lbl">待补重量</view>
         </view>

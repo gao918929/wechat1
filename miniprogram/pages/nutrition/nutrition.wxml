@@ -1,69 +1,148 @@
-<glass-nav title="营养分析" back />
+<px-nav title="营养分析" back />
 <view class="container">
-  <view class="tabs">
-    <view class="tab {{view === 'me' ? 'active' : ''}}" bindtap="setView" data-v="me">个人</view>
-    <view class="tab {{view === 'group' ? 'active' : ''}}" bindtap="setView" data-v="group">小组整体</view>
+  <view class="tabs view-tabs">
+    <view class="tab {{view === 'me' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setView" data-v="me">个人</view>
+    <view class="tab {{view === 'group' ? 'active' : ''}}" hover-class="px-pressed" bindtap="setView" data-v="group">小组整体</view>
   </view>
-  <view class="row mb">
-    <text class="tag {{days === 7 ? '' : 'gray'}}" bindtap="setDays" data-d="7">近 7 天</text>
-    <text class="tag {{days === 30 ? '' : 'gray'}}" bindtap="setDays" data-d="30">近 30 天</text>
+  <view class="range">
+    <image class="range-icon" src="/assets/px/calendar.svg" />
+    <text class="range-lbl">统计区间</text>
+    <view class="rg {{days === 7 ? 'on' : ''}}" hover-class="px-pressed" bindtap="setDays" data-d="7">近 7 天</view>
+    <view class="rg {{days === 30 ? 'on' : ''}}" hover-class="px-pressed" bindtap="setDays" data-d="30">近 30 天</view>
   </view>
+
+  <view class="px-loading wait" wx:if="{{view === 'me' && !report}}"></view>
 
   <block wx:if="{{view === 'me' && report}}">
-    <view class="card hero">
-      <view class="row">
-        <view class="ring-wrap">
-          <view class="ring" style="--p:{{report.score || 0}}"></view>
-          <view class="ring-center"><view class="big">{{report.scoreText}}</view><view class="unit">健康评分</view></view>
+    <!-- rating window: S / A / B / C badge + score meter -->
+    <view class="card hero rank-card anim-slide">
+      <view class="win-tab"><image class="win-tab-icon" src="/assets/px/trophy.svg" />健康评级</view>
+      <view class="rank-row">
+        <view class="rank-badge {{report.gradeCls}} anim-pop">
+          <text class="rank-cap">RANK</text>
+          <text class="px-num rank-letter">{{report.grade}}</text>
+          <view class="rank-spark" wx:if="{{report.grade === 'S'}}"><px-sprite name="sprite-sparkle" frames="4" size="48" duration="800" /></view>
         </view>
-        <view class="grow" style="margin-left:36rpx">
-          <view class="score-level">{{report.scoreLevel}}</view>
-          <view class="muted">已记录 {{report.logged_days}} 天 · 目标 {{report.target.kcal}} kcal/天</view>
-          <view class="row wrap mt" wx:if="{{report.reasons.length}}"><text class="tag warn" wx:for="{{report.reasons}}" wx:key="*this">{{item}}</text></view>
-          <view class="muted mt" wx:if="{{!report.logged_days}}">在计划里点“吃了”，或拍照复盘一餐</view>
+        <view class="rank-info">
+          <view class="rank-lbl">健康评分</view>
+          <view class="rank-score">
+            <text class="px-num score-num">{{report.scoreText}}</text>
+            <text class="px-num score-max">/100</text>
+            <text class="level {{report.gradeCls}}">{{report.scoreLevel}}</text>
+          </view>
+          <px-meter value="{{report.scoreMeter}}" segments="10" color="{{report.gradeColor}}" height="24" />
         </view>
+      </view>
+      <view class="rank-meta">
+        <text>已记录 <text class="px-num meta-num">{{report.logged_days}}</text> 天</text>
+        <text class="meta-sep">|</text>
+        <text>目标 <text class="px-num meta-num">{{report.target.kcal}}</text> kcal/天</text>
+      </view>
+      <view class="reasons" wx:if="{{report.reasons.length}}">
+        <image class="reason-icon" src="/assets/px/warn.svg" />
+        <view class="grow"><text class="tag warn" wx:for="{{report.reasons}}" wx:key="*this">{{item}}</text></view>
       </view>
     </view>
 
-    <view class="section-title"><text>能量趋势</text><text class="muted">虚线为目标</text></view>
-    <view class="card">
-      <view class="chart">
-        <view class="target-line" style="bottom:{{report.targetLine + 74}}rpx"></view>
+    <!-- health partner read-out -->
+    <view class="doc-say anim-slide d1">
+      <view class="doc-sprite"><px-sprite name="sprite-health" frames="2" size="112" duration="1000" /></view>
+      <view class="doc-box">
+        <view class="name-plate">健康伙伴</view>
+        <view class="px-dialog doc-dialog"><px-typewriter text="{{report.comment}}" speed="30" step="2" /></view>
+      </view>
+    </view>
+
+    <!-- energy trend: stacked pixel blocks + dashed target -->
+    <view class="section-title"><text>能量趋势</text><text class="muted">最近 7 天 · kcal</text></view>
+    <view class="card chart-card anim-slide d2">
+      <view class="plot" style="height:{{chart.plotH}}rpx">
+        <view class="target-line" style="bottom:{{chart.targetBottom}}rpx"></view>
         <view wx:for="{{bars}}" wx:key="date" class="col">
-          <view class="col-val">{{item.kcal || ''}}</view>
-          <view class="col-bar {{item.over ? 'over' : ''}} {{item.empty ? 'empty' : ''}}" style="height:{{item.h}}rpx"></view>
-          <view class="col-day">{{item.week}}</view>
-          <view class="col-date">{{item.date}}</view>
+          <view wx:if="{{item.cells.length}}" class="stack">
+            <view wx:for="{{item.cells}}" wx:for-item="c" wx:for-index="ci" wx:key="ci" class="cell {{c}}"></view>
+          </view>
+          <view wx:else class="stack-empty"></view>
+        </view>
+      </view>
+      <view class="axis"></view>
+      <view class="days">
+        <view wx:for="{{bars}}" wx:key="date" class="day">
+          <view class="px-num day-k {{item.over ? 'is-over' : ''}} {{item.empty ? 'is-empty' : ''}}">{{item.kcal || '-'}}</view>
+          <view class="day-w">{{item.week}}</view>
+          <view class="day-d">{{item.date}}</view>
+        </view>
+      </view>
+      <view class="legend">
+        <view class="lg"><view class="lg-sw ok"></view><text>摄入</text></view>
+        <view class="lg"><view class="lg-sw hot"></view><text>超目标 10% 以上</text></view>
+        <view class="lg"><view class="lg-dash"></view><text>目标 {{report.target.kcal}}</text></view>
+      </view>
+    </view>
+
+    <!-- macros: HP bars -->
+    <view class="section-title"><text>日均摄入</text><text class="muted">对比目标</text></view>
+    <view class="card macro-card anim-slide d3">
+      <view wx:for="{{report.macros}}" wx:key="name" class="macro-row">
+        <view class="mr-head">
+          <image class="mr-icon" src="/assets/px/{{item.icon}}.svg" />
+          <text class="mr-name">{{item.name}}</text>
+          <text class="px-num mr-v">{{item.v}}</text>
+          <text class="px-num mr-t">/{{item.t}}</text>
+          <text class="mr-unit">{{item.unit}}</text>
+        </view>
+        <view class="mr-bar">
+          <view class="mr-meter"><px-meter value="{{item.pct}}" segments="20" color="{{item.color}}" height="20" /></view>
+          <text class="px-num mr-pct">{{item.pct}}%</text>
         </view>
       </view>
     </view>
 
-    <view class="section-title"><text>日均摄入</text><text class="muted">对比目标</text></view>
-    <view class="card">
-      <view wx:for="{{report.macros}}" wx:key="name" class="macro-row">
-        <view class="between"><text class="bold">{{item.name}}</text><text class="muted">{{item.v}} / {{item.t}} {{item.unit}}</text></view>
-        <view class="bar"><view class="fill" style="width:{{item.pct}}%"></view></view>
-      </view>
-    </view>
-
-    <view class="section-title"><text>维生素与矿物质</text><text class="muted">估算</text></view>
+    <!-- vitamins & minerals: icon tiles -->
+    <view class="section-title"><text>维生素与矿物质</text><text class="muted">估算 · 日均</text></view>
     <view class="micro-grid">
-      <view wx:for="{{report.micro}}" wx:key="name" class="micro">
-        <view class="micro-v">{{item.v}}<text class="micro-u">{{item.unit}}</text></view>
-        <view class="bold">{{item.name}}</view>
-        <view class="muted">参考 {{item.ref}}{{item.unit}}</view>
+      <view wx:for="{{report.micro}}" wx:key="name" class="micro anim-slide d{{index + 3}}">
+        <view class="micro-top">
+          <view class="mini-icon micro-icon {{item.tile}}"><image src="/assets/px/{{item.icon}}.svg" /></view>
+          <text class="tag micro-state {{item.stateCls}} {{item.over ? 'anim-shake' : ''}}">{{item.state}}</text>
+        </view>
+        <view class="micro-name">{{item.name}}</view>
+        <view class="micro-v"><text class="px-num micro-num">{{item.v}}</text><text class="micro-u">{{item.unit}}</text></view>
+        <px-meter value="{{item.meter}}" segments="8" color="{{item.color}}" height="16" />
+        <view class="micro-ref">{{item.refLabel}} {{item.ref}}{{item.unit}}</view>
       </view>
     </view>
-    <view class="notice">数据来源：{{report.sources}}。{{report.disclaimer}}</view>
+    <view class="notice src-note">数据来源：{{report.sources}}。{{report.disclaimer}}</view>
   </block>
 
   <block wx:if="{{view === 'group'}}">
-    <view class="card">
-      <view class="card-title">{{group.name}} · 日均</view>
-      <view wx:for="{{members}}" wx:key="user_id" class="list-item">
-        <view class="between"><text class="bold">{{item.nickname}}</text><text class="muted">{{item.meals}} 餐记录</text></view>
-        <view class="between small mt"><text>能量 {{item.avg_kcal}} / {{item.target_kcal}} kcal</text><text>蛋白质 {{item.avg_protein}} / {{item.target_protein}} g</text></view>
-        <view class="bar mt"><view class="fill" style="width:{{item.pct}}%"></view></view>
+    <view class="px-loading wait" wx:if="{{!group}}"></view>
+    <view class="card team anim-slide" wx:if="{{group}}">
+      <view class="card-title team-title">
+        <view class="row grow"><image class="ct-icon" src="/assets/px/users.svg" /><text class="ellipsis">{{group.name}} · 日均</text></view>
+        <text class="tag gray team-count">{{members.length}} 人</text>
+      </view>
+      <view wx:if="{{!members.length}}" class="empty">还没有成员数据</view>
+      <view wx:for="{{members}}" wx:key="user_id" class="mem {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}">
+        <view class="avatar mem-avatar {{item.tone}}">{{item.initial}}</view>
+        <view class="grow">
+          <view class="mem-head">
+            <text class="mem-name ellipsis">{{item.nickname}}</text>
+            <text class="tag {{item.meals ? '' : 'gray'}}">{{item.meals}} 餐记录</text>
+          </view>
+          <view class="mac">
+            <image class="mac-icon" src="/assets/px/flame.svg" />
+            <view class="mac-meter"><px-meter value="{{item.pct}}" segments="10" color="yellow" height="16" /></view>
+            <text class="px-num mac-val">{{item.avg_kcal}}/{{item.target_kcal}}</text>
+            <text class="mac-unit">kcal</text>
+          </view>
+          <view class="mac">
+            <image class="mac-icon" src="/assets/px/egg.svg" />
+            <view class="mac-meter"><px-meter value="{{item.proteinPct}}" segments="10" color="green" height="16" /></view>
+            <text class="px-num mac-val">{{item.avg_protein}}/{{item.target_protein}}</text>
+            <text class="mac-unit">g</text>
+          </view>
+        </view>
       </view>
     </view>
     <view class="notice">{{disclaimer}}</view>

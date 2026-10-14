@@ -1,50 +1,130 @@
-<glass-nav title="小组管理" back />
+<px-nav title="小组管理" back />
 <view class="container">
-  <view class="card">
-    <view class="card-title">我的小组</view>
-    <view wx:for="{{groups}}" wx:key="id" class="list-item between" bindtap="switchTo" data-id="{{item.id}}">
-      <view><text class="bold">{{item.name}}</text><text class="muted ml">{{item.members}} 人 · {{item.role === 'admin' ? '管理员' : '成员'}}</text></view>
-      <text class="tag {{current.id === item.id ? '' : 'gray'}}">{{current.id === item.id ? '当前' : '切换'}}</text>
+  <!-- current party: name, stats and the invite "password" -->
+  <view class="card hero party anim-slide" wx:if="{{detail}}">
+    <view class="win-tab"><image class="win-tab-icon" src="/assets/px/users.svg" />当前队伍</view>
+    <view class="party-head">
+      <view class="party-icon"><image src="/assets/px/{{detail.kind === 'household' ? 'tab-home' : 'users'}}.svg" /></view>
+      <view class="grow">
+        <view class="party-name ellipsis">{{detail.name}}</view>
+        <view class="party-meta">{{kindLabel}} · 我是{{isAdmin ? '管理员' : '成员'}}</view>
+      </view>
+    </view>
+
+    <view class="party-stats">
+      <view class="ps">
+        <view class="px-num ps-num">{{detail.member_list.length}}</view>
+        <view class="ps-lbl">成员</view>
+      </view>
+      <view class="ps sep">
+        <view class="px-num ps-num gold">{{adminCount}}</view>
+        <view class="ps-lbl">管理员</view>
+      </view>
+      <view class="ps sep">
+        <view class="px-num ps-num {{dietCount ? 'red' : ''}}">{{dietCount}}</view>
+        <view class="ps-lbl">忌口 / 过敏</view>
+      </view>
+    </view>
+
+    <view class="code">
+      <view class="code-lbl"><text>邀请暗号</text><text class="code-hint">分享给室友 / 家人</text></view>
+      <view class="code-row">
+        <view class="code-slots" bindtap="copyCode">
+          <view wx:for="{{codeChars}}" wx:key="index" class="code-cell"><text class="px-num">{{item}}</text></view>
+        </view>
+        <button class="btn small ghost code-copy" hover-class="px-pressed" bindtap="copyCode">复制</button>
+      </view>
     </view>
   </view>
 
-  <view class="card" wx:if="{{detail}}">
-    <view class="card-title">
-      <text>{{detail.name}}</text>
-      <text class="tag gray" bindtap="copyCode">邀请码 {{detail.invite_code}} · 复制</text>
+  <!-- roster -->
+  <block wx:if="{{detail}}">
+    <view class="section-title"><text>队伍名单</text><text class="link" wx:if="{{isAdmin}}">点成员可管理</text></view>
+    <view class="card roster">
+      <view wx:for="{{detail.member_list}}" wx:key="id" class="mem {{index < 6 ? 'anim-slide d' + (index + 1) : ''}}"
+        hover-class="{{isAdmin && !item.isMe ? 'px-pressed' : 'none'}}" bindtap="memberActions" data-index="{{index}}">
+        <view class="ava {{item.tone}}">
+          <text class="ava-char">{{item.initial}}</text>
+          <view wx:if="{{item.role === 'admin'}}" class="crown anim-pop"><image src="/assets/px/trophy.svg" /></view>
+        </view>
+        <view class="grow">
+          <view class="mem-top">
+            <text class="mem-name ellipsis">{{item.nickname}}</text>
+            <text wx:if="{{item.isMe}}" class="me-tag">我</text>
+          </view>
+          <view class="mem-tags">
+            <text class="tag {{item.role === 'admin' ? 'gold' : 'gray'}}">{{item.role === 'admin' ? '管理员' : '成员'}}</text>
+            <text class="tag purple" wx:if="{{detail.twin_visibility === 'selected' && item.visible}}">可看孪生</text>
+          </view>
+          <view class="diet" wx:if="{{item.allergens.length || item.avoidances.length}}">
+            <block wx:if="{{item.allergens.length}}">
+              <image class="diet-icon" src="/assets/px/shield.svg" />
+              <text wx:for="{{item.allergenText}}" wx:for-item="a" wx:key="*this" class="tag danger">{{a}}</text>
+            </block>
+            <block wx:if="{{item.avoidances.length}}">
+              <image class="diet-icon" src="/assets/px/cross.svg" />
+              <text wx:for="{{item.avoidText}}" wx:for-item="a" wx:key="*this" class="tag warn">{{a}}</text>
+            </block>
+          </view>
+        </view>
+        <image wx:if="{{isAdmin && !item.isMe}}" class="mem-go" src="/assets/px/ui-next.svg" />
+      </view>
     </view>
-    <view wx:for="{{detail.member_list}}" wx:key="id" class="list-item" bindtap="memberActions" data-index="{{index}}">
-      <view class="between">
-        <text class="bold">{{item.nickname}}{{item.isMe ? '（我）' : ''}}</text>
-        <view>
-          <text class="tag {{item.role === 'admin' ? '' : 'gray'}}">{{item.role === 'admin' ? '管理员' : '成员'}}</text>
-          <text class="tag gray" wx:if="{{detail.twin_visibility === 'selected' && item.visible}}">可看孪生</text>
+
+    <!-- party rules & settings -->
+    <view class="card rules">
+      <view class="rule-row">
+        <image class="rule-icon" src="/assets/px/shield.svg" />
+        <text class="rule-text">管理员可编辑库存与预算；成员可标记消耗、提交需求。所有人的忌口都会进入计划。</text>
+      </view>
+      <view wx:if="{{isOwner}}" class="vis">
+        <view class="sub-head"><image class="sub-icon" src="/assets/px/twin.svg" /><text>群体数字孪生可见范围</text></view>
+        <view class="tabs vis-tabs">
+          <view wx:for="{{vis}}" wx:key="key" class="tab {{detail.twin_visibility === item.key ? 'active' : ''}}"
+            hover-class="px-pressed" bindtap="setVis" data-k="{{item.key}}">{{item.label}}</view>
         </view>
       </view>
-      <view class="muted mt" wx:if="{{item.allergens.length || item.avoidances.length}}">
-        <text wx:for="{{item.allergens}}" wx:for-item="a" wx:key="*this" class="tag danger">{{a}}</text>
-        <text wx:for="{{item.avoidances}}" wx:for-item="a" wx:key="*this" class="tag warn">{{a}}</text>
+      <button class="btn danger leave" wx:if="{{!isOwner && detail.kind !== 'personal'}}" hover-class="px-pressed" bindtap="leave">退出小组</button>
+    </view>
+  </block>
+
+  <!-- my groups (switch) -->
+  <view class="section-title"><text>我的小组</text><text class="link">{{groups.length}} 支队伍</text></view>
+  <view class="card flush glist">
+    <view wx:for="{{groups}}" wx:key="id" class="g-row {{current.id === item.id ? 'is-cur' : ''}}" hover-class="px-pressed" bindtap="switchTo" data-id="{{item.id}}">
+      <view class="mini-icon {{current.id === item.id ? 'i-yellow' : ''}}"><image src="/assets/px/users.svg" /></view>
+      <view class="grow">
+        <view class="g-name ellipsis">{{item.name}}</view>
+        <view class="g-meta">{{item.members}} 人 · {{item.role === 'admin' ? '管理员' : '成员'}}</view>
+      </view>
+      <view wx:if="{{current.id === item.id}}" class="cur-badge"><image class="cur-star" src="/assets/px/star.svg" />当前</view>
+      <text wx:else class="g-switch">切换</text>
+    </view>
+  </view>
+
+  <!-- join / create -->
+  <view class="section-title"><text>加入 / 创建</text></view>
+  <view class="card">
+    <view class="sub-head"><image class="sub-icon" src="/assets/px/send.svg" /><text>输入暗号加入小组</text></view>
+    <view class="chat-bar">
+      <input class="input" placeholder="室友 / 家人分享的邀请码" value="{{code}}" bindinput="onCode" />
+      <button class="btn small act" hover-class="px-pressed" bindtap="join">加入</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-head"><image class="sub-icon" src="/assets/px/plus.svg" /><text>创建新小组</text></view>
+    <view class="kinds">
+      <view class="kind {{newKind === 'dorm' ? 'on' : ''}}" hover-class="px-pressed" bindtap="setKind" data-k="dorm">
+        <image class="kind-icon" src="/assets/px/users.svg" /><text>宿舍</text>
+      </view>
+      <view class="kind {{newKind === 'household' ? 'on' : ''}}" hover-class="px-pressed" bindtap="setKind" data-k="household">
+        <image class="kind-icon" src="/assets/px/tab-home.svg" /><text>家庭</text>
       </view>
     </view>
-    <view class="notice">管理员可编辑库存与预算；成员可标记消耗、提交需求。所有人的忌口都会进入计划。</view>
-    <view wx:if="{{isOwner}}" class="mt">
-      <view class="small bold">群体数字孪生可见范围</view>
-      <view class="row mt"><text wx:for="{{vis}}" wx:key="key" class="tag {{detail.twin_visibility === item.key ? '' : 'gray'}}" bindtap="setVis" data-k="{{item.key}}">{{item.label}}</text></view>
+    <view class="chat-bar">
+      <input class="input" placeholder="如 302 宿舍" value="{{newName}}" bindinput="onName" />
+      <button class="btn small act" hover-class="px-pressed" bindtap="create">创建</button>
     </view>
-    <button class="btn ghost mt" wx:if="{{!isOwner && detail.kind !== 'personal'}}" bindtap="leave">退出小组</button>
-  </view>
-
-  <view class="card">
-    <view class="card-title">加入小组</view>
-    <view class="chat-bar"><input class="input" placeholder="输入室友/家人分享的邀请码" value="{{code}}" bindinput="onCode" /><button class="btn small" bindtap="join">加入</button></view>
-  </view>
-
-  <view class="card">
-    <view class="card-title">创建小组</view>
-    <view class="row mb">
-      <text class="tag {{newKind === 'dorm' ? '' : 'gray'}}" bindtap="setKind" data-k="dorm">宿舍</text>
-      <text class="tag {{newKind === 'household' ? '' : 'gray'}}" bindtap="setKind" data-k="household">家庭</text>
-    </view>
-    <view class="chat-bar"><input class="input" placeholder="如 302 宿舍" value="{{newName}}" bindinput="onName" /><button class="btn small" bindtap="create">创建</button></view>
   </view>
 </view>

@@ -4,12 +4,17 @@ const app = getApp();
 
 const LAYER = { hard: '禁忌', inventory: '库存', nutrition: '营养', budget: '预算' };
 const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+// each agent is drawn with its pixel sprite /assets/px/sprite-<key>.svg
 const AGENTS = [
-  { key: 'health', title: '健康适配', icon: 'health', cls: '', role: '营养与安全' },
-  { key: 'iterative', title: '迭代优化', icon: 'loop', cls: 'i-purple', role: '数字孪生偏好' },
-  { key: 'inventory', title: '库存优先', icon: 'fridge', cls: 'i-blue', role: '临期先用' },
-  { key: 'budget', title: '预算约束', icon: 'wallet', cls: 'i-orange', role: '成本控制' }
+  { key: 'health', title: '健康适配', role: '营养与安全' },
+  { key: 'iterative', title: '迭代优化', role: '数字孪生偏好' },
+  { key: 'inventory', title: '库存优先', role: '临期先用' },
+  { key: 'budget', title: '预算约束', role: '成本控制' }
 ];
+// one-character badge for the dish category colour block
+const KIND_SHORT = { main: '主', veg: '素', soup: '汤', staple: '饭', one_pot: '锅', breakfast: '早' };
+// generation progress shown in the loading bar (display only)
+function progressOf(doneCount, dayCount) { return Math.min(100, 15 + doneCount * 15 + (dayCount ? 25 : 0)); }
 const STAGES = { intent: '解析指令', agent: '智能体分析中', framework: '编排菜单', validation: '三层校验', revision: '退回修订',
   conflict: '生成备选方案', variant: '方案排序', day: '输出菜单', shopping: '生成购物清单', done: '完成' };
 
@@ -21,8 +26,10 @@ function decorateDay(day) {
     costText: money(day.meals.reduce((c, m) => c + (m.cost || 0), 0)),
     meals: day.meals.map((m) => Object.assign({}, m, {
       label: MEAL[m.meal] || m.meal,
+      costText: money(m.cost),
       dishes: m.dishes.map((x) => Object.assign({}, x, {
         kindLabel: KIND[x.kind] || x.kind,
+        kindShort: KIND_SHORT[x.kind] || String(KIND[x.kind] || x.kind || '菜').slice(0, 1),
         kcal: Math.round(x.nutrition_per_serving.kcal),
         protein: Math.round(x.nutrition_per_serving.protein),
         costText: money(x.cost),
@@ -35,7 +42,7 @@ function decorateDay(day) {
 
 Page({
   data: {
-    id: null, status: 'pending', stage: '排队中', log: [], agents: [], doneCount: 0, intent: null,
+    id: null, status: 'pending', stage: '排队中', log: [], agents: [], doneCount: 0, progress: 15, intent: null,
     streamDays: [], result: null, variants: [], active: '', variant: null, days: [], chosen: '',
     expanded: {}, showDetails: false, rating: 0, error: '', conflictsText: '', agentRows: []
   },
@@ -64,7 +71,8 @@ Page({
       const d = this.agentMap[a.key];
       return Object.assign({}, a, { done: !!d, mode: d && d.mode, summary: d ? d.summary : '', seconds: d ? d.seconds : 0 });
     });
-    this.setData({ agents, doneCount: agents.filter((a) => a.done).length });
+    const doneCount = agents.filter((a) => a.done).length;
+    this.setData({ agents, doneCount, progress: progressOf(doneCount, this.data.streamDays.length) });
   },
 
   addLog(kind, text) {
@@ -96,7 +104,8 @@ Page({
     } else if (ev.type === 'variant') {
       this.addLog('ok', d.title + ' · ¥' + money(d.summary.total_cost));
     } else if (ev.type === 'day') {
-      this.setData({ streamDays: this.data.streamDays.concat([decorateDay(d.day)]) });
+      const streamDays = this.data.streamDays.concat([decorateDay(d.day)]);
+      this.setData({ streamDays, progress: progressOf(this.data.doneCount, streamDays.length) });
     } else if (ev.type === 'error') {
       this.setData({ error: d.message, status: 'failed' });
     }
@@ -126,7 +135,10 @@ Page({
     const vm = Object.assign({}, v, {
       costText: money(s.total_cost), perPersonText: money(s.per_person_cost),
       usePct: s.budget_utilization ? Math.min(100, Math.round(s.budget_utilization * 100)) : 0,
-      nearUsed: s.near_expiry_used.map((u) => u.name + ' · 第' + u.day + '天'),
+      // uncapped, so <px-meter> flashes red when the plan is over budget
+      budgetPct: s.budget_utilization ? Math.round(s.budget_utilization * 100) : 0,
+      costLong: money(s.total_cost).length > 6,
+      nearUsed: s.near_expiry_used.map((u) => u.name + ' 第' + u.day + '天'),
       nearUnused: s.near_expiry_unused.map((u) => u.name).join('、'),
       issues: v.validation.issues.slice(0, 6).map((i) => i.message),
       satisfiedText: v.validation.suggestions ? v.validation.suggestions.satisfied.join('、') : ''

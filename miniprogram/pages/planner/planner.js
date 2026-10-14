@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
 const config = require('../../config');
+const { money } = require('../../utils/util');
 const app = getApp();
 
 const EXAMPLES = [
@@ -8,12 +9,15 @@ const EXAMPLES = [
   '宿舍3个人想省钱，每人每周60元，帮我安排5天的午饭'
 ];
 const EXAMPLE_TITLES = ['宿舍减脂晚餐', '孕妇+孩子的家常餐', '省钱午饭'];
+// quest-card dressing (display only): pixel icon + one-line brief of each example
+const EXAMPLE_ICONS = ['flame', 'heart', 'coin'];
+const EXAMPLE_META = ['4 人 · 7 天晚餐 · 人均 ¥80', '3 人 · 午餐+晚餐 · 共 ¥400', '3 人 · 5 天午饭 · 人均 ¥60'];
 
 Page({
   data: {
     group: null,
     instruction: '',
-    examples: EXAMPLES.map((text, i) => ({ text, title: EXAMPLE_TITLES[i] })),
+    examples: EXAMPLES.map((text, i) => ({ text, title: EXAMPLE_TITLES[i], icon: EXAMPLE_ICONS[i], meta: EXAMPLE_META[i] })),
     days: 7,
     dayOptions: [1, 2, 3, 4, 5, 6, 7, 14],
     meals: { breakfast: false, lunch: false, dinner: true },
@@ -44,7 +48,13 @@ Page({
       plans: plans.map((x) => Object.assign(x, {
         dateText: x.created_at.slice(5, 10).replace('-', '/'),
         state: x.status === 'done' ? 'ok' : x.status === 'failed' ? 'danger' : 'warn',
-        stateText: x.status === 'done' ? '已完成' : x.status === 'failed' ? '失败' : '生成中'
+        stateText: x.status === 'done' ? '已完成' : x.status === 'failed' ? '失败' : '生成中',
+        // quest-log display fields
+        dateMon: Number(x.created_at.slice(5, 7)) + '月',
+        dateDay: x.created_at.slice(8, 10),
+        stateIcon: x.status === 'done' ? 'check' : x.status === 'failed' ? 'cross' : 'clock',
+        costText: x.summary ? money(x.summary.total_cost) : '',
+        perText: x.summary ? money(x.summary.per_person_cost) : ''
       }))
     }));
   },
@@ -57,7 +67,8 @@ Page({
     this.setData({ ['meals.' + k]: !this.data.meals[k] });
   },
   onPeople(e) { this.setData({ people: e.detail.value }); },
-  onAlt(e) { this.setData({ alternatives: e.detail.value }); },
+  // bound to the pixel toggle (tap → flip); still accepts a switch-style change event ({ value })
+  onAlt(e) { this.setData({ alternatives: e && e.detail && typeof e.detail.value === 'boolean' ? e.detail.value : !this.data.alternatives }); },
   toggleOverride(e) {
     const k = e.currentTarget.dataset.k;
     this.setData({ ['overrides.' + k]: !this.data.overrides[k] });

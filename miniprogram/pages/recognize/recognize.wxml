@@ -90,7 +90,8 @@
           <view class="slot-line" wx:if="{{item.amount || item.unit_price}}">
             <image class="line-icon" src="/assets/px/coin.svg" />
             <text class="px-num price" wx:if="{{item.amount}}">¥{{item.amount}}</text>
-            <text class="unit" wx:if="{{item.unit_price}}">{{item.unit_price}} 元/kg{{item.estimated ? '，估算' : ''}}</text>
+            <text class="unit" wx:if="{{item.unit_price}}">{{item.unit_price}} 元/kg</text>
+              <text class="est-badge" wx:if="{{item.unit_price && item.estimated}}">估算</text>
           </view>
           <view class="slot-method" wx:if="{{item.method}}">{{item.method}}</view>
         </block>
@@ -102,7 +103,7 @@
             <image class="line-icon" src="/assets/px/flame.svg" />
             <text class="est-val">约 {{item.nutrition_total.kcal}} kcal</text>
             <text class="est-badge">估算</text>
-            <text class="unit">{{item.portion}} 人份</text>
+            <text class="unit portion">{{item.portion}} 人份</text>
           </view>
         </block>
 

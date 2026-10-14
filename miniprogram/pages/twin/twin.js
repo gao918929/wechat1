@@ -2,8 +2,20 @@ const api = require('../../utils/api');
 const { VARIANT } = require('../../utils/util');
 const app = getApp();
 
+// display-only: compact signed score, e.g. +3 / -1.5
+function scoreText(v) {
+  const r = Math.round((v || 0) * 10) / 10;
+  return (r > 0 ? '+' : '') + r;
+}
+// display-only: meta option keys → readable labels (spicy → 辣); unknown keys pass through
+function labels(keys, options) {
+  const m = {};
+  (options || []).forEach((o) => { m[o.key] = o.label; });
+  return (keys || []).map((k) => m[k] || k);
+}
+
 function topScores(map, positive) {
-  return Object.keys(map || {}).map((k) => ({ name: k, score: map[k] }))
+  return Object.keys(map || {}).map((k) => ({ name: k, score: map[k], scoreText: scoreText(map[k]) }))
     .filter((x) => (positive ? x.score > 0 : x.score < 0))
     .sort((a, b) => (positive ? b.score - a.score : a.score - b.score)).slice(0, 8);
 }
@@ -32,15 +44,17 @@ Page({
   viewModel(d) {
     d = d || {};
     const choices = d.variant_choices || {};
+    const meta = app.globalData.meta || {};
     return {
       favor: topScores(d.dish_scores, true), avoid: topScores(d.dish_scores, false),
       ingredients: topScores(d.ingredient_scores, true).concat(topScores(d.ingredient_scores, false)),
       subs: d.substitutions || [], recent: (d.recent_dishes || []).slice(0, 10).join('、'),
-      calibration: Object.keys(d.calibration || {}).map((k) => ({ name: k, factor: d.calibration[k].factor, n: d.calibration[k].n })),
+      calibration: Object.keys(d.calibration || {}).map((k) => ({ name: k, factor: d.calibration[k].factor, n: d.calibration[k].n,
+        factorText: Math.round((d.calibration[k].factor || 0) * 100) / 100 })),
       choices: Object.keys(choices).map((k) => ({ name: VARIANT[k] || k, n: choices[k] })),
       price: d.price_sensitivity ? { high: '价格敏感（常买低于参考价）', mid: '价格适中', low: '偏好品质（常买高于参考价）' }[d.price_sensitivity] : '',
       feedback: d.feedback_count || 0,
-      members: d.members || [], unionAvoid: (d.union_avoid || []).join('、'), unionAllergens: (d.union_allergens || []).join('、'),
+      members: d.members || [], unionAvoid: labels(d.union_avoid, meta.avoid_options).join('、'), unionAllergens: labels(d.union_allergens, meta.allergen_options).join('、'),
       budget: d.budget_habits || null
     };
   },

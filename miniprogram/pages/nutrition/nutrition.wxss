@@ -1,16 +1,165 @@
-.score-level { font-size: 40rpx; font-weight: 800; letter-spacing: -0.5rpx; margin-bottom: 6rpx; }
-.chart { position: relative; display: flex; align-items: flex-end; height: 400rpx; padding-top: 20rpx; }
-.target-line { position: absolute; left: 0; right: 0; border-top: 2rpx dashed rgba(29, 158, 108, 0.45); }
-.col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
-.col-val { font-size: 18rpx; color: var(--text-3); margin-bottom: 8rpx; }
-.col-bar { width: 36rpx; border-radius: 18rpx; background: linear-gradient(180deg, #5ad493, #13a3a0); box-shadow: 0 8rpx 16rpx rgba(29, 158, 108, 0.22); }
-.col-bar.over { background: linear-gradient(180deg, #ffcb6b, #f08a24); box-shadow: 0 8rpx 16rpx rgba(240, 138, 36, 0.22); }
-.col-bar.empty { background: var(--fill); box-shadow: none; }
-.col-day { font-size: 24rpx; font-weight: 600; margin-top: 12rpx; }
-.col-date { font-size: 18rpx; color: var(--text-3); }
-.macro-row { padding: 14rpx 0; }
-.macro-row .bar { margin-top: 10rpx; }
+/* 营养 · Pixel Kitchen — rating badge, block chart, HP bars, icon tiles.
+   1 art pixel = 4rpx; notched outlines via box-shadow; hard shadows only, no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- view tabs + range switch */
+.tabs.view-tabs { margin: 16rpx 4rpx 32rpx; }
+.range { display: flex; align-items: center; margin: 0 4rpx 52rpx; }
+.range-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; }
+.range-lbl { flex: 1; min-width: 0; margin-left: 12rpx; font-size: 24rpx; color: var(--text-2); }
+.rg {
+  margin: 4rpx 4rpx 4rpx 24rpx; padding: 6rpx 20rpx; font-size: 24rpx; line-height: 1.6; color: var(--text-2); background: var(--paper-2);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--paper-3);
+}
+.rg.on {
+  color: var(--ink); background: var(--yellow);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8, 4rpx 6rpx 0 0 var(--shadow);
+}
+.px-loading.wait { margin: 24rpx 8rpx 48rpx; }
+
+/* ---------------------------------------------------------------- window name tab (matches index) */
+.win-tab {
+  position: absolute; left: 24rpx; top: -20rpx; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
+  font-size: 22rpx; color: var(--ink); background: var(--yellow);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
+}
+.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
+
+/* ---------------------------------------------------------------- rating window */
+.card.rank-card { padding: 44rpx 28rpx 24rpx; }
+.rank-row { display: flex; align-items: center; }
+.rank-badge {
+  position: relative; flex-shrink: 0; width: 144rpx; height: 144rpx; margin: 4rpx 32rpx 4rpx 4rpx;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--green); color: #fff;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -8rpx -8rpx 0 0 var(--green-d), inset 8rpx 8rpx 0 0 var(--green-l), 8rpx 12rpx 0 0 var(--shadow);
+}
+.rank-badge.g-S { background: var(--yellow); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -8rpx -8rpx 0 0 var(--yellow-d), inset 8rpx 8rpx 0 0 #fff4b8, 8rpx 12rpx 0 0 var(--shadow); }
+.rank-badge.g-B { background: var(--blue); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -8rpx -8rpx 0 0 var(--blue-d), inset 8rpx 8rpx 0 0 var(--blue-l), 8rpx 12rpx 0 0 var(--shadow); }
+.rank-badge.g-C { background: var(--orange); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -8rpx -8rpx 0 0 var(--orange-d), inset 8rpx 8rpx 0 0 #ffd08a, 8rpx 12rpx 0 0 var(--shadow); }
+.rank-badge.g-none { background: var(--paper-2); color: var(--text-3); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -8rpx -8rpx 0 0 var(--paper-3), inset 8rpx 8rpx 0 0 #fff, 8rpx 12rpx 0 0 var(--shadow); }
+.rank-cap { font-size: 20rpx; line-height: 1; letter-spacing: 4rpx; margin-bottom: 12rpx; text-shadow: 2rpx 2rpx 0 var(--ink); }
+.rank-letter { font-size: 56rpx; line-height: 1; text-shadow: 4rpx 4rpx 0 var(--ink); }
+.rank-badge.g-none .rank-cap, .rank-badge.g-none .rank-letter { text-shadow: none; }
+.rank-spark { position: absolute; right: -20rpx; top: -24rpx; width: 48rpx; height: 48rpx; }
+
+.rank-info { flex: 1; min-width: 0; }
+.rank-lbl { font-size: 24rpx; color: var(--text-3); }
+.rank-score { display: flex; align-items: baseline; margin: 4rpx 0 12rpx; }
+.score-num { font-size: 48rpx; line-height: 1.3; color: var(--ink); }
+.score-max { font-size: 20rpx; color: var(--text-3); margin-left: 8rpx; }
+.level {
+  margin: 0 4rpx 0 auto; padding: 0 12rpx; font-size: 24rpx; line-height: 1.6; align-self: center;
+  background: var(--green-l); color: var(--green-d);
+  box-shadow: 0 -4rpx 0 0 var(--green-d), 0 4rpx 0 0 var(--green-d), -4rpx 0 0 0 var(--green-d), 4rpx 0 0 0 var(--green-d);
+}
+.level.g-S { background: #fff1b0; color: var(--yellow-d); box-shadow: 0 -4rpx 0 0 var(--yellow-d), 0 4rpx 0 0 var(--yellow-d), -4rpx 0 0 0 var(--yellow-d), 4rpx 0 0 0 var(--yellow-d); }
+.level.g-B { background: var(--blue-l); color: var(--blue-d); box-shadow: 0 -4rpx 0 0 var(--blue-d), 0 4rpx 0 0 var(--blue-d), -4rpx 0 0 0 var(--blue-d), 4rpx 0 0 0 var(--blue-d); }
+.level.g-C { background: #ffe2b0; color: var(--orange-d); box-shadow: 0 -4rpx 0 0 var(--orange-d), 0 4rpx 0 0 var(--orange-d), -4rpx 0 0 0 var(--orange-d), 4rpx 0 0 0 var(--orange-d); }
+.level.g-none { background: var(--paper-2); color: var(--text-2); box-shadow: 0 -4rpx 0 0 var(--paper-3), 0 4rpx 0 0 var(--paper-3), -4rpx 0 0 0 var(--paper-3), 4rpx 0 0 0 var(--paper-3); }
+
+.rank-meta { display: flex; align-items: center; flex-wrap: wrap; margin-top: 24rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); font-size: 24rpx; color: var(--text-2); }
+.meta-num { font-size: 20rpx; color: var(--ink); margin: 0 4rpx; }
+.meta-sep { margin: 0 16rpx; color: var(--paper-3); }
+.reasons { display: flex; align-items: flex-start; margin-top: 12rpx; }
+.reason-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 12rpx 12rpx 0 0; }
+
+/* ---------------------------------------------------------------- health partner dialogue */
+.doc-say { display: flex; align-items: flex-end; margin: 0 0 40rpx; }
+.doc-sprite { width: 112rpx; height: 112rpx; flex-shrink: 0; margin: 0 12rpx 4rpx -8rpx; }
+.doc-box { position: relative; flex: 1; min-width: 0; padding-top: 20rpx; }
+.name-plate {
+  position: absolute; left: 24rpx; top: 0; z-index: 2; padding: 0 16rpx; height: 40rpx; line-height: 40rpx;
+  font-size: 22rpx; color: var(--ink); background: var(--green-l);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--green), inset 4rpx 4rpx 0 0 #eafbe6;
+}
+.px-dialog.doc-dialog { margin: 0 4rpx 4rpx; padding: 36rpx 24rpx 20rpx; font-size: 24rpx; line-height: 1.75; }
+
+/* ---------------------------------------------------------------- energy chart: stacked pixel blocks */
+.card.chart-card { padding: 32rpx 24rpx 20rpx; }
+.plot { position: relative; display: flex; align-items: flex-end; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+/* one column = ink frame with cells stacked bottom-up (12rpx cell + 4rpx gap = 16rpx pitch) */
+.stack { box-sizing: content-box; width: 36rpx; padding: 4rpx; display: flex; flex-direction: column-reverse; background: var(--ink); }
+.cell {
+  height: 12rpx; background: var(--green);
+  box-shadow: inset 4rpx 0 0 0 var(--green-l), inset -4rpx 0 0 0 var(--green-d);
+}
+.cell + .cell { margin-bottom: 4rpx; }
+.cell.hot { background: var(--orange); box-shadow: inset 4rpx 0 0 0 #ffd08a, inset -4rpx 0 0 0 var(--orange-d); }
+.stack-empty { box-sizing: content-box; width: 36rpx; height: 4rpx; padding: 4rpx; background: var(--paper-3); }
+/* dashed goal line (hard-stepped stripes) */
+.target-line {
+  position: absolute; left: -12rpx; right: -12rpx; height: 4rpx; z-index: 2;
+  background-image: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 12rpx, transparent 12rpx, transparent 20rpx);
+}
+.axis { height: 4rpx; margin: 0 -12rpx; background: var(--ink); }
+.days { display: flex; padding-top: 16rpx; }
+.day { flex: 1; min-width: 0; text-align: center; }
+.day-k { font-size: 20rpx; line-height: 28rpx; margin-bottom: 8rpx; color: var(--ink); white-space: nowrap; letter-spacing: -2rpx; }
+.day-k.is-over { color: var(--orange-d); }
+.day-k.is-empty { color: var(--text-3); }
+.day-w { font-size: 24rpx; line-height: 1.4; color: var(--text); }
+.day-d { font-size: 20rpx; line-height: 1.4; color: var(--text-3); }
+.legend { display: flex; flex-wrap: wrap; align-items: center; margin-top: 16rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); font-size: 20rpx; color: var(--text-2); }
+.lg { display: flex; align-items: center; margin: 4rpx 28rpx 4rpx 0; }
+.lg-sw { width: 16rpx; height: 16rpx; margin: 4rpx 12rpx 4rpx 4rpx; background: var(--green); box-shadow: 0 0 0 4rpx var(--ink); }
+.lg-sw.hot { background: var(--orange); }
+.lg-dash { width: 32rpx; height: 4rpx; margin-right: 12rpx; background-image: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 12rpx, transparent 12rpx, transparent 20rpx); }
+
+/* ---------------------------------------------------------------- macros: HP bars */
+.card.macro-card { padding: 8rpx 28rpx; }
+.macro-row { padding: 20rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
+.macro-row:last-child { border-bottom: none; }
+.mr-head { display: flex; align-items: center; }
+.mr-icon { width: 40rpx; height: 40rpx; flex-shrink: 0; margin-right: 12rpx; }
+.mr-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
+.mr-v { font-size: 24rpx; color: var(--ink); }
+.mr-t { font-size: 20rpx; color: var(--text-3); margin-left: 4rpx; }
+.mr-unit { width: 56rpx; flex-shrink: 0; margin-left: 8rpx; font-size: 20rpx; color: var(--text-3); }
+.mr-bar { display: flex; align-items: center; margin-top: 12rpx; }
+.mr-meter { flex: 1; min-width: 0; }
+.mr-pct { width: 104rpx; flex-shrink: 0; text-align: right; font-size: 20rpx; color: var(--text-2); }
+
+/* ---------------------------------------------------------------- vitamins & minerals: icon tiles */
 .micro-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
-.micro { width: calc(50% - 12rpx); box-sizing: border-box; margin-bottom: 24rpx; padding: 28rpx; border-radius: 36rpx; background: rgba(255, 255, 255, 0.62); border: 1rpx solid rgba(255, 255, 255, 0.75); box-shadow: 0 14rpx 36rpx rgba(17, 40, 30, 0.06); }
-.micro-v { font-size: 48rpx; font-weight: 800; letter-spacing: -1rpx; background: linear-gradient(135deg, #1d9e6c, #13a3a0); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.micro-u { font-size: 24rpx; }
+.micro {
+  box-sizing: border-box; width: calc(50% - 24rpx); margin: 4rpx 4rpx 36rpx; padding: 20rpx 24rpx 20rpx; background: var(--paper);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff, 8rpx 12rpx 0 0 var(--shadow);
+}
+.micro-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.mini-icon.micro-icon { margin: 4rpx 0 4rpx 4rpx; }
+.tag.micro-state { margin: 4rpx 4rpx 0 0; }
+.micro-name { font-size: 28rpx; color: var(--text); margin-top: 16rpx; }
+.micro-v { display: flex; align-items: baseline; margin: 4rpx 0 12rpx; }
+.micro-num { font-size: 40rpx; line-height: 1.3; color: var(--ink); }
+.micro-u { font-size: 24rpx; color: var(--text-3); margin-left: 8rpx; }
+.micro-ref { font-size: 20rpx; color: var(--text-3); margin-top: 8rpx; }
+.src-note { padding-top: 4rpx; }
+
+/* ---------------------------------------------------------------- group view: team roster */
+.card.team { padding: 24rpx 28rpx 8rpx; }
+.card-title.team-title { margin-bottom: 4rpx; }
+.ct-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 16rpx; }
+.tag.team-count { margin: 0 4rpx 0 16rpx; }
+.mem { display: flex; align-items: flex-start; padding: 24rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
+.mem:last-child { border-bottom: none; }
+.avatar.mem-avatar { margin: 8rpx 24rpx 4rpx 4rpx; }
+.avatar.t-green { background: var(--green); }
+.avatar.t-blue { background: var(--blue); }
+.avatar.t-orange { background: var(--orange); }
+.avatar.t-purple { background: var(--purple); }
+.avatar.t-pink { background: var(--pink); }
+.mem-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4rpx; }
+.mem-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
+.mem-head .tag { margin: 4rpx 4rpx 4rpx 16rpx; }
+.mac { display: flex; align-items: center; height: 48rpx; }
+.mac-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
+.mac-meter { flex: 1; min-width: 0; }
+.mac-val { flex-shrink: 0; margin-left: 16rpx; font-size: 20rpx; color: var(--text); white-space: nowrap; }
+.mac-unit { width: 52rpx; flex-shrink: 0; margin-left: 8rpx; font-size: 20rpx; color: var(--text-3); }

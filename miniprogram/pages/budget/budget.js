@@ -34,12 +34,24 @@ Page({
     ]).then(([g, report, expenses]) => {
       report.totalText = money(report.total);
       report.usePct = report.budget ? Math.min(100, pct(report.total / report.budget)) : 0;
-      report.by_category.forEach((c) => { c.pctText = pct(c.share); });
+      report.by_category.forEach((c) => { c.pctText = pct(c.share); c.amountText = money(c.amount); });
       report.useText = report.budget ? pct(report.total / report.budget) : null;
+      // display-only fields for the pixel layout
+      const md = (d) => (d || '').slice(5, 10).replace('-', '/');
+      report.rangeText = (this.data.period === 'month' ? '本月 · ' : '本周 · ') + md(report.start) + ' – ' + md(report.end);
+      report.perText = money(report.per_person);
+      report.leftText = report.budget ? money(Math.abs(report.budget_left)) : '';
+      report.totalCls = report.totalText.length > 7 ? 'long' : '';
+      report.meterColor = report.over_budget ? 'red' : report.useText >= 80 ? 'orange' : 'green';
+      (report.by_payer || []).forEach((p) => { p.amountText = money(p.amount); });
       expenses.forEach((e) => {
         e.date = e.paid_at.slice(5, 10).replace('-', '/');
         e.itemText = e.items.map((i) => i.name).join('、');
         e.sourceText = e.source === 'manual' ? '手动' : e.source === 'label' ? '价签' : '小票';
+        e.amtText = money(e.total_amount);
+        e.amtCls = e.amtText.length > 7 ? 'long' : '';
+        e.icon = e.source === 'manual' ? 'coin' : 'receipt';
+        e.tone = e.source === 'manual' ? 'i-yellow' : e.source === 'label' ? 'i-blue' : 'i-orange';
       });
       this.setData({ report, expenses, budgetMode: g.budget_mode, budgetAmount: g.budget_amount ? String(g.budget_amount) : '' });
     });
