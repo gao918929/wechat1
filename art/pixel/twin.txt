@@ -11,7 +11,7 @@
 .KggKgK..KvKvvK.
 .KgggggKKvvvvVK.
 .KgggGK..KvvvVK.
-..KgGK....KvVK..
+..KgGKK..KKvVK..
 .KlgggGKKvvvvVK.
 .KggggGKKvvvvVK.
 .KKKKKKKKKKKKKK.
