@@ -5,6 +5,44 @@ const app = getApp();
 
 const TITLES = { ingredients: '食材识别', receipt: '小票 / 价签记账', meal: '餐后拍照复盘' };
 
+// ---- pixel display helpers (presentation only)
+// Ingredient → /assets/px/<icon>.svg; no match → category-coloured initial tile.
+const ICON_RULES = [
+  ['egg', ['蛋']],
+  ['tomato', ['番茄', '西红柿', '圣女果']],
+  ['carrot', ['胡萝卜', '红萝卜']],
+  ['broccoli', ['西兰花', '西蓝花', '花椰菜', '花菜']],
+  ['milk', ['牛奶', '酸奶', '奶粉']],
+  ['fish', ['鱼']],
+  ['chili', ['辣椒']],
+  ['meat', ['肉', '排骨', '鸡腿', '鸡翅', '牛排', '五花', '里脊']]
+];
+function iconFor(name) {
+  const n = name || '';
+  const hit = ICON_RULES.find((r) => r[1].some((k) => n.indexOf(k) >= 0));
+  return hit ? hit[0] : '';
+}
+// Adds display-only fields to a card item; the original fields are untouched.
+function decorate(i) {
+  const q = Number(i.quantity);
+  const raw = i.weight_text || (i.needs_weight ? '已识别食材，需补充重量' : '');
+  return Object.assign({}, i, {
+    icon: iconFor(i.canonical || i.name),
+    initial: (i.name || '?').slice(0, 1),
+    cat: i.category || 'vegetables',
+    qtyText: q >= 1 && Math.floor(q) === q ? q + ' 个' : '',   // never "0.34 个"
+    weightShort: i.needs_weight ? '需补充重量' : raw.replace(/（估算）|\(估算\)/g, '').trim(),
+    isEst: !!i.is_estimated && !i.needs_weight && !!raw,
+    method: (i.estimate && i.estimate.method) || '',
+    renamed: !!i.recognized_as && i.recognized_as !== i.name,
+    pending: i.status === 'confirm',
+    notFresh: i.freshness === 'not_fresh'
+  });
+}
+function countPicked(items, include) {
+  return items.filter((i) => include[i.id]).length;
+}
+
 Page({
   data: {
     kind: 'ingredients',
@@ -26,6 +64,9 @@ Page({
     planId: null,
     planDay: null,
     done: null,
+    doneText: {},
+    doneItems: [],
+    pickCount: 0,
     MEAL
   },
 
@@ -70,7 +111,8 @@ Page({
   setRec(rec) {
     const include = {};
     (rec.card.items || []).forEach((i) => { include[i.id] = i.status !== 'confirm'; });
-    this.setData({ rec, card: rec.card, items: rec.card.items || [], include, reply: rec.card.message || '' });
+    const items = (rec.card.items || []).map(decorate);
+    this.setData({ rec, card: rec.card, items, include, pickCount: countPicked(items, include), reply: rec.card.message || '' });
   },
 
   onChat(e) { this.setData({ chatText: e.detail.value }); },
@@ -119,7 +161,9 @@ Page({
 
   toggleInclude(e) {
     const id = e.currentTarget.dataset.id;
-    this.setData({ ['include.' + id]: !this.data.include[id] });
+    const on = !this.data.include[id];
+    const include = Object.assign({}, this.data.include, { [id]: on });
+    this.setData({ ['include.' + id]: on, pickCount: countPicked(this.data.items, include) });
   },
 
   setContext(e) { this.patch({ context: e.currentTarget.dataset.v }); },
@@ -140,7 +184,12 @@ Page({
     if (this.data.planId) { body.plan_id = this.data.planId; body.plan_day = this.data.planDay; }
     api.post('/api/recognitions/' + this.data.rec.id + '/confirm', body).then((r) => {
       const j = (a) => (a || []).join('、');
-      this.setData({ done: r, doneText: { added: j(r.added), skipped: j(r.skipped), deviation: j(r.deviation) } });
+      const got = r.added || r.added_to_inventory || [];
+      this.setData({ done: r, doneText: { added: j(r.added), skipped: j(r.skipped), deviation: j(r.deviation), toInventory: j(r.added_to_inventory) },
+        doneItems: got.map((n) => {
+          const src = this.data.items.find((i) => i.name === n) || {};
+          return { name: n, icon: src.icon || iconFor(n), initial: String(n).slice(0, 1), cat: src.cat || 'vegetables' };
+        }) });
       let msg = '已确认';
       if (r.kind === 'ingredients') msg = '已入库 ' + r.added.length + ' 种';
       if (r.kind === 'receipt') msg = '已记账 ¥' + r.total;

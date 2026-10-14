@@ -1,0 +1,140 @@
+/* 识别 · Pixel Kitchen — "获得物品" loot screen. 1 art pixel = 4rpx, hard shadows only. */
+
+/* ---------------------------------------------------------------- header window */
+.intro { padding: 24rpx; }
+.intro-top { display: flex; align-items: center; }
+.intro-title { font-size: 32rpx; color: var(--text); letter-spacing: 1rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.intro-num { font-size: 28rpx; color: var(--green-d); margin: 0 4rpx; }
+.intro-sub { font-size: 22rpx; color: var(--text-3); }
+.btn.retake { flex-shrink: 0; margin-left: 16rpx; padding: 10rpx 20rpx; }
+.btn .btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 10rpx; }
+.intro-note { margin-top: 20rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); font-size: 22rpx; line-height: 1.8; color: var(--text-3); }
+
+/* ---------------------------------------------------------------- chef dialogue */
+.say { display: flex; align-items: flex-start; padding: 24rpx 28rpx 24rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
+.say-face {
+  width: 88rpx; height: 88rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow: inset -4rpx -4rpx 0 0 var(--paper-3);
+}
+.say-who { font-size: 22rpx; color: var(--yellow); letter-spacing: 2rpx; margin-bottom: 4rpx; }
+
+/* ---------------------------------------------------------------- meta windows */
+.meta { padding: 24rpx 28rpx 12rpx; }
+.title-icon { width: 40rpx; height: 40rpx; margin-right: 12rpx; }
+.next-icon { width: 32rpx; height: 32rpx; margin-left: 12rpx; }
+.ctx-tabs { margin: 16rpx 4rpx 20rpx; gap: 20rpx; }
+.ctx-tabs .tab { font-size: 26rpx; line-height: 1.5; padding: 14rpx 0 12rpx; }
+.ctx-sub { font-size: 20rpx; color: var(--text-3); }
+.ctx-tabs .tab.active .ctx-sub { color: var(--ink-2); }
+
+/* ---------------------------------------------------------------- loot list */
+.pick { font-size: 24rpx; color: var(--text-3); display: flex; align-items: center; }
+.pick-num { font-size: 24rpx; color: var(--green-d); margin-left: 8rpx; }
+
+.slot-wrap { margin-bottom: 28rpx; }
+.slot {
+  display: flex; align-items: center; margin: 4rpx; padding: 20rpx 20rpx 20rpx 20rpx; background: var(--paper);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff, 6rpx 8rpx 0 0 var(--shadow);
+}
+/* awaiting confirmation: orange frame + stepped flash (one looping effect on the page) */
+.slot.slot-pending {
+  background: #fff3d6;
+  box-shadow:
+    0 -4rpx 0 0 var(--orange-d), 0 4rpx 0 0 var(--orange-d), -4rpx 0 0 0 var(--orange-d), 4rpx 0 0 0 var(--orange-d),
+    inset 0 0 0 4rpx #ffe2b0, 6rpx 8rpx 0 0 var(--shadow);
+  animation: rec-pending 1.2s steps(1) infinite;
+}
+@keyframes rec-pending {
+  0% { background-color: #fff3d6; }
+  50% { background-color: var(--paper); }
+}
+
+.slot-cell {
+  width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  display: flex; align-items: center; justify-content: center; background: var(--paper-2);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset 4rpx 4rpx 0 0 var(--paper-3);
+}
+.slot-on .slot-cell { background: #fff1b0; box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 4rpx 4rpx 0 0 #f0d982; }
+.slot-img { width: 64rpx; height: 64rpx; }
+.avatar.slot-avatar { width: 60rpx; height: 60rpx; margin: 0; font-size: 30rpx; }
+
+.slot-head { display: flex; align-items: baseline; flex-wrap: wrap; }
+.slot-name { font-size: 30rpx; color: var(--text); letter-spacing: 1rpx; margin-right: 12rpx; }
+.slot-was { font-size: 22rpx; color: var(--text-3); }
+.slot-line { display: flex; align-items: center; flex-wrap: wrap; margin-top: 8rpx; font-size: 24rpx; color: var(--text-2); }
+.slot-line .qty { color: var(--text-2); }
+.slot-line .dot { margin: 0 10rpx; color: var(--text-3); }
+.line-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 8rpx; }
+.est-val { color: var(--orange-d); }
+.need { color: var(--orange-d); }
+.est-badge {
+  margin: 2rpx 0 2rpx 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 1.5; color: var(--orange-d); background: #ffe2b0;
+  box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d);
+}
+.price { font-size: 22rpx; color: var(--text); margin-right: 12rpx; }
+.unit { font-size: 22rpx; color: var(--text-3); margin-left: 12rpx; }
+.price + .unit { margin-left: 0; }
+.slot-method { margin-top: 6rpx; font-size: 22rpx; line-height: 1.6; color: var(--text-3); }
+.slot-tags { margin-top: 8rpx; }
+.slot-tags .tag { margin: 6rpx 14rpx 2rpx 2rpx; }
+.ing-row { display: flex; flex-wrap: wrap; margin-top: 4rpx; }
+.ing {
+  margin: 6rpx 12rpx 4rpx 2rpx; padding: 0 10rpx; font-size: 22rpx; line-height: 1.6; color: var(--text-2); background: var(--paper-2);
+  box-shadow: 0 -2rpx 0 0 var(--paper-3), 0 2rpx 0 0 var(--paper-3), -2rpx 0 0 0 var(--paper-3), 2rpx 0 0 0 var(--paper-3);
+}
+.slot .check { margin: 4rpx 4rpx 4rpx 20rpx; }
+
+.empty-loot { display: flex; flex-direction: column; align-items: center; padding: 40rpx 28rpx; font-size: 26rpx; color: var(--text-3); }
+.empty-icon { width: 64rpx; height: 64rpx; margin-bottom: 16rpx; }
+
+/* ---------------------------------------------------------------- chat + confirm */
+.act { padding: 24rpx; margin-top: 12rpx; }
+.act-head { display: flex; align-items: center; font-size: 24rpx; color: var(--text-2); margin-bottom: 18rpx; }
+.act-icon { width: 32rpx; height: 32rpx; margin-right: 12rpx; }
+.act .input { font-size: 26rpx; }
+.btn.confirm-btn { margin: 32rpx 4rpx 4rpx; font-size: 32rpx; }
+.confirm-count { font-size: 26rpx; }
+
+/* ---------------------------------------------------------------- "获得物品!" reward window */
+.got { padding: 28rpx 28rpx 24rpx; margin-top: 12rpx; }
+.got-head { display: flex; align-items: center; justify-content: center; margin-bottom: 20rpx; }
+.got-title { font-size: 40rpx; letter-spacing: 4rpx; margin-left: 12rpx; color: #fff; text-shadow: 4rpx 4rpx 0 var(--green-d); }
+.got-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20rpx; margin: 8rpx 0 20rpx; }
+.got-item { width: 124rpx; display: flex; flex-direction: column; align-items: center; }
+.got-cell {
+  width: 96rpx; height: 96rpx; margin: 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff, 6rpx 8rpx 0 0 rgba(43, 35, 64, 0.3);
+}
+.avatar.got-avatar { width: 60rpx; height: 60rpx; margin: 0; font-size: 30rpx; }
+.got-name { margin-top: 10rpx; font-size: 22rpx; max-width: 124rpx; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.got-total, .got-kcal {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin: 8rpx 4rpx 16rpx; padding: 12rpx 16rpx;
+  font-size: 26rpx; background: var(--green-d); text-shadow: none;
+}
+.got-coin, .got-line-icon { width: 48rpx; height: 48rpx; margin-right: 12rpx; }
+.got-money { font-size: 32rpx; margin-left: 12rpx; color: var(--yellow); }
+.got-kcal-num { font-size: 24rpx; color: var(--yellow); margin: 0 6rpx; }
+.got-lines { font-size: 24rpx; line-height: 1.7; color: #eafbe6; }
+.got-line { padding: 8rpx 0; border-top: 4rpx dashed rgba(255, 255, 255, 0.35); }
+.got-line:first-child { border-top: none; }
+
+/* ---------------------------------------------------------------- edit sheet */
+.sheet-cell {
+  width: 64rpx; height: 64rpx; margin: 4rpx 20rpx 4rpx 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper-2);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset 4rpx 4rpx 0 0 var(--paper-3);
+}
+.sheet-img { width: 48rpx; height: 48rpx; }
+.avatar.sheet-avatar { width: 48rpx; height: 48rpx; margin: 0; font-size: 24rpx; }
+.sheet-close {
+  width: 56rpx; height: 56rpx; margin: 4rpx; display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), 4rpx 6rpx 0 0 var(--shadow);
+}
+.sheet-close image { width: 32rpx; height: 32rpx; }

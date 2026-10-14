@@ -2,6 +2,25 @@ const api = require('../../utils/api');
 const { LEVEL_TAG } = require('../../utils/util');
 const app = getApp();
 
+// Pixel ingredient icons (/assets/px/<icon>.svg). First matching keyword wins; no match → category initial tile.
+const ICON_RULES = [
+  ['egg', ['蛋']],
+  ['tomato', ['番茄', '西红柿', '圣女果']],
+  ['carrot', ['胡萝卜', '红萝卜']],
+  ['broccoli', ['西兰花', '西蓝花', '花椰菜', '花菜']],
+  ['milk', ['牛奶', '酸奶', '奶粉']],
+  ['fish', ['鱼']],
+  ['chili', ['辣椒']],
+  ['meat', ['肉', '排骨', '鸡腿', '鸡翅', '牛排', '五花', '里脊']]
+];
+function iconFor(name) {
+  const n = name || '';
+  const hit = ICON_RULES.find((r) => r[1].some((k) => n.indexOf(k) >= 0));
+  return hit ? hit[0] : '';
+}
+// Freshness meter tone by level (8-cell HP bar).
+const METER_TONE = { ok: 'green', near_expiry: 'orange', expired: 'red', not_fresh: 'red' };
+
 // Visual freshness: a bar that drains as the item approaches expiry.
 function decorate(it) {
   const f = it.freshness;
@@ -9,11 +28,27 @@ function decorate(it) {
     : Math.max(6, Math.min(100, Math.round((f.days_left / Math.max(1, f.shelf_days)) * 100)));
   const daysText = f.level === 'expired' ? '已过期' : f.level === 'not_fresh' ? '不新鲜'
     : f.days_left === 0 ? '今天到期' : f.days_left + ' 天';
-  const amount = [it.quantity ? it.quantity + ' 个' : '', it.weight_text].filter(Boolean).join(' · ');
+  // Count only when it is a whole number of pieces ≥ 1 — never show "0.34 个".
+  const q = Number(it.quantity);
+  const qtyText = q >= 1 && Math.floor(q) === q ? q + ' 个' : '';
+  let weightText = (it.weight_text || '').replace(/（估算）|\(估算\)/g, '').trim();
+  if (!weightText && it.grams) weightText = '约 ' + Math.round(it.grams) + ' g';
+  const amount = [qtyText, weightText].filter(Boolean).join(' · ');
+  const urgent = f.level !== 'ok' || f.days_left === 0;
   return Object.assign(it, {
     initial: it.name.slice(0, 1), cat: it.category || 'vegetables', pct, daysText,
     barCls: f.level === 'ok' ? '' : f.level === 'near_expiry' ? 'warn' : 'danger',
-    amount: amount || (it.needs_weight ? '需补充重量' : '')
+    amount: amount || (it.needs_weight ? '需补充重量' : ''),
+    // pixel display fields
+    icon: iconFor(it.canonical || it.name),
+    isEst: !!it.is_estimated && !!weightText,
+    urgent,
+    meterVal: f.level === 'expired' || f.level === 'not_fresh' ? 13 : Math.max(13, pct),
+    meterTone: f.days_left === 0 && f.level === 'ok' ? 'orange' : (METER_TONE[f.level] || 'green'),
+    expShort: (f.expires_on || '').slice(5),
+    // "10 天" → pixel digits + unit; worded states (已过期 / 不新鲜 / 今天到期) stay as text
+    daysNum: (f.level === 'ok' || f.level === 'near_expiry') && f.days_left > 0 ? String(f.days_left) : '',
+    daysTone: f.level === 'ok' && f.days_left > 0 ? 'ok' : f.level === 'near_expiry' || f.level === 'ok' ? 'warn' : 'danger'
   });
 }
 
@@ -25,6 +60,8 @@ Page({
     alerts: [],
     chatText: '',
     chatReply: '',
+    chatOk: true,
+    alertNames: '',
     showAdd: false,
     stats: { total: 0, urgent: 0, needsWeight: 0 },
     form: { name: '', quantity: '', weight_g: '', purchase_date: '' },
@@ -56,6 +93,7 @@ Page({
       const items = d.items.map(decorate);
       this.setData({
         items, alerts: d.alerts,
+        alertNames: (d.alerts || []).map((a) => a.name).join(' · '),
         stats: { total: items.length, urgent: d.alerts.length, needsWeight: d.needs_weight.length }
       });
     });
@@ -70,7 +108,7 @@ Page({
     const text = this.data.chatText.trim();
     if (!text) return;
     api.post('/api/groups/' + this.data.group.id + '/inventory/chat', { text }).then((r) => {
-      this.setData({ chatText: '', chatReply: r.ok ? '✅ ' + r.applied.join('；') : r.message });
+      this.setData({ chatText: '', chatOk: !!r.ok, chatReply: r.ok ? r.applied.join('；') : r.message });
       this.load();
     });
   },

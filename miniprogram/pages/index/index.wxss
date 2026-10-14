@@ -1,12 +1,146 @@
-.home-avatar { position: relative; margin-bottom: 8rpx; }
-.home-avatar .avatar { margin-right: 0; width: 76rpx; height: 76rpx; font-size: 30rpx; box-shadow: 0 8rpx 20rpx rgba(29, 158, 108, 0.3); }
-.badge { position: absolute; right: -8rpx; top: -8rpx; min-width: 32rpx; height: 32rpx; padding: 0 8rpx; box-sizing: border-box; border-radius: 16rpx; background: #e5484d; color: #fff; font-size: 20rpx; line-height: 32rpx; text-align: center; border: 3rpx solid #f4f6f2; }
-.group-chip { display: inline-flex; align-items: center; padding: 14rpx 26rpx; margin: 0 0 24rpx; border-radius: 999rpx; background: rgba(255, 255, 255, 0.6); border: 1rpx solid rgba(255, 255, 255, 0.8); font-size: 26rpx; }
-.group-chip .muted { margin-left: 8rpx; }
-.live-dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #2fc07e; margin-right: 14rpx; box-shadow: 0 0 0 6rpx rgba(47, 192, 126, 0.18); }
-.live-dot.off { background: #b0b6b2; box-shadow: none; }
-.today-left { font-size: 36rpx; font-weight: 800; letter-spacing: -0.5rpx; margin: 4rpx 0 12rpx; }
-.unit-inline { font-size: 22rpx; color: var(--text-3); font-weight: 500; }
-.macro { margin-top: 10rpx; }
-.empty-card { display: flex; align-items: center; padding: 26rpx 32rpx; }
-.plan-quote { font-size: 30rpx; font-weight: 600; margin: 18rpx 0 6rpx; color: #fff; }
+/* 首页 · Pixel Kitchen. 1 art pixel = 4rpx; hard shadows only; no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- header: chef + player avatar */
+.hd-right { display: flex; align-items: flex-end; margin-left: 16rpx; }
+.hd-chef { width: 144rpx; height: 144rpx; margin: 0 12rpx -12rpx 0; }
+.hd-me { position: relative; margin: 4rpx 4rpx 8rpx; }
+.hd-avatar {
+  margin: 0; width: 80rpx; height: 80rpx; font-size: 32rpx;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--green-d), inset 4rpx 4rpx 0 0 var(--green-l), 6rpx 8rpx 0 0 var(--shadow);
+}
+.hd-me.px-pressed { box-shadow: none !important; }
+.hd-me.px-pressed .hd-avatar {
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--green-d), inset 4rpx 4rpx 0 0 var(--green-l);
+}
+.hd-badge {
+  position: absolute; right: -16rpx; top: -16rpx; min-width: 36rpx; height: 36rpx; padding: 0 6rpx; box-sizing: border-box;
+  background: var(--red); color: #fff; font-size: 20rpx; line-height: 36rpx; text-align: center;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--red-d);
+}
+
+/* ---------------------------------------------------------------- party (group) selector */
+.party {
+  display: inline-flex; align-items: center; margin: 4rpx 4rpx 44rpx; padding: 12rpx 20rpx 12rpx 16rpx;
+  max-width: calc(100% - 8rpx); box-sizing: border-box; white-space: nowrap;
+  background: var(--paper); font-size: 24rpx; line-height: 1.4;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff, 6rpx 8rpx 0 0 var(--shadow);
+}
+.party-icon { width: 32rpx; height: 32rpx; margin-right: 12rpx; flex-shrink: 0; }
+.party-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 28rpx; color: var(--ink); }
+.party-count { flex-shrink: 0; margin-left: 12rpx; color: var(--text-2); }
+.party-sep { flex-shrink: 0; width: 4rpx; height: 24rpx; margin: 0 16rpx; background: var(--paper-3); }
+.party-dot { width: 12rpx; height: 12rpx; margin: 0 12rpx 0 4rpx; background: var(--text-3); box-shadow: 0 0 0 4rpx var(--ink); flex-shrink: 0; }
+.party-dot.on { background: var(--green); }
+.party-meta { flex-shrink: 0; color: var(--text-3); }
+.party-caret { width: 16rpx; height: 16rpx; margin-left: 16rpx; transform: rotate(90deg); flex-shrink: 0; }
+
+/* ---------------------------------------------------------------- mascot dialogue (RPG text box + name plate) */
+.chef-say { position: relative; margin: 0 0 48rpx; }
+.name-plate {
+  position: absolute; left: 28rpx; top: -20rpx; z-index: 2; padding: 0 16rpx; height: 40rpx; line-height: 40rpx;
+  font-size: 22rpx; color: var(--ink); background: var(--yellow);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
+}
+.chef-box { margin: 0 4rpx; padding: 36rpx 28rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
+
+/* ---------------------------------------------------------------- today: status window */
+.energy { margin-top: 0; padding: 40rpx 28rpx 24rpx; }
+.win-tab {
+  position: absolute; left: 24rpx; top: -20rpx; display: flex; align-items: center; height: 40rpx; padding: 0 16rpx 0 10rpx;
+  font-size: 22rpx; color: var(--ink); background: var(--yellow);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fff4b8;
+}
+.win-tab-icon { width: 32rpx; height: 32rpx; margin-right: 8rpx; }
+.en-top { display: flex; align-items: flex-end; justify-content: space-between; }
+.en-kcal { display: flex; align-items: baseline; min-width: 0; }
+.en-big { font-size: 48rpx; line-height: 1.2; color: var(--ink); }
+.en-big.is-over, .en-pct.is-over { color: var(--red); }
+.en-target { font-size: 24rpx; margin-left: 8rpx; color: var(--text-3); }
+.en-unit { font-size: 24rpx; margin-left: 8rpx; color: var(--text-3); }
+.en-pct { font-size: 24rpx; color: var(--green-d); }
+.en-meter { margin: 20rpx 0 12rpx; }
+.en-note { display: flex; justify-content: space-between; align-items: center; font-size: 24rpx; color: var(--text-2); }
+.en-left { font-size: 24rpx; color: var(--green-d); }
+.en-over { color: var(--red-d); }
+.en-more { display: flex; align-items: center; color: var(--text-3); font-size: 22rpx; }
+.en-more-icon { width: 16rpx; height: 16rpx; margin-left: 8rpx; }
+.en-macros { margin-top: 20rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); }
+.mac { display: flex; align-items: center; height: 52rpx; }
+.mac-name { width: 104rpx; flex-shrink: 0; font-size: 24rpx; color: var(--text-2); }
+.mac-meter { flex: 1; min-width: 0; }
+.mac-val { width: 184rpx; flex-shrink: 0; text-align: right; font-size: 20rpx; color: var(--text); }
+
+/* ---------------------------------------------------------------- quick actions */
+.qa-card { padding: 16rpx 8rpx 8rpx; }
+.qa-grid { display: flex; flex-wrap: wrap; }
+.qa { width: 33.33%; }
+.qa-btn { display: flex; flex-direction: column; align-items: center; padding: 16rpx 0 20rpx; }
+.qa-icon {
+  display: flex; align-items: center; justify-content: center; width: 104rpx; height: 104rpx; margin: 4rpx 4rpx 16rpx;
+  background: var(--green-l);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6), 6rpx 8rpx 0 0 var(--shadow);
+}
+.qa-img { width: 64rpx; height: 64rpx; }
+.qa-label { font-size: 24rpx; color: var(--text); }
+/* press: only the tile sinks, not the whole cell */
+.qa-btn.px-pressed { transform: none; box-shadow: none !important; }
+.qa-btn.px-pressed .qa-icon {
+  transform: translate(4rpx, 6rpx);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ---------------------------------------------------------------- section link as a tiny pixel button */
+.sec-link {
+  display: flex; align-items: center; margin: 4rpx 8rpx 4rpx 4rpx; padding: 2rpx 12rpx 2rpx 16rpx;
+  font-size: 22rpx; color: var(--ink); background: var(--paper);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), 4rpx 6rpx 0 0 var(--shadow);
+}
+.sec-link-icon { width: 16rpx; height: 16rpx; margin-left: 8rpx; }
+
+/* ---------------------------------------------------------------- near-expiry chips */
+.al-chip { padding: 12rpx 16rpx 12rpx 14rpx; }
+.al-icon { width: 32rpx; height: 32rpx; margin-right: 10rpx; flex-shrink: 0; }
+.al-sub { margin-left: 12rpx; padding: 0 8rpx; font-size: 22rpx; line-height: 32rpx; }
+.al-warn { background: #ffe2b0; color: var(--orange-d); }
+.al-danger { background: var(--red-l); color: var(--red-d); }
+.al-urgent {
+  box-shadow: 0 -4rpx 0 0 var(--red-d), 0 4rpx 0 0 var(--red-d), -4rpx 0 0 0 var(--red-d), 4rpx 0 0 0 var(--red-d), 6rpx 8rpx 0 0 var(--shadow);
+}
+.ok-card { display: flex; align-items: center; padding: 24rpx 28rpx; }
+.ok-img { width: 48rpx; height: 48rpx; }
+
+/* ---------------------------------------------------------------- latest plan (green feature window) */
+.plan { margin-bottom: 40rpx; padding: 24rpx 28rpx 28rpx; }
+.plan-tag { margin: 4rpx 12rpx 4rpx 4rpx; }
+.plan-id { font-size: 20rpx; color: #eafbe6; }
+.plan-quote { margin: 12rpx 0 20rpx; font-size: 28rpx; color: #fff; }
+.plan-money {
+  display: flex; align-items: center; margin: 4rpx; padding: 16rpx 20rpx 16rpx 16rpx; background: var(--green-d); text-shadow: none;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset 4rpx 4rpx 0 0 rgba(43, 35, 64, 0.35);
+}
+.plan-coin { width: 64rpx; height: 64rpx; margin-right: 16rpx; flex-shrink: 0; }
+.plan-total { font-size: 40rpx; line-height: 1.3; color: #fff; }
+.plan-pp { flex-shrink: 0; margin-left: 16rpx; text-align: right; }
+.plan-pp-num { font-size: 24rpx; line-height: 1.6; color: var(--yellow); }
+.plan-total.is-m { font-size: 32rpx; line-height: 1.6; }
+.plan-total.is-s { font-size: 24rpx; line-height: 2; }
+.plan-pp-num.is-s { font-size: 20rpx; }
+.plan-budget { display: flex; align-items: center; margin-top: 20rpx; }
+.plan-budget-l { margin-right: 12rpx; font-size: 24rpx; }
+.plan-budget-v { margin: 0 4rpx 0 12rpx; font-size: 20rpx; }
+.plan-budget-tag { margin: 4rpx 4rpx 4rpx 16rpx; text-shadow: none; }
+.plan-wait { display: flex; align-items: center; }
+.plan-wait-art { width: 96rpx; height: 96rpx; margin-right: 20rpx; flex-shrink: 0; }
+.plan-wait-icon { width: 64rpx; height: 64rpx; margin-right: 20rpx; flex-shrink: 0; }
+.plan-wait-title { font-size: 32rpx; color: #fff; }
+.plan-next { width: 32rpx; height: 32rpx; margin-left: 16rpx; flex-shrink: 0; }
