@@ -20,7 +20,7 @@
 | 多智能体调度 | ✅ 完成；真实 LLM 路径只用模拟模型测过 | 调度器 + 4 个智能体 + 三层校验 |
 | 知识库 LLM Wiki | ✅ 架构完成，内容为首版 | 72 种食材、10 个人群模型、5 份规则、49 道菜 |
 | 微信小程序 | ✅ 页面与交互完成，**未在开发者工具或真机运行过** | 12 个页面 + 2 个自定义组件，约 2,900 行 |
-| 界面设计 | ✅ “Fresh Glass” 毛玻璃设计系统 | 预览见 `docs/preview.png` |
+| 界面设计 | ✅ “Pixel Kitchen” 像素风设计系统 | 规范见 `docs/PIXEL_STYLE.md`，预览见 `docs/preview.png` |
 | 文档 | ✅ 中英文 README、本文档 | |
 
 ---
@@ -60,11 +60,11 @@
 ### 2.2 小程序界面
 
 - **12 个页面**：首页、冰箱、AI 计划、账本、我的、计划详情、识别卡片、购物清单、营养分析、小组管理、数字孪生、消息通知。
-- **设计系统**（`app.wxss`，组件 `glass-nav`、`custom-tab-bar`）：
-  - iOS 大标题，顶栏滚动后才变成毛玻璃
-  - 底部是悬浮的毛玻璃标签栏
-  - 统一的线性图标集
-  - 能量环、新鲜度条、智能体状态卡、圆形勾选等组件
+- **设计系统**（`app.wxss` + 组件 `px-nav`、`px-sprite`、`px-meter`、`px-typewriter`、`custom-tab-bar`），规范见 `docs/PIXEL_STYLE.md`：
+  - 8-bit 做饭游戏风：缺角像素窗口、硬阴影、无圆角/模糊/柔和渐变，1 个像素点 = 4rpx
+  - 49 个手绘像素素材（`art/pixel/*.txt` → `tools/pixelart.py` → `assets/px/*.svg`）：标签栏、功能、食材图标，以及番茄小厨、四个智能体伙伴、锅、金币、闪光的逐帧动画
+  - 格子进度条（px-meter）、打字机对话框（px-typewriter）、逐帧动画（steps()），每屏循环动画不超过 3 个
+  - 像素字体运行时由后端 `/static/fonts` 提供（避开 2MB 包体限制），字符集由 `tools/build_pixel_font.py` 按项目用字裁剪
 - **开发期兜底**：后端没配微信凭证时用每台设备固定的开发 ID 登录；没配 DeepSeek 时用离线规则引擎。两者都会在界面上标明当前模式。
 
 ### 2.3 验证情况
@@ -88,7 +88,7 @@
 |---|---|---|---|
 | 1 | **接入 DeepSeek 实测多智能体** | 真实 LLM 路径只用模拟模型测过 | 在 `.env` 填 `DEEPSEEK_API_KEY` 后跑 `scripts/demo.py`；检查四个智能体的 JSON 输出是否稳定、耗时（文档预估 10–30 秒）、token 用量（返回结果里的 `llm_usage`）；根据效果调整各智能体提示词 |
 | 2 | **确认多模态识别的接口** | DeepSeek 官方 API 目前可能不支持图片输入（**需确认**） | 找到能接收 OpenAI 格式 `image_url` 的 DeepSeek 视觉模型部署，配置 `DEEPSEEK_VISION_*`；如果不可行，按设计文档 6.4 的备选方案接入 OCR 或图像识别 API |
-| 3 | **微信开发者工具 + 真机调试** | 小程序从未真正运行过 | 重点检查：毛玻璃效果（`backdrop-filter`）在 iOS 和安卓上的表现；自定义标签栏；SSE 分块接收（`enableChunked` 需要基础库 ≥ 2.20.2，不支持时会自动退回轮询）；`wx.connectSocket`；canvas 2d 生成图片；`conic-gradient` 圆环 |
+| 3 | **微信开发者工具 + 真机调试** | 小程序从未真正运行过 | 重点检查：像素字体 `wx.loadFontFace` 加载（需要后端可访问，真机需 HTTPS 合法域名）；SVG 像素图是否清晰；逐帧动画和 hover-class 按压效果；自定义标签栏；SSE 分块接收（`enableChunked` 需要基础库 ≥ 2.20.2，不支持时会自动退回轮询）；`wx.connectSocket`；canvas 2d 生成图片；`conic-gradient` 圆环 |
 | 4 | **注册小程序并配置域名** | 正式运行需要 appid 和合法域名 | 注册 appid，填进 `project.config.json` 和后端 `.env`；演示时可在开发者工具里勾选“不校验合法域名”；真机演示需要 HTTPS / WSS（可以用内网穿透或云服务器） |
 | 5 | **核对知识库数据** | 营养数值是近似值，价格是通用区间 | 按《中国食物成分表》第 6 版逐项核对 72 种食材；把参考价校准到所在城市 |
 | 6 | **录制演示视频** | 交付物要求 | 按设计文档第 7 节：一句话指令 → 周计划 → 购物清单 → 餐后复盘 → 孪生学习 → 下周计划变化 |
@@ -123,8 +123,9 @@
 1. **离线规则引擎只用于开发和测试。** 没有配置 DeepSeek 时，四个智能体用确定性规则完成分析和编排，结果可用但不是“LLM 多智能体”。设计文档要求演示时用 DeepSeek，界面会标明当前模式。
 2. **能量、库存、价格、过敏原匹配和校验都由代码计算，LLM 只负责“选什么、怎么排、怎么换”。** 这是有意的设计：减少幻觉、保证硬约束不被突破。答辩时可以作为亮点讲。
 3. **数字孪生的合并权重。** 规划时会把个人孪生和群体孪生合并；发起人自己在这个小组里的反馈会在两边各算一次，所以权重偏高。目前当作“发起人偏好优先”处理，如需均衡可在 `services/twin.py` 的 `planning_view` 调整。
-4. **预览图是近似效果。** 自制渲染器有局限，而且这个浏览器在软件渲染下会跳过 12px 以上的背景模糊，所以真机的毛玻璃效果更强；最终效果以开发者工具和真机为准。
+4. **预览图是近似效果。** 自制渲染器（`tools/preview/`）用浏览器模拟 WXML/WXSS，动画只能截到某一帧，原生组件（picker、slider、switch）只是占位；最终效果以开发者工具和真机为准。
 5. **营养与价格数据是近似值。** 所有估算都标注了“估算”，所有输出都附带“不构成医疗建议”的声明。
+6. **像素风的后续优化。** 页面里还有几处重复的局部样式可以提到 `app.wxss`（窗口名牌 `.win-tab`、`估算` 徽章、金色/紫色标签、日历牌、红色警告窗口、像素开关）；常见食材缺少专属图标（白菜/青菜、大米、豆腐、盐、油），目前用首字方块代替；原生 slider 的圆形滑块无法像素化，可以做一个 `px-slider` 组件。
 
 ---
 
@@ -139,7 +140,9 @@ backend/app/
   jobs.py        后台生成 + SSE 事件     realtime.py  WebSocket     llm.py  DeepSeek 客户端
 backend/tests/   28 个测试            backend/scripts/demo.py  第 7 节演示脚本
 llm_wiki/        知识库（格式约定见 00_index.md）
-miniprogram/     app.wxss（设计系统）· components/glass-nav · custom-tab-bar · pages/*
+miniprogram/     app.wxss（像素设计系统）· components/px-* · custom-tab-bar · assets/px · pages/*
+art/pixel/       像素画源文件       tools/  pixelart.py · build_pixel_font.py · preview/（页面截图）
+docs/PIXEL_STYLE.md  像素风规范、绘图与动画提示词
 ```
 
 运行方法见 [README.zh-CN.md](../README.zh-CN.md)。

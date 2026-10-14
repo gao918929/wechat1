@@ -118,7 +118,7 @@ Page({
     const text = this.data.chatText.trim();
     if (!text) return;
     api.post('/api/groups/' + this.data.group.id + '/inventory/chat', { text }).then((r) => {
-      this.setData({ chatText: '', chatOk: !!r.ok, chatReply: r.ok ? r.applied.join('；') : r.message });
+      this.setData({ chatText: '', chatOk: !!r.ok, chatReply: r.ok ? (r.applied.join('；') || '收到，没有需要改动的食材') : r.message });
       this.load();
     });
   },

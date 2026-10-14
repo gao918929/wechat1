@@ -17,7 +17,7 @@ Component({
       const v = Math.max(0, value || 0);
       const lit = Math.round(Math.min(100, v) / 100 * n);
       const cells = [];
-      for (let i = 0; i < n; i++) cells.push({ on: i < lit, delay: i * 45 });
+      for (let i = 0; i < n; i++) cells.push({ on: i < lit, delay: i * Math.min(45, Math.floor(600 / n)) });
       this.setData({ cells, over: v > 100, tone: COLORS.indexOf(color) >= 0 ? color : 'green' });
     }
   }

@@ -1,6 +1,6 @@
 <px-nav title="冰箱" subtitle="{{group.name}} · {{stats.total}} 种食材" large>
   <view slot="right" class="nav-add" wx:if="{{isAdmin}}" bindtap="toggleAdd" hover-class="px-pressed">
-    <image src="/assets/px/plus.svg" />
+    <image class="nav-add-img" src="/assets/px/plus.svg" />
   </view>
 </px-nav>
 
@@ -31,7 +31,7 @@
       <text class="bag-alert-key">先吃掉</text>
       <text class="bag-alert-names">{{alertNames}}</text>
     </view>
-    <view class="bag-alert ok" wx:else>
+    <view class="bag-alert ok" wx:elif="{{items.length}}">
       <image class="bag-alert-icon" src="/assets/px/check.svg" />
       <text class="bag-alert-names">全部新鲜，没有临期食材</text>
     </view>
@@ -120,7 +120,7 @@
   <view class="sheet" catchtap="">
     <view class="card-title">
       <view class="row"><image class="sheet-icon" src="/assets/px/plus.svg" /><text>手动添加</text></view>
-      <view class="sheet-close" bindtap="toggleAdd" hover-class="px-pressed"><image src="/assets/px/cross.svg" /></view>
+      <view class="sheet-close" bindtap="toggleAdd" hover-class="px-pressed"><image class="sheet-close-img" src="/assets/px/cross.svg" /></view>
     </view>
     <view class="field"><text class="label">食材</text><input class="input" value="{{form.name}}" data-key="name" bindinput="onForm" placeholder="如 鸡胸肉" /></view>
     <view class="row wrap sugg" wx:if="{{suggestions.length}}">

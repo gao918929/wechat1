@@ -59,6 +59,7 @@ const PAGES = {
       await p.evaluate(() => document.fonts.ready);
       await p.waitForTimeout(700); // let entrance animations settle
       await p.screenshot({ path: path.join(outDir, `${n}.png`) });
+      await p.addStyleTag({ content: '.tb{display:none!important}' }); // fixed tab bar would cover mid-page content
       await p.screenshot({ path: path.join(outDir, `${n}_full.png`), fullPage: true });
       await p.close();
       console.log('ok', n, '→', path.join(outDir, `${n}.png`));

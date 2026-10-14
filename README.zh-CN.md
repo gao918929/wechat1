@@ -6,7 +6,9 @@
 它把六个环节串成闭环：**库存 → 预算 → 健康 → 多智能体周计划 → 购物 → 餐后复盘**；
 **膳食数字孪生**会从每一次修改、评分和纠正中学习，越用越懂你。
 
-![小程序界面预览（浏览器近似渲染的毛玻璃界面）](docs/preview.png)
+![小程序界面预览（“像素厨房”像素风，浏览器近似渲染）](docs/preview.png)
+
+界面是一款 8-bit 做饭小游戏的风格：手绘像素图标和动画角色（番茄小厨与四个智能体伙伴）、缺角像素窗口、硬阴影、逐帧动画。像素字体（Fusion Pixel / Press Start 2P，OFL 授权）运行时从后端加载。设计规范、绘图提示词和动画目录见 [`docs/PIXEL_STYLE.md`](docs/PIXEL_STYLE.md)；像素画源文件在 `art/pixel/`，用 `tools/pixelart.py` 生成 SVG；页面截图工具在 `tools/preview/`。
 
 ```
 miniprogram/   微信小程序（12 个页面，原生 WXML/WXSS/JS）

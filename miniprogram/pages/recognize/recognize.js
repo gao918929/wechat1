@@ -40,7 +40,8 @@ function decorate(i, kind) {
     // dishes without a matching ingredient icon get the rice-bowl icon
     icon: iconFor(i.canonical || i.name) || (kind === 'meal' ? 'meal' : ''),
     initial: initialOf(i.name),
-    cat: i.category || 'vegetables',
+    // not matched to a known ingredient (待确认 / non-food receipt line) → neutral grey tile
+    cat: kind !== 'meal' && !i.canonical ? 'other' : (i.category || 'vegetables'),
     qtyText: q >= 1 && Math.floor(q) === q ? q + ' 个' : '',   // never "0.34 个"
     weightShort: i.needs_weight ? '需补充重量' : raw.replace(/（估算）|\(估算\)/g, '').trim(),
     isEst: !!i.is_estimated && !i.needs_weight && !!raw,
@@ -203,9 +204,9 @@ Page({
       const num = (v, d) => (typeof v === 'number' ? String(Math.round(v * d) / d) : '–');
       this.setData({ done: r, doneText: { added: j(r.added), skipped: j(r.skipped), deviation: j(r.deviation), toInventory: j(r.added_to_inventory) },
         doneNutri: { kcal: num(n.kcal, 1), protein: num(n.protein, 10) },
-        doneItems: got.map((name) => {
+        doneItems: got.map((name, key) => {
           const src = this.data.items.find((i) => i.name === name) || {};
-          return { name, icon: src.icon || iconFor(name), initial: src.initial || initialOf(name), cat: src.cat || 'vegetables' };
+          return { key, name, icon: src.icon || iconFor(name), initial: src.initial || initialOf(name), cat: src.cat || 'vegetables' };
         }) });
       let msg = '已确认';
       if (r.kind === 'ingredients') msg = '已入库 ' + r.added.length + ' 种';

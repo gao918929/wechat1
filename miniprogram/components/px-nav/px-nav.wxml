@@ -3,7 +3,7 @@
     <view wx:if="{{back}}" class="pn-back" hover-class="pn-back-down" bindtap="goBack">
       <image class="pn-back-icon" src="/assets/px/ui-back.svg" />
     </view>
-    <view class="pn-title">{{title}}</view>
+    <view class="pn-title">{{large ? "" : title}}</view>
   </view>
 </view>
 <view style="height:{{total}}px"></view>

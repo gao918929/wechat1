@@ -7,7 +7,9 @@ An AI meal-coordination WeChat mini program built from
 It connects six stages: **inventory → budget → health → multi-agent weekly planning → shopping → post-meal review**.
 **Dietary digital twins** learn from every edit, rating and correction.
 
-![Mini program screens (browser approximation of the frosted-glass UI)](docs/preview.png)
+![Mini program screens in the "Pixel Kitchen" pixel-art style (browser approximation)](docs/preview.png)
+
+The UI is an 8-bit cooking game: hand-drawn pixel icons and animated sprites (Tomato Chef and the four agent buddies), notched pixel windows, hard shadows and stepped animations. Fonts (Fusion Pixel / Press Start 2P, OFL) load at runtime from the backend. Design spec, art prompts and animation catalogue: [`docs/PIXEL_STYLE.md`](docs/PIXEL_STYLE.md); art sources in `art/pixel/` are built with `tools/pixelart.py`; page screenshots come from `tools/preview/`.
 
 ```
 miniprogram/   WeChat mini program (12 pages, native WXML/WXSS/JS)

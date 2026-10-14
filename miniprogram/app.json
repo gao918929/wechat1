@@ -54,7 +54,6 @@
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
-    "glass-nav": "/components/glass-nav/glass-nav",
     "px-nav": "/components/px-nav/px-nav",
     "px-sprite": "/components/px-sprite/px-sprite",
     "px-meter": "/components/px-meter/px-meter",

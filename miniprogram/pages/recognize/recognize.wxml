@@ -58,7 +58,7 @@
   <!-- loot list -->
   <view class="section-title">
     <text>获得清单</text>
-    <view class="pick">已选 <text class="px-num pick-num">{{pickCount}}/{{items.length}}</text></view>
+    <view class="pick" wx:if="{{items.length}}">已选 <text class="px-num pick-num">{{pickCount}}/{{items.length}}</text></view>
   </view>
 
   <view wx:if="{{!items.length}}" class="card empty-loot">
@@ -91,7 +91,7 @@
             <image class="line-icon" src="/assets/px/coin.svg" />
             <text class="px-num price" wx:if="{{item.amount}}">¥{{item.amount}}</text>
             <text class="unit" wx:if="{{item.unit_price}}">{{item.unit_price}} 元/kg</text>
-              <text class="est-badge" wx:if="{{item.unit_price && item.estimated}}">估算</text>
+            <text class="est-badge" wx:if="{{item.unit_price && item.estimated}}">估算</text>
           </view>
           <view class="slot-method" wx:if="{{item.method}}">{{item.method}}</view>
         </block>
@@ -113,7 +113,10 @@
         </view>
       </view>
 
-      <view class="check {{include[item.id] ? 'on' : ''}}" catchtap="toggleInclude" data-id="{{item.id}}" hover-class="px-pressed" hover-stop-propagation="{{true}}"></view>
+      <!-- wide tap target: the rest of the slot opens the editor -->
+      <view class="check-hit" catchtap="toggleInclude" data-id="{{item.id}}" hover-class="check-hit-down" hover-stop-propagation="{{true}}">
+        <view class="check {{include[item.id] ? 'on' : ''}}"></view>
+      </view>
     </view>
   </view>
 
@@ -141,7 +144,7 @@
     </view>
 
     <view class="got-grid" wx:if="{{doneItems.length}}">
-      <view wx:for="{{doneItems}}" wx:key="name" class="got-item anim-pop {{index < 6 ? 'd' + (index + 1) : ''}}">
+      <view wx:for="{{doneItems}}" wx:key="key" class="got-item anim-pop {{index < 6 ? 'd' + (index + 1) : ''}}">
         <view class="got-cell">
           <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
           <view wx:else class="avatar got-avatar c-{{item.cat}}">{{item.initial}}</view>
@@ -186,7 +189,7 @@
           </view>
           <text>修改条目</text>
         </view>
-        <view class="sheet-close" bindtap="closeEdit" hover-class="px-pressed"><image src="/assets/px/cross.svg" /></view>
+        <view class="sheet-close" bindtap="closeEdit" hover-class="px-pressed"><image class="sheet-close-img" src="/assets/px/cross.svg" /></view>
       </view>
       <view class="field"><text class="label">名称</text><input class="input" value="{{edit.name}}" data-key="name" bindinput="onEdit" /></view>
       <view class="field" wx:if="{{kind !== 'meal'}}"><text class="label">重量（克）</text><input class="input" type="digit" value="{{edit.weight_g}}" data-key="weight_g" bindinput="onEdit" /></view>

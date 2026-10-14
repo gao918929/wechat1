@@ -174,7 +174,7 @@ button.btn { line-height: 1.4; border-radius: 0; }
 button.btn::after { border: none; }
 .btn-row { display: flex; gap: 24rpx; margin-top: 24rpx; }
 .btn-row .btn { flex: 1; }
-.btn-icon { width: 36rpx; height: 36rpx; vertical-align: -8rpx; margin-right: 10rpx; }
+.btn-icon { width: 32rpx; height: 32rpx; vertical-align: -6rpx; margin-right: 10rpx; }
 /* pressed: sink into the shadow */
 .px-pressed { transform: translate(4rpx, 6rpx); box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink) !important; }
 
