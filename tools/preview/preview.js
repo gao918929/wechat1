@@ -43,7 +43,7 @@ const PAGES = {
 (async () => {
   const args = process.argv.slice(2);
   const names = !args.length || args.includes('all') ? Object.keys(PAGES) : args;
-  const outDir = path.join(__dirname, 'out');
+  const outDir = process.env.PREVIEW_OUT || path.join(__dirname, 'out');
   fs.mkdirSync(outDir, { recursive: true });
   const browser = await chromium.launch(fs.existsSync('/opt/pw-browsers/chromium') ? { executablePath: '/opt/pw-browsers/chromium' } : {});
   for (const n of names) {
