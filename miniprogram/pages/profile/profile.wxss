@@ -1,0 +1,100 @@
+/* 我的 · Pixel Kitchen — character card, RPG stat panel, pixel menu + form.
+   1 art pixel = 4rpx; notched outlines via box-shadow; hard shadows only, no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- character card */
+.card.char-card { margin-top: 24rpx; padding: 44rpx 28rpx 24rpx; }
+.char-top { display: flex; align-items: center; }
+.portrait {
+  position: relative; flex-shrink: 0; width: 160rpx; height: 160rpx; margin: 4rpx 32rpx 4rpx 4rpx; overflow: hidden;
+  background: var(--blue-l);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset 4rpx 4rpx 0 0 #fff, 8rpx 12rpx 0 0 var(--shadow);
+}
+/* grass strip the mascot stands on */
+.portrait-ground {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 28rpx; background: var(--green);
+  box-shadow: inset 0 4rpx 0 0 var(--green-l), inset 0 -4rpx 0 0 var(--green-d);
+}
+.portrait-sprite { position: absolute; left: 8rpx; bottom: 4rpx; width: 144rpx; height: 144rpx; }
+.char-info { flex: 1; min-width: 0; }
+.char-lbl { font-size: 20rpx; color: var(--text-3); letter-spacing: 4rpx; }
+.char-name { font-size: 40rpx; line-height: 1.4; color: var(--ink); letter-spacing: 2rpx; text-shadow: 4rpx 4rpx 0 var(--paper-3); }
+.char-goal { display: flex; align-items: flex-start; margin-top: 12rpx; font-size: 24rpx; line-height: 1.6; color: var(--text-2); }
+.goal-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 4rpx 8rpx 0 0; }
+
+/* RPG stat panel (dark double-ruled box) */
+.px-dialog.attr-panel { margin: 32rpx 4rpx 24rpx; padding: 20rpx 28rpx 12rpx; }
+.attr-head { display: flex; justify-content: space-between; align-items: center; font-size: 24rpx; color: var(--yellow); letter-spacing: 2rpx; padding-bottom: 8rpx; }
+.attr-hint { font-size: 20rpx; color: #8a8199; }
+.attr-grid { display: flex; flex-wrap: wrap; }
+.attr { box-sizing: border-box; width: 50%; display: flex; align-items: center; padding: 16rpx 0; }
+.attr:nth-child(n+3) { border-top: 4rpx dashed var(--ink-2); }
+.attr-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 16rpx; }
+.attr-body { flex: 1; min-width: 0; }
+.attr-k { font-size: 20rpx; line-height: 1.4; color: #c9c3d6; }
+.attr-v { display: flex; align-items: baseline; margin-top: 4rpx; white-space: nowrap; }
+.attr-num { font-size: 32rpx; line-height: 1.3; color: #fff; text-shadow: 4rpx 4rpx 0 var(--ink-2); }
+.attr-u { font-size: 20rpx; color: #c9c3d6; margin-left: 8rpx; }
+
+.basis { display: flex; align-items: flex-start; font-size: 20rpx; line-height: 1.6; color: var(--text-2); }
+.basis-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 0 12rpx 0 0; }
+.note { display: flex; align-items: flex-start; margin-top: 12rpx; font-size: 24rpx; line-height: 1.6; color: var(--orange-d); }
+.note-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 4rpx 12rpx 0 0; }
+
+/* ---------------------------------------------------------------- menu rows */
+.card.flush.menu-card { padding: 8rpx 16rpx; margin-bottom: 44rpx; }
+.menu { display: flex; align-items: center; padding: 20rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
+.menu:last-child { border-bottom: none; }
+.menu-name { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
+.menu-sub { font-size: 24rpx; color: var(--text-3); margin-left: 12rpx; }
+.chev { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 16rpx; }
+
+/* ---------------------------------------------------------------- health form */
+.card.flush.form-card { padding: 8rpx 28rpx; }
+.form-card .field .label { width: 168rpx; flex-shrink: 0; }
+/* a picker wraps its row, so restore the divider that .field:last-child removes */
+.field.pick { border-bottom: 4rpx dashed var(--paper-3); margin: 0 -12rpx; padding-left: 12rpx; padding-right: 12rpx; }
+.pick-v { flex: 1; min-width: 0; text-align: right; font-size: 28rpx; color: var(--text-2); }
+.pick-caret { width: 16rpx; height: 16rpx; flex-shrink: 0; margin-left: 16rpx; transform: rotate(90deg); }
+.field.opts-field { align-items: flex-start; }
+.opts-field .label { padding-top: 10rpx; }
+
+/* selectable pixel options: flat when off, raised + coloured when on */
+.opts { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; margin: 0 -4rpx; }
+.opt {
+  display: inline-flex; align-items: center; margin: 8rpx 16rpx 8rpx 4rpx; padding: 4rpx 16rpx; font-size: 24rpx; line-height: 1.6;
+  color: var(--text-2); background: var(--paper-2);
+  box-shadow: 0 -4rpx 0 0 var(--paper-3), 0 4rpx 0 0 var(--paper-3), -4rpx 0 0 0 var(--paper-3), 4rpx 0 0 0 var(--paper-3);
+}
+.opt.on {
+  color: var(--green-d); background: var(--green-l);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset 0 -4rpx 0 0 rgba(43, 35, 64, 0.15), 4rpx 6rpx 0 0 var(--shadow);
+}
+.opt.on.gold { color: var(--ink); background: var(--yellow); }
+.opt.on.warn { color: var(--orange-d); background: #ffe2b0; }
+.opt.on.danger { color: var(--red-d); background: var(--red-l); }
+.opt-x { width: 32rpx; height: 32rpx; margin: 0 -4rpx 0 8rpx; }
+
+/* ---------------------------------------------------------------- allergens & avoidances */
+.card.diet-card { padding: 28rpx 28rpx 32rpx; }
+.sub-title { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 12rpx; }
+.sub-title.gap { margin-top: 40rpx; padding-top: 28rpx; border-top: 4rpx dashed var(--paper-3); }
+.st-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
+.st-name { font-size: 28rpx; color: var(--text); margin-right: 16rpx; }
+.sub-title .tag { margin: 4rpx 4rpx 4rpx 0; }
+.chat-bar.add-bar { margin-top: 20rpx; align-items: stretch; }
+.btn.add-btn { flex-shrink: 0; display: flex; align-items: center; margin: 4rpx; padding: 0 24rpx; }
+
+.spicy { margin-top: 40rpx; padding-top: 28rpx; border-top: 4rpx dashed var(--paper-3); }
+.spicy-head { display: flex; align-items: center; }
+.spicy-lbl { flex: 1; min-width: 0; font-size: 28rpx; color: var(--text); }
+.chilis { display: flex; align-items: center; }
+.chili { width: 32rpx; height: 32rpx; margin-left: 4rpx; opacity: 0.25; }
+.chili.on { opacity: 1; }
+.spicy-name { width: 104rpx; text-align: right; font-size: 24rpx; color: var(--red-d); }
+.spicy-slider { display: block; margin: 24rpx 8rpx 8rpx; }
+
+.likes { margin-top: 32rpx; padding-top: 28rpx; border-top: 4rpx dashed var(--paper-3); }
+.likes-head { display: flex; align-items: center; margin-bottom: 16rpx; }
+.btn.save-btn { margin: 40rpx 4rpx 4rpx; }

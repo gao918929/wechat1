@@ -1,0 +1,162 @@
+<px-nav title="AI 计划" subtitle="四个智能体 · 一句话生成一周菜单" large />
+
+<view class="container">
+  <!-- quest giver: the chef mascot asks for the brief in an RPG dialogue box -->
+  <view class="giver anim-slide">
+    <view class="giver-chef">
+      <px-sprite name="sprite-chef" frames="4" size="120" duration="1000" />
+    </view>
+    <view class="px-dialog giver-talk">
+      <view class="talk-who">
+        <text class="talk-name">番茄小厨</text>
+        <text class="talk-group" wx:if="{{group}}">{{group.name}}</text>
+      </view>
+      <px-typewriter text="告诉小厨你们的情况：人数、预算、忌口、冰箱里有什么，一句话就行！" speed="30" step="2" />
+    </view>
+  </view>
+
+  <!-- the brief (quest request form) -->
+  <view class="card brief anim-slide d1">
+    <view class="brief-head">
+      <image class="brief-icon" src="/assets/px/receipt.svg" />
+      <text class="brief-title">任务委托书</text>
+      <text class="px-num brief-count">{{instruction.length}}/1000</text>
+    </view>
+    <textarea class="textarea prompt" maxlength="1000" auto-height value="{{instruction}}" bindinput="onInput"
+      placeholder="例如：我在减脂，宿舍4个人，每人预算80元，不吃辣，冰箱里有快过期的鸡胸肉，帮我们规划一周晚餐" />
+  </view>
+
+  <!-- example quests -->
+  <view class="section-title"><text>示例任务</text><text class="sec-hint">点一下直接接取</text></view>
+  <scroll-view scroll-x class="quests" enhanced show-scrollbar="{{false}}">
+    <view wx:for="{{examples}}" wx:key="title" class="quest anim-slide {{'d' + (index + 2)}}" bindtap="useExample" data-i="{{index}}" hover-class="px-pressed">
+      <view class="quest-band">
+        <image class="quest-icon" src="/assets/px/{{item.icon}}.svg" />
+        <text class="quest-title">{{item.title}}</text>
+      </view>
+      <view class="quest-body">
+        <view class="quest-meta">{{item.meta}}</view>
+        <view class="quest-text">{{item.text}}</view>
+        <view class="quest-go"><text>接取</text><image class="quest-next" src="/assets/px/ui-next.svg" /></view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- options as a pixel list -->
+  <view class="section-title"><text>任务设置</text></view>
+  <view class="card flush opts">
+    <picker range="{{dayOptions}}" bindchange="onDays">
+      <view class="opt" hover-class="px-pressed-row">
+        <image class="opt-icon" src="/assets/px/calendar.svg" />
+        <text class="opt-label">天数</text>
+        <view class="grow opt-value"><text class="px-num opt-num">{{days}}</text><text class="opt-unit">天</text></view>
+        <image class="opt-next" src="/assets/px/ui-next.svg" />
+      </view>
+    </picker>
+    <view class="opt">
+      <image class="opt-icon" src="/assets/px/meal.svg" />
+      <text class="opt-label">餐次</text>
+      <view class="seg grow">
+        <view class="seg-item {{meals.breakfast ? 'on' : ''}}" bindtap="toggleMeal" data-k="breakfast" hover-class="px-pressed">早餐</view>
+        <view class="seg-item {{meals.lunch ? 'on' : ''}}" bindtap="toggleMeal" data-k="lunch" hover-class="px-pressed">午餐</view>
+        <view class="seg-item {{meals.dinner ? 'on' : ''}}" bindtap="toggleMeal" data-k="dinner" hover-class="px-pressed">晚餐</view>
+      </view>
+    </view>
+    <view class="opt">
+      <image class="opt-icon" src="/assets/px/users.svg" />
+      <text class="opt-label">就餐人数</text>
+      <view class="grow"></view>
+      <input class="input people" type="number" value="{{people}}" bindinput="onPeople" placeholder="自动识别" placeholder-class="people-ph" />
+      <text class="opt-unit">人</text>
+    </view>
+    <view class="opt {{avoidances.length ? '' : 'opt-last'}}">
+      <image class="opt-icon" src="/assets/px/loop.svg" />
+      <view class="grow">
+        <view class="opt-label">备选方案</view>
+        <view class="opt-sub">另出 健康优先 / 预算优先</view>
+      </view>
+      <view class="px-toggle alt-toggle {{alternatives ? 'on' : ''}}" bindtap="onAlt" hover-class="px-pressed">
+        <view class="px-toggle-knob"></view>
+        <text class="px-num px-toggle-txt">{{alternatives ? 'ON' : 'OFF'}}</text>
+      </view>
+    </view>
+    <view class="opt opt-last opt-top" wx:if="{{avoidances.length}}">
+      <image class="opt-icon" src="/assets/px/chili.svg" />
+      <view class="grow">
+        <view class="opt-label">这次可以吃</view>
+        <view class="opt-sub">平时忌口，点亮表示这次放开</view>
+        <view class="avoid-row">
+          <view wx:for="{{avoidances}}" wx:key="key" class="avoid {{overrides[item.key] ? 'on' : ''}}" bindtap="toggleOverride" data-k="{{item.key}}" hover-class="px-pressed">
+            <image class="avoid-icon" src="/assets/px/{{overrides[item.key] ? 'check' : 'cross'}}.svg" />
+            <text>{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="rule">
+    <image class="rule-icon" src="/assets/px/shield.svg" />
+    <text class="grow">过敏原是硬约束，一票否决；口味忌口是软约束，默认回避，你可以推翻。</text>
+  </view>
+
+  <!-- launch: the party that will take the quest + start button -->
+  <view class="card launch">
+    <view class="party-head">
+      <text>出战小队</text>
+      <text class="muted">4 位智能体伙伴</text>
+    </view>
+    <view class="party">
+      <view class="member">
+        <view class="member-cell agent-health"><px-sprite name="sprite-health" frames="2" size="72" playing="{{false}}" /></view>
+        <text class="member-name">健康适配</text>
+      </view>
+      <view class="member">
+        <view class="member-cell agent-iterative"><px-sprite name="sprite-iterative" frames="2" size="72" playing="{{false}}" /></view>
+        <text class="member-name">迭代优化</text>
+      </view>
+      <view class="member">
+        <view class="member-cell agent-inventory"><px-sprite name="sprite-inventory" frames="2" size="72" playing="{{false}}" /></view>
+        <text class="member-name">库存优先</text>
+      </view>
+      <view class="member">
+        <view class="member-cell agent-budget"><px-sprite name="sprite-budget" frames="2" size="72" playing="{{false}}" /></view>
+        <text class="member-name">预算约束</text>
+      </view>
+    </view>
+    <button class="btn go-btn" bindtap="submit" disabled="{{submitting}}" hover-class="px-pressed">
+      <image class="go-icon" src="/assets/px/magic.svg" />{{submitting ? '正在召集智能体…' : '开始规划'}}
+    </button>
+    <view class="px-loading launch-load" wx:if="{{submitting}}"></view>
+  </view>
+
+  <!-- history = quest log -->
+  <view class="section-title"><text>任务日志</text><text class="sec-hint" wx:if="{{plans.length}}">共 {{plans.length}} 条</text></view>
+  <view wx:if="{{!plans.length}}" class="card log-empty">
+    <image class="log-empty-icon" src="/assets/px/tab-plan-off.svg" />
+    <view class="empty">还没有计划</view>
+  </view>
+  <view wx:for="{{plans}}" wx:key="id" class="log-wrap anim-slide {{index < 6 ? 'd' + (index + 1) : ''}}">
+    <view class="log" bindtap="open" data-id="{{item.id}}" hover-class="px-pressed">
+      <view class="px-cal">
+        <view class="px-cal-top">{{item.dateMon}}</view>
+        <view class="px-num px-cal-day">{{item.dateDay}}</view>
+      </view>
+      <view class="grow">
+        <view class="log-text">{{item.instruction || '按小组设置生成'}}</view>
+        <view class="log-meta">
+          <view class="tag log-state {{item.state === 'ok' ? '' : item.state}}">
+            <image class="log-state-icon" src="/assets/px/{{item.stateIcon}}.svg" />{{item.stateText}}
+          </view>
+          <text class="log-title" wx:if="{{item.summary}}">{{item.summary.title}}</text>
+        </view>
+        <view class="log-cost" wx:if="{{item.summary}}">
+          <image class="log-coin" src="/assets/px/coin.svg" />
+          <text class="px-num log-total">¥{{item.costText}}</text>
+          <text class="log-per">人均</text>
+          <text class="px-num log-per-num">¥{{item.perText}}</text>
+        </view>
+      </view>
+      <image class="log-next" src="/assets/px/ui-next.svg" />
+    </view>
+  </view>
+</view>

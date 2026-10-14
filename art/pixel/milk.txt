@@ -1,0 +1,18 @@
+# name: milk
+# kind: icon
+................
+...KKKKKKKK.....
+...KwwwwwwqK....
+...KwwwKqqqqK...
+..KwwwwwKqqqqK..
+.KwwwwwwwKqqqqK.
+.KwwwwwwqKKKKKK.
+.KwwwwwwqKqqqqK.
+.KbwbbwbbKBqBBK.
+.KcbbbbbbKBBBBK.
+.KcbbbbbbKBBBBK.
+.KcbbbbbbKBBBBK.
+.KbbbbbbbKBBBBK.
+.KBBBBBBBKBBBBK.
+.KKKKKKKKKKKKKK.
+................

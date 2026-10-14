@@ -1,0 +1,20 @@
+/* the fixed element itself is the window (see note in docs/PIXEL_STYLE.md) */
+.tb {
+  position: fixed; z-index: 95; left: 32rpx; right: 32rpx;
+  bottom: calc(env(safe-area-inset-bottom) + 20rpx);
+  display: flex; align-items: center; height: 124rpx; padding: 0 12rpx; gap: 8rpx;
+  background: #fffaf0;
+  box-shadow:
+    0 -4rpx 0 0 #2b2340, 0 4rpx 0 0 #2b2340, -4rpx 0 0 0 #2b2340, 4rpx 0 0 0 #2b2340,
+    inset -4rpx -4rpx 0 0 #e2d3b1, inset 4rpx 4rpx 0 0 #ffffff, 8rpx 12rpx 0 0 rgba(43, 35, 64, 0.2);
+}
+.tb-item { flex: 1; height: 100rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tb-item.on {
+  background: #f8d24b;
+  box-shadow: 0 -4rpx 0 0 #2b2340, 0 4rpx 0 0 #2b2340, -4rpx 0 0 0 #2b2340, 4rpx 0 0 0 #2b2340,
+    inset -4rpx -4rpx 0 0 #c79a1e, inset 4rpx 4rpx 0 0 #fff4b8;
+}
+.tb-down { transform: translateY(4rpx); }
+.tb-icon { width: 52rpx; height: 52rpx; }
+.tb-text { font-family: "Pixel", sans-serif; font-size: 20rpx; margin-top: 2rpx; color: #958aa6; letter-spacing: 1rpx; }
+.tb-item.on .tb-text { color: #2b2340; }

@@ -1,0 +1,98 @@
+/* 账本 · Pixel Kitchen — a coin-themed ledger. 1 art pixel = 4rpx; hard shadows only, no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- nav: piggy bank mascot */
+.nav-pig { flex-shrink: 0; width: 120rpx; height: 120rpx; margin: -12rpx -4rpx -8rpx 16rpx; }
+
+/* ---------------------------------------------------------------- period tabs */
+.tabs.period { margin: 12rpx 4rpx 40rpx; }
+
+/* ---------------------------------------------------------------- wallet status window */
+.card.wallet { padding: 28rpx 32rpx 32rpx; }
+.w-head { display: flex; align-items: center; font-size: 24rpx; color: #eafbe6; }
+.w-coin { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 16rpx; }
+.w-label { flex: 1; min-width: 0; letter-spacing: 1rpx; }
+.w-count { margin: 0 4rpx 0 12rpx; }
+.w-total { font-size: 56rpx; line-height: 1.3; margin: 24rpx 0 12rpx; color: #fff; text-shadow: 4rpx 4rpx 0 var(--green-d); }
+.w-total.long { font-size: 40rpx; }
+.wallet.orange .w-total { text-shadow: 4rpx 4rpx 0 var(--orange-d); }
+.w-sub { font-size: 24rpx; color: #eafbe6; }
+
+.w-budget { margin-top: 28rpx; padding-top: 24rpx; border-top: 4rpx dashed rgba(255, 255, 255, 0.5); }
+.w-row { display: flex; align-items: center; font-size: 24rpx; color: #eafbe6; margin-bottom: 12rpx; }
+.w-foot { margin: 16rpx 0 0; }
+.w-pct-lbl { font-size: 24rpx; margin-right: 8rpx; }
+.w-pct { font-size: 24rpx; color: #fff; }
+.w-left { font-size: 28rpx; color: #fff; }
+.wallet.orange .w-left { color: #fff4b8; }
+.w-none { font-size: 24rpx; color: #eafbe6; }
+
+/* ---------------------------------------------------------------- spending mix */
+.ct-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 16rpx; }
+.mix-total { font-size: 24rpx; color: var(--text-2); }
+/* stacked block bar, framed like <px-meter> */
+.stack {
+  display: flex; height: 36rpx; padding: 4rpx; margin: 12rpx 4rpx 24rpx; background: var(--ink);
+  box-shadow: 0 0 0 4rpx var(--ink), 6rpx 8rpx 0 4rpx var(--shadow);
+}
+.seg {
+  flex-basis: 0; min-width: 4rpx;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 20rpx, rgba(43, 35, 64, 0.16) 20rpx, rgba(43, 35, 64, 0.16) 24rpx);
+  box-shadow: inset 0 4rpx 0 0 rgba(255, 255, 255, 0.45), inset 0 -4rpx 0 0 rgba(43, 35, 64, 0.25);
+}
+.seg + .seg { margin-left: 4rpx; }
+.legend { display: flex; align-items: center; padding: 16rpx 0; font-size: 28rpx; border-top: 4rpx dashed var(--paper-3); }
+.swatch {
+  width: 24rpx; height: 24rpx; flex-shrink: 0; margin: 4rpx 20rpx 4rpx 4rpx;
+  box-shadow: 0 0 0 4rpx var(--ink), inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.25);
+}
+.l-pct { width: 96rpx; text-align: right; font-size: 20rpx; color: var(--text-3); }
+.l-amt { width: 180rpx; text-align: right; font-size: 24rpx; color: var(--text); }
+.payers { display: flex; align-items: center; flex-wrap: wrap; margin-top: 8rpx; padding-top: 16rpx; border-top: 4rpx dashed var(--paper-3); }
+.payers-lbl { font-size: 24rpx; color: var(--text-3); margin-right: 12rpx; }
+
+/* category colours: global .cat-<key> (same as inventory avatars and shopping bars) */
+
+/* ---------------------------------------------------------------- quick entries */
+.action-row { display: flex; margin: 0 0 40rpx; }
+.action-card {
+  flex: 1; min-width: 0; display: flex; align-items: center; margin: 4rpx; padding: 24rpx 16rpx 24rpx 20rpx; background: var(--paper);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff, 8rpx 12rpx 0 0 var(--shadow);
+}
+.action-card + .action-card { margin-left: 32rpx; }
+/* open state = selected (yellow) */
+.action-card.on {
+  background: #fff1b0;
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--yellow-d), inset 4rpx 4rpx 0 0 #fffbe0, 8rpx 12rpx 0 0 var(--shadow);
+}
+.action-card .mini-icon { margin-right: 16rpx; }
+.action-name { font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; white-space: nowrap; }
+.action-sub { font-size: 24rpx; color: var(--text-3); white-space: nowrap; }
+
+/* ---------------------------------------------------------------- manual entry */
+.card.manual { padding: 24rpx 28rpx 28rpx; }
+
+/* ---------------------------------------------------------------- ledger */
+.card.ledger { padding: 4rpx 24rpx; }
+.tx { display: flex; align-items: center; margin: 0 -12rpx; padding: 20rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
+.tx:last-child { border-bottom: none; }
+.tx .mini-icon { margin-right: 20rpx; }
+.tx-name { font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
+.tx-meta { font-size: 24rpx; color: var(--text-3); margin-top: 4rpx; }
+.src {
+  display: inline-block; padding: 0 8rpx; margin: 0 12rpx 0 4rpx; font-size: 20rpx; line-height: 1.6;
+  background: var(--paper-2); color: var(--text-2);
+  box-shadow: 0 -2rpx 0 0 var(--paper-3), 0 2rpx 0 0 var(--paper-3), -2rpx 0 0 0 var(--paper-3), 2rpx 0 0 0 var(--paper-3);
+}
+.src.s-receipt { background: #ffe2b0; color: var(--orange-d); box-shadow: 0 -2rpx 0 0 var(--orange-d), 0 2rpx 0 0 var(--orange-d), -2rpx 0 0 0 var(--orange-d), 2rpx 0 0 0 var(--orange-d); }
+.src.s-label { background: var(--blue-l); color: var(--blue-d); box-shadow: 0 -2rpx 0 0 var(--blue-d), 0 2rpx 0 0 var(--blue-d), -2rpx 0 0 0 var(--blue-d), 2rpx 0 0 0 var(--blue-d); }
+.src.s-manual { background: #fff1b0; color: var(--yellow-d); box-shadow: 0 -2rpx 0 0 var(--yellow-d), 0 2rpx 0 0 var(--yellow-d), -2rpx 0 0 0 var(--yellow-d), 2rpx 0 0 0 var(--yellow-d); }
+.tx-amt { flex-shrink: 0; margin-left: 16rpx; font-size: 24rpx; color: var(--red-d); }
+.tx-amt.long { font-size: 20rpx; }
+.empty-icon { display: block; width: 64rpx; height: 64rpx; margin: 0 auto 12rpx; }
+
+/* ---------------------------------------------------------------- budget settings */
+.tabs.set-tabs { margin: 16rpx 4rpx 20rpx; }

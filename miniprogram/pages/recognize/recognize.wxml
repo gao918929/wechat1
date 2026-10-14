@@ -1,0 +1,205 @@
+<px-nav title="{{title}}" back />
+<view class="container no-tab">
+  <!-- quest header: what this card is + retake -->
+  <view class="card intro anim-slide">
+    <view class="intro-top">
+      <view class="mini-icon {{kind === 'receipt' ? 'i-orange' : kind === 'meal' ? 'i-yellow' : 'i-blue'}}">
+        <image src="/assets/px/{{kind === 'receipt' ? 'receipt' : kind === 'meal' ? 'meal' : 'camera'}}.svg" />
+      </view>
+      <view class="grow">
+        <view class="intro-title" wx:if="{{rec && rec.upload_id}}">识别到 <text class="px-num intro-num">{{items.length}}</text> {{kind === 'meal' ? '道菜' : kind === 'receipt' ? '条商品' : '件物品'}}</view>
+        <view class="intro-title" wx:else>手动清单</view>
+        <view class="intro-sub">{{rec && rec.upload_id ? 'AI 识别 · 核对后再确认' : '说一句话或拍照来添加'}}</view>
+      </view>
+      <view class="btn small ghost retake" bindtap="takePhoto" wx:if="{{!done}}" hover-class="px-pressed">
+        <image class="btn-icon" src="/assets/px/camera.svg" />{{rec && rec.upload_id ? '重拍' : '拍照'}}
+      </view>
+    </view>
+    <view class="intro-note">识别只是辅助：点任意条目可修改，也可以直接说“把白菜改成400克”“这不是娃娃菜，是小白菜”。所有估算值都会标注“估算”。</view>
+  </view>
+
+  <!-- chef's RPG reply -->
+  <view class="px-dialog say anim-slide-x" wx:if="{{reply}}">
+    <view class="say-face"><px-sprite name="sprite-chef" frames="4" size="72" duration="1000" playing="{{!done}}" /></view>
+    <view class="grow">
+      <view class="say-who">番茄小厨</view>
+      <px-typewriter text="{{reply}}" speed="30" step="2" />
+    </view>
+  </view>
+
+  <!-- receipt meta -->
+  <view class="card meta anim-slide d1" wx:if="{{kind === 'receipt'}}">
+    <view class="card-title"><view class="row"><image class="title-icon" src="/assets/px/receipt.svg" /><text>小票信息</text></view></view>
+    <view class="field"><text class="label">商家</text><input class="input" value="{{card.merchant}}" data-key="merchant" bindblur="onMeta" placeholder="如 物美超市" /></view>
+    <view class="field"><text class="label">实付金额</text><input class="input" type="digit" value="{{card.total}}" data-key="total" bindblur="onMeta" placeholder="小票实付（记账口径）" /></view>
+    <picker mode="date" value="{{card.date}}" data-key="date" bindchange="onMeta">
+      <view class="field"><text class="label">购买日期</text><text class="grow">{{card.date || '今天'}}</text><image class="next-icon" src="/assets/px/ui-next.svg" /></view>
+    </picker>
+    <view class="field"><text class="label">同时入库</text><view class="grow"></view><switch checked="{{addToInventory}}" bindchange="onAddInv" color="#4cb963" /></view>
+  </view>
+
+  <!-- meal meta -->
+  <view class="card meta anim-slide d1" wx:if="{{kind === 'meal'}}">
+    <view class="card-title"><view class="row"><image class="title-icon" src="/assets/px/meal.svg" /><text>就餐场景</text></view></view>
+    <view class="tabs ctx-tabs">
+      <view class="tab {{card.context === 'home' ? 'active' : ''}}" bindtap="setContext" data-v="home" hover-class="px-pressed">
+        <view>自己做</view><view class="ctx-sub">扣库存</view>
+      </view>
+      <view class="tab {{card.context === 'out' ? 'active' : ''}}" bindtap="setContext" data-v="out" hover-class="px-pressed">
+        <view>外食 / 外卖</view><view class="ctx-sub">只记营养</view>
+      </view>
+    </view>
+    <picker range="{{mealLabels}}" value="{{mealIndex}}" bindchange="onMeal">
+      <view class="field"><text class="label">餐次</text><text class="grow">{{mealLabels[mealIndex]}}</text><image class="next-icon" src="/assets/px/ui-next.svg" /></view>
+    </picker>
+    <view class="field"><text class="label">我吃了几份</text><slider class="grow" min="0.5" max="3" step="0.5" value="{{myShare}}" show-value bindchange="onShare" activeColor="#4cb963" backgroundColor="#e2d3b1" block-color="#f8d24b" block-size="20" /></view>
+  </view>
+
+  <!-- loot list -->
+  <view class="section-title">
+    <text>获得清单</text>
+    <view class="pick" wx:if="{{items.length}}">已选 <text class="px-num pick-num">{{pickCount}}/{{items.length}}</text></view>
+  </view>
+
+  <view wx:if="{{!items.length}}" class="card empty-loot">
+    <image class="empty-icon" src="/assets/px/{{kind === 'receipt' ? 'receipt' : kind === 'meal' ? 'meal' : 'camera'}}.svg" />
+    <view>暂无条目，可以说“加上一斤猪里脊”</view>
+  </view>
+
+  <view wx:for="{{items}}" wx:key="id" class="slot-wrap anim-slide {{index < 6 ? 'd' + (index + 1) : ''}}">
+    <view class="slot {{item.pending ? 'slot-pending' : ''}} {{item.pending && !done ? 'slot-flash' : ''}} {{include[item.id] ? 'slot-on' : ''}}" bindtap="openEdit" data-index="{{index}}" hover-class="px-pressed">
+      <view class="slot-cell">
+        <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
+        <view wx:else class="avatar slot-avatar cat-{{item.cat}}">{{item.initial}}</view>
+      </view>
+
+      <view class="grow">
+        <view class="slot-head">
+          <text class="slot-name">{{item.name}}</text>
+          <text class="slot-was" wx:if="{{item.renamed}}">识别为 {{item.recognized_as}}</text>
+        </view>
+
+        <block wx:if="{{kind !== 'meal'}}">
+          <view class="slot-line">
+            <text wx:if="{{item.qtyText}}" class="qty">{{item.qtyText}}</text>
+            <text wx:if="{{item.qtyText && item.weightShort}}" class="dot">·</text>
+            <image wx:if="{{item.isEst}}" class="line-icon" src="/assets/px/scale.svg" />
+            <text class="{{item.needs_weight ? 'need' : item.isEst ? 'est-val' : ''}}">{{item.weightShort}}</text>
+            <text class="est-badge" wx:if="{{item.isEst}}">估算</text>
+          </view>
+          <view class="slot-line" wx:if="{{item.amount || item.unit_price}}">
+            <image class="line-icon" src="/assets/px/coin.svg" />
+            <text class="px-num price" wx:if="{{item.amount}}">¥{{item.amount}}</text>
+            <text class="unit" wx:if="{{item.unit_price}}">{{item.unit_price}} 元/kg</text>
+            <text class="est-badge" wx:if="{{item.unit_price && item.estimated}}">估算</text>
+          </view>
+          <view class="slot-method" wx:if="{{item.method}}">{{item.method}}</view>
+        </block>
+        <block wx:else>
+          <view class="ing-row">
+            <text class="ing" wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">{{ing.name}} {{ing.grams}}g</text>
+          </view>
+          <view class="slot-line">
+            <image class="line-icon" src="/assets/px/flame.svg" />
+            <text class="est-val">约 {{item.nutrition_total.kcal}} kcal</text>
+            <text class="est-badge">估算</text>
+            <text class="unit portion">{{item.portion}} 人份</text>
+          </view>
+        </block>
+
+        <view class="slot-tags" wx:if="{{item.pending || item.notFresh}}">
+          <text class="tag warn pending-tag" wx:if="{{item.pending}}">待确认</text>
+          <text class="tag danger" wx:if="{{item.notFresh}}">外观不新鲜</text>
+        </view>
+      </view>
+
+      <!-- wide tap target: the rest of the slot opens the editor -->
+      <view class="check-hit" catchtap="toggleInclude" data-id="{{item.id}}" hover-class="px-pressed" hover-stop-propagation="{{true}}">
+        <view class="check {{include[item.id] ? 'on' : ''}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- fix-by-chat + confirm -->
+  <view class="card act anim-slide d6" wx:if="{{!done}}">
+    <view class="act-head">
+      <image class="act-icon" src="/assets/px/magic.svg" />
+      <text>用一句话修改清单</text>
+    </view>
+    <view class="chat-bar">
+      <input class="input" placeholder="如：把白菜改成400克" value="{{chatText}}" bindinput="onChat" confirm-type="send" bindconfirm="sendChat" />
+      <view class="send" bindtap="sendChat" hover-class="px-pressed"><image src="/assets/px/send.svg" /></view>
+    </view>
+    <button class="btn confirm-btn" bindtap="confirm" wx:if="{{rec}}" hover-class="px-pressed">
+      确认{{kind === 'ingredients' ? '入库' : kind === 'receipt' ? '记账' : '记录'}}<text class="confirm-count" wx:if="{{kind !== 'receipt' || pickCount}}"> · {{pickCount}} 件</text>
+    </button>
+  </view>
+
+  <!-- "获得物品!" reward window -->
+  <view class="card feature got anim-pop" wx:if="{{done}}">
+    <view class="got-head">
+      <px-sprite name="sprite-sparkle" frames="4" size="64" duration="800" />
+      <view class="got-title">{{kind === 'meal' ? '记录完成!' : kind === 'receipt' ? '记账完成!' : '获得物品!'}}</view>
+      <px-sprite name="sprite-sparkle" frames="4" size="64" duration="800" />
+    </view>
+
+    <view class="got-grid" wx:if="{{doneItems.length}}">
+      <view wx:for="{{doneItems}}" wx:key="key" class="got-item anim-pop {{index < 6 ? 'd' + (index + 1) : ''}}">
+        <view class="got-cell">
+          <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
+          <view wx:else class="avatar got-avatar cat-{{item.cat}}">{{item.initial}}</view>
+        </view>
+        <view class="got-name">{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="got-total" wx:if="{{done.total}}">
+      <image class="got-coin anim-coin" src="/assets/px/coin.svg" />
+      <text>已记账</text><text class="px-num got-money">¥{{done.total}}</text>
+    </view>
+    <view class="got-stats" wx:if="{{done.nutrition}}">
+      <view class="got-stat">
+        <image class="got-stat-icon" src="/assets/px/flame.svg" />
+        <view><view class="px-num got-stat-num">{{doneNutri.kcal}}</view><view class="got-stat-lbl">kcal 本餐摄入</view></view>
+      </view>
+      <view class="got-stat">
+        <image class="got-stat-icon" src="/assets/px/meat.svg" />
+        <view><view class="px-num got-stat-num">{{doneNutri.protein}}</view><view class="got-stat-lbl">g 蛋白质</view></view>
+      </view>
+    </view>
+    <view class="got-est" wx:if="{{done.nutrition}}">以上为估算值，按你吃了 {{myShare}} 份计算</view>
+
+    <view class="got-lines">
+      <view class="got-line" wx:if="{{done.added}}">已入库：{{doneText.added}}</view>
+      <view class="got-line" wx:if="{{done.added_to_inventory && done.added_to_inventory.length}}">同时入库：{{doneText.toInventory}}</view>
+      <view class="got-line" wx:if="{{done.skipped && done.skipped.length}}">未入库（待确认）：{{doneText.skipped}}</view>
+      <view class="got-line" wx:if="{{done.inventory_note}}">{{done.inventory_note}}</view>
+      <view class="got-line" wx:if="{{done.deviation && done.deviation.length}}">与计划相比未吃：{{doneText.deviation}}（已写入数字孪生）</view>
+    </view>
+  </view>
+
+  <!-- pixel bottom sheet: edit one item -->
+  <view class="mask" wx:if="{{editIndex >= 0}}" bindtap="closeEdit">
+    <view class="sheet" catchtap="">
+      <view class="card-title">
+        <view class="row">
+          <view class="sheet-cell">
+            <image wx:if="{{items[editIndex].icon}}" class="sheet-img" src="/assets/px/{{items[editIndex].icon}}.svg" />
+            <view wx:else class="avatar sheet-avatar cat-{{items[editIndex].cat}}">{{items[editIndex].initial}}</view>
+          </view>
+          <text>修改条目</text>
+        </view>
+        <view class="sheet-close" bindtap="closeEdit" hover-class="px-pressed"><image class="sheet-close-img" src="/assets/px/cross.svg" /></view>
+      </view>
+      <view class="field"><text class="label">名称</text><input class="input" value="{{edit.name}}" data-key="name" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind !== 'meal'}}"><text class="label">重量（克）</text><input class="input" type="digit" value="{{edit.weight_g}}" data-key="weight_g" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind !== 'meal'}}"><text class="label">数量（个）</text><input class="input" type="digit" value="{{edit.quantity}}" data-key="quantity" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind === 'receipt'}}"><text class="label">金额（元）</text><input class="input" type="digit" value="{{edit.amount}}" data-key="amount" bindinput="onEdit" /></view>
+      <view class="field" wx:if="{{kind === 'receipt'}}"><text class="label">单价 元/kg</text><input class="input" type="digit" value="{{edit.unit_price}}" data-key="unit_price" bindinput="onEdit" /></view>
+      <view class="btn-row">
+        <button class="btn ghost" bindtap="removeItem" hover-class="px-pressed"><image class="btn-icon" src="/assets/px/cross.svg" />删除</button>
+        <button class="btn" bindtap="saveEdit" hover-class="px-pressed">保存</button>
+      </view>
+    </view>
+  </view>
+</view>

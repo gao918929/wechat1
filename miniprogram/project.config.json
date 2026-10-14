@@ -1,0 +1,17 @@
+{
+  "description": "MealAgent 膳食统筹微信小程序",
+  "projectname": "MealAgent",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "libVersion": "3.4.0",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "showShadowRootInWxmlPanel": true
+  },
+  "packOptions": { "ignore": [], "include": [] },
+  "condition": {}
+}

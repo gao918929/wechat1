@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/inventory/inventory",
+    "pages/planner/planner",
+    "pages/budget/budget",
+    "pages/profile/profile",
+    "pages/plan/plan",
+    "pages/recognize/recognize",
+    "pages/shopping/shopping",
+    "pages/nutrition/nutrition",
+    "pages/group/group",
+    "pages/twin/twin",
+    "pages/notifications/notifications"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTitleText": "MealAgent",
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#fffaf0",
+    "backgroundColor": "#f4ecd8",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#958aa6",
+    "selectedColor": "#2b2340",
+    "backgroundColor": "#fffaf0",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/inventory/inventory",
+        "text": "冰箱"
+      },
+      {
+        "pagePath": "pages/planner/planner",
+        "text": "计划"
+      },
+      {
+        "pagePath": "pages/budget/budget",
+        "text": "账本"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ],
+    "custom": true
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "px-nav": "/components/px-nav/px-nav",
+    "px-sprite": "/components/px-sprite/px-sprite",
+    "px-meter": "/components/px-meter/px-meter",
+    "px-typewriter": "/components/px-typewriter/px-typewriter"
+  }
+}

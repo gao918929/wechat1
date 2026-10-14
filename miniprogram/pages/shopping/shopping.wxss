@@ -1,0 +1,93 @@
+/* 购物清单 · Pixel Kitchen — the shopping list as a quest log. 1 art pixel = 4rpx; hard shadows only, no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- quest window */
+.card.quest { padding: 28rpx 28rpx 32rpx; margin-top: 16rpx; }
+.q-head { display: flex; align-items: center; }
+.q-cart {
+  width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow:
+    0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff;
+}
+.q-cart image { width: 64rpx; height: 64rpx; }
+.q-kicker { font-size: 24rpx; color: #eafbe6; letter-spacing: 2rpx; }
+.q-title { font-size: 32rpx; line-height: 1.5; color: #fff; }
+
+.q-total-row { display: flex; align-items: center; margin: 28rpx 0 4rpx; }
+.q-coin { width: 64rpx; height: 64rpx; flex-shrink: 0; margin-right: 20rpx; }
+.q-total { font-size: 56rpx; line-height: 1.3; color: #fff; text-shadow: 4rpx 4rpx 0 var(--green-d); }
+.q-total.long { font-size: 40rpx; }
+.q-total-lbl { margin-left: auto; padding-left: 16rpx; font-size: 24rpx; color: #eafbe6; }
+
+.q-stats { display: flex; margin-top: 24rpx; padding-top: 20rpx; border-top: 4rpx dashed rgba(255, 255, 255, 0.5); }
+.q-stat { flex: 1; min-width: 0; text-align: center; }
+.q-stat.sep { border-left: 4rpx dashed rgba(255, 255, 255, 0.5); }
+.q-num { font-size: 24rpx; line-height: 1.6; color: #fff; }
+.q-num.over { color: var(--yellow); }
+.q-lbl { font-size: 24rpx; color: #eafbe6; margin-top: 4rpx; white-space: nowrap; }
+
+.q-progress { margin-top: 24rpx; padding-top: 20rpx; border-top: 4rpx dashed rgba(255, 255, 255, 0.5); }
+.q-prow { display: flex; align-items: center; font-size: 24rpx; color: #eafbe6; margin-bottom: 12rpx; }
+.q-picon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 8rpx; }
+.q-pnum { font-size: 24rpx; color: #fff; }
+.q-clear { display: inline-block; margin: 4rpx; padding: 0 12rpx; background: var(--yellow); color: var(--ink); text-shadow: none;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--yellow-d); }
+.quest .btn-row { margin-top: 32rpx; gap: 32rpx; }
+.quest .btn { text-shadow: none; }
+
+/* ---------------------------------------------------------------- section windows */
+.card.sec { padding: 0; }
+.sec-bar {
+  display: flex; align-items: center; padding: 8rpx 24rpx 8rpx 16rpx; color: #fff;
+  text-shadow: 2rpx 2rpx 0 rgba(43, 35, 64, 0.35);
+  box-shadow: inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.4), inset -4rpx 0 0 0 rgba(43, 35, 64, 0.2), 0 4rpx 0 0 var(--ink);
+}
+.sec-icon {
+  width: 64rpx; height: 64rpx; flex-shrink: 0; margin: 4rpx 16rpx 4rpx 4rpx;
+  display: flex; align-items: center; justify-content: center; background: var(--paper);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink), inset -4rpx -4rpx 0 0 var(--paper-3);
+}
+.sec-icon image { width: 48rpx; height: 48rpx; }
+.sec-name { flex: 1; min-width: 0; font-size: 32rpx; letter-spacing: 2rpx; }
+.sec-done { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
+.sec-count { font-size: 20rpx; }
+/* bar colours per section: global .cat-<key> (white text on dark ones, ink text on yellow) */
+
+.sec-list { padding: 4rpx 28rpx 8rpx; }
+.it { display: flex; align-items: center; margin: 0 -12rpx; padding: 16rpx 12rpx; border-bottom: 4rpx dashed var(--paper-3); }
+.it:last-child { border-bottom: none; }
+/* ingredient icon (16px art at 1:1) in a small sunken cell; the initial stands in when there is no icon */
+.it-cell {
+  width: 48rpx; height: 48rpx; flex-shrink: 0; margin: 4rpx 20rpx 4rpx 0; display: flex; align-items: center; justify-content: center;
+  background: var(--paper-2); box-shadow: inset 4rpx 4rpx 0 0 var(--paper-3);
+}
+.it-img { width: 32rpx; height: 32rpx; }
+.it-initial { font-size: 24rpx; line-height: 1; color: var(--text-3); }
+.it.done .it-cell { opacity: 0.45; }
+.it-name { font-size: 28rpx; color: var(--text); letter-spacing: 1rpx; }
+.it-qty { font-size: 24rpx; color: var(--text-3); }
+.it-have { color: var(--blue-d); }
+.it-price { flex-shrink: 0; margin-left: 16rpx; text-align: right; }
+.it-cost { font-size: 24rpx; line-height: 1.6; color: var(--text); }
+.ptag { display: inline-block; margin-top: 4rpx; font-size: 20rpx; line-height: 1.6; color: var(--text-3); }
+.ptag.hist {
+  padding: 0 8rpx; margin-right: 4rpx; background: var(--green-l); color: var(--green-d);
+  box-shadow: 0 -2rpx 0 0 var(--green-d), 0 2rpx 0 0 var(--green-d), -2rpx 0 0 0 var(--green-d), 2rpx 0 0 0 var(--green-d);
+}
+/* ticked: struck through and greyed */
+.it.done .it-name, .it.done .it-cost { color: var(--text-3); text-decoration: line-through; }
+.it.done .it-qty, .it.done .it-have, .it.done .ptag { color: #c9c3d6; }
+.it.done .ptag.hist { background: var(--paper-2); box-shadow: 0 -2rpx 0 0 var(--paper-3), 0 2rpx 0 0 var(--paper-3), -2rpx 0 0 0 var(--paper-3), 2rpx 0 0 0 var(--paper-3); }
+
+/* ---------------------------------------------------------------- pantry / covered */
+.card.extra { padding: 24rpx 28rpx 20rpx; }
+.extra-head { display: flex; align-items: center; font-size: 28rpx; color: var(--text); margin-bottom: 12rpx; }
+.extra-head .tag { margin-right: 4rpx; }
+.extra-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 16rpx; }
+.extra-tags { display: flex; flex-wrap: wrap; }
+
+/* ---------------------------------------------------------------- loading */
+.loading { display: flex; flex-direction: column; align-items: center; padding-top: 160rpx; }
+.loading-text { font-size: 28rpx; color: var(--text-2); margin: 20rpx 0 28rpx; }
+.loading-bar { width: 320rpx; }

@@ -1,0 +1,7 @@
+<view class="tb">
+  <view wx:for="{{list}}" wx:key="pagePath" class="tb-item {{selected === index ? 'on' : ''}}" hover-class="tb-down"
+    bindtap="switchTab" data-index="{{index}}">
+    <image class="tb-icon {{selected === index ? 'anim-bob' : ''}}" src="/assets/px/tab-{{item.icon}}{{selected === index ? '' : '-off'}}.svg" />
+    <text class="tb-text">{{item.text}}</text>
+  </view>
+</view>

@@ -1,0 +1,95 @@
+/* 数字孪生 · Pixel Kitchen — the twin as a "memory dex". 1 art pixel = 4rpx; hard shadows only, no radius / blur / soft gradients. */
+
+/* ---------------------------------------------------------------- view tabs */
+.tabs .tab { display: flex; align-items: center; justify-content: center; }
+.tab-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 10rpx; }
+
+/* group twin unavailable */
+.card.err { display: flex; align-items: center; background: #ffe2b0; padding: 24rpx 28rpx;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 #f5c784, inset 4rpx 4rpx 0 0 #fff4dc, 8rpx 12rpx 0 0 var(--shadow); }
+.err-icon { width: 48rpx; height: 48rpx; flex-shrink: 0; margin-right: 20rpx; }
+.err-text { flex: 1; font-size: 26rpx; line-height: 1.6; color: var(--orange-d); }
+
+/* ---------------------------------------------------------------- memory dex status window */
+.card.dex { margin-top: 40rpx; padding: 44rpx 28rpx 28rpx; }
+.dex-head { display: flex; align-items: center; }
+.dex-portrait {
+  width: 96rpx; height: 96rpx; flex-shrink: 0; margin: 4rpx 24rpx 4rpx 4rpx;
+  display: flex; align-items: center; justify-content: center; background: #ddd0ff;
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 rgba(43, 35, 64, 0.18), inset 4rpx 4rpx 0 0 rgba(255, 255, 255, 0.6);
+}
+.dex-img { width: 64rpx; height: 64rpx; display: block; }
+.dex-kicker { display: flex; align-items: center; font-size: 24rpx; color: var(--text-3); letter-spacing: 1rpx; }
+.ver { margin-left: 12rpx; padding: 0 8rpx; font-size: 20rpx; line-height: 32rpx; color: #fff; background: var(--purple);
+  box-shadow: 0 0 0 2rpx var(--purple-d); }
+.dex-learn { display: flex; align-items: baseline; margin-top: 8rpx; }
+.dex-num { font-size: 48rpx; line-height: 1.2; color: var(--purple-d); text-shadow: 4rpx 4rpx 0 #ddd0ff; }
+.dex-unit { font-size: 24rpx; color: var(--text-2); margin-left: 12rpx; }
+
+.dex-stats { display: flex; margin-top: 28rpx; padding: 20rpx 0 4rpx; border-top: 4rpx dashed var(--paper-3); }
+.ds { flex: 1; min-width: 0; text-align: center; }
+.ds.sep { border-left: 4rpx dashed var(--paper-3); }
+.ds-num { font-size: 32rpx; line-height: 1.5; color: var(--text-3); }
+.ds-num.good { color: var(--green-d); }
+.ds-num.bad { color: var(--red); }
+.ds-num.warn { color: var(--orange-d); }
+.ds-num.info { color: var(--blue-d); }
+.ds-lbl { font-size: 22rpx; color: var(--text-3); margin-top: 4rpx; }
+
+.dex-vis { display: flex; align-items: center; margin-top: 20rpx; padding-top: 20rpx; border-top: 4rpx dashed var(--paper-3);
+  font-size: 24rpx; line-height: 1.6; color: var(--text-3); }
+.dex-vis-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
+.btn.dex-btn { display: flex; align-items: center; justify-content: center; margin: 24rpx 4rpx 4rpx; padding: 14rpx 22rpx; font-size: 26rpx; }
+
+/* ---------------------------------------------------------------- icon entry rows */
+.card.entries { padding: 4rpx 28rpx; }
+.entry { display: flex; align-items: flex-start; padding: 24rpx 0; border-bottom: 4rpx dashed var(--paper-3); }
+.entry:last-child { border-bottom: none; }
+.entry-t { font-size: 26rpx; line-height: 1.5; color: var(--ink); letter-spacing: 1rpx; }
+.entry-v { font-size: 26rpx; line-height: 1.6; color: var(--text-2); margin-top: 4rpx; }
+.entry-v.none { color: var(--text-3); }
+.money { font-size: 24rpx; color: var(--orange-d); }
+.entry .badges { margin-top: 4rpx; }
+.entry.hint { align-items: center; }
+.entry.hint .mini-icon { background: var(--paper-2); }
+.hint-text { font-size: 24rpx; color: var(--text-3); }
+
+/* group summary — RPG dialogue with a name plate */
+.px-dialog.note { margin: 40rpx 4rpx 36rpx; padding: 40rpx 28rpx 24rpx; font-size: 26rpx; line-height: 1.7; }
+
+/* ---------------------------------------------------------------- taste dex pages */
+.card.pages { padding: 4rpx 28rpx 8rpx; }
+.pg { padding: 24rpx 0 20rpx; border-bottom: 4rpx dashed var(--paper-3); }
+.pg:last-child { border-bottom: none; }
+.pg-head { display: flex; align-items: center; font-size: 28rpx; color: var(--ink); letter-spacing: 1rpx; margin-bottom: 12rpx; }
+.pg-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 12rpx; }
+.pg-count { min-width: 24rpx; padding: 0 10rpx; margin: 4rpx; font-size: 20rpx; line-height: 36rpx; text-align: center; color: var(--text-2); background: var(--paper-2);
+  box-shadow: 0 0 0 4rpx var(--paper-3); }
+
+.badges { display: flex; flex-wrap: wrap; align-items: center; }
+.badge {
+  display: inline-flex; align-items: center; margin: 8rpx 16rpx 8rpx 4rpx; padding: 4rpx 12rpx 8rpx; font-size: 24rpx; line-height: 1.5;
+  background: var(--paper-2); color: var(--text-2);
+  box-shadow: 0 -4rpx 0 0 var(--paper-3), 0 4rpx 0 0 var(--paper-3), -4rpx 0 0 0 var(--paper-3), 4rpx 0 0 0 var(--paper-3), inset 0 -4rpx 0 0 var(--paper-3);
+}
+.badge.good { background: var(--green-l); color: var(--green-d);
+  box-shadow: 0 -4rpx 0 0 var(--green-d), 0 4rpx 0 0 var(--green-d), -4rpx 0 0 0 var(--green-d), 4rpx 0 0 0 var(--green-d), inset 0 -4rpx 0 0 #7fd06f; }
+.badge.bad { background: var(--red-l); color: var(--red-d);
+  box-shadow: 0 -4rpx 0 0 var(--red-d), 0 4rpx 0 0 var(--red-d), -4rpx 0 0 0 var(--red-d), 4rpx 0 0 0 var(--red-d), inset 0 -4rpx 0 0 #f59484; }
+.badge.swap { background: #ffe2b0; color: var(--orange-d);
+  box-shadow: 0 -4rpx 0 0 var(--orange-d), 0 4rpx 0 0 var(--orange-d), -4rpx 0 0 0 var(--orange-d), 4rpx 0 0 0 var(--orange-d), inset 0 -4rpx 0 0 #f5c784; }
+.badge.info { background: var(--blue-l); color: var(--blue-d);
+  box-shadow: 0 -4rpx 0 0 var(--blue-d), 0 4rpx 0 0 var(--blue-d), -4rpx 0 0 0 var(--blue-d), 4rpx 0 0 0 var(--blue-d), inset 0 -4rpx 0 0 #8ccbf2; }
+/* score digits: global .px-num.inline does the baseline nudge */
+.sc { margin-left: 10rpx; font-size: 20rpx; }
+.badge-star { width: 32rpx; height: 32rpx; flex-shrink: 0; margin: 0 6rpx 0 -4rpx; }
+.swap-arrow { width: 16rpx; height: 16rpx; flex-shrink: 0; margin: 0 6rpx; }
+.none { font-size: 24rpx; color: var(--text-3); margin: 8rpx 4rpx; }
+
+/* ---------------------------------------------------------------- manual edits */
+.card.manual { padding: 8rpx 28rpx 28rpx; }
+.field .lbl { display: flex; align-items: center; width: 176rpx; flex-shrink: 0; }
+.lbl-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; margin-right: 10rpx; }
+.btn.save { margin: 28rpx 4rpx 4rpx; }

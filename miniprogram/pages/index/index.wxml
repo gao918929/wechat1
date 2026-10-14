@@ -1,0 +1,168 @@
+<px-nav title="{{title}}" subtitle="{{dateText}}" large>
+  <view slot="right" class="hd-right">
+    <view class="hd-chef"><px-sprite name="sprite-chef" frames="4" size="144" duration="1200" /></view>
+    <view class="hd-me" hover-class="px-pressed" bindtap="go" data-url="/pages/profile/profile">
+      <view class="avatar hd-avatar">{{initial}}</view>
+      <view class="hd-badge px-num anim-pop" wx:if="{{unread}}">{{unread}}</view>
+    </view>
+  </view>
+</px-nav>
+
+<view class="container">
+  <!-- party (group) selector -->
+  <picker range="{{groups}}" range-key="name" value="{{groupIndex}}" bindchange="onGroupChange">
+    <view class="party" hover-class="px-pressed">
+      <image class="party-icon" src="/assets/px/users.svg" />
+      <text class="party-name">{{group.name}}</text>
+      <text class="party-count">{{group.members}} 人</text>
+      <view class="party-sep"></view>
+      <view class="px-led sm party-led {{llmOnline ? 'on' : ''}}"><view class="px-led-core {{llmOnline ? 'anim-blink' : ''}}"></view></view>
+      <text class="party-meta">{{llmOnline ? 'DeepSeek 在线' : '离线规则引擎'}}</text>
+      <image class="party-caret" src="/assets/px/ui-next.svg" />
+    </view>
+  </picker>
+
+  <!-- mascot advice -->
+  <view class="chef-say anim-slide-x" wx:if="{{tip}}">
+    <view class="name-plate">番茄小厨</view>
+    <!-- no blinking ▼: the tab icon, chef sprite and online light already use the 3-loop budget (spec §5) -->
+    <view class="px-dialog chef-box"><px-typewriter text="{{tip}}" speed="30" step="2" cursor="{{false}}" /></view>
+  </view>
+
+  <!-- today: RPG status window -->
+  <view class="anim-slide">
+    <view class="card hero energy" hover-class="px-pressed" bindtap="go" data-url="/pages/nutrition/nutrition">
+      <view class="win-tab"><image class="win-tab-icon" src="/assets/px/flame.svg" />今日能量</view>
+      <view class="en-top">
+        <view class="en-kcal">
+          <text class="px-num en-big {{today.over ? 'is-over anim-shake' : ''}}">{{today.kcal || 0}}</text>
+          <text class="px-num en-target">/{{today.target || '--'}}</text>
+          <text class="en-unit">kcal</text>
+        </view>
+        <text class="px-num en-pct {{today.over ? 'is-over' : ''}}">{{today.ratio || 0}}%</text>
+      </view>
+      <view class="en-meter"><px-meter value="{{today.meter || 0}}" segments="20" color="{{today.over ? 'red' : 'green'}}" height="36" /></view>
+      <view class="en-note">
+        <text wx:if="{{today.over}}" class="en-over">已超出目标，下一餐清淡一点</text>
+        <text wx:else>还可摄入 <text class="px-num en-left">{{today.left || 0}}</text> kcal</text>
+        <view class="en-more">营养详情<image class="en-more-icon" src="/assets/px/ui-next.svg" /></view>
+      </view>
+      <view class="en-macros">
+        <view wx:for="{{today.macros}}" wx:key="name" class="mac">
+          <text class="mac-name">{{item.name}}</text>
+          <view class="mac-meter"><px-meter value="{{item.pct}}" segments="10" color="{{item.color}}" height="20" /></view>
+          <text class="px-num mac-val {{item.over ? 'is-over' : ''}}">{{item.v}}/{{item.t}}g</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- quick actions: icon tiles, staggered entrance -->
+  <view class="card qa-card">
+    <view class="qa-grid">
+      <view class="qa anim-slide d1">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="recognize" data-kind="ingredients">
+          <view class="qa-icon"><image class="qa-img" src="/assets/px/camera.svg" /></view><text class="qa-label">拍冰箱</text>
+        </view>
+      </view>
+      <view class="qa anim-slide d2">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="recognize" data-kind="receipt">
+          <view class="qa-icon i-orange"><image class="qa-img" src="/assets/px/receipt.svg" /></view><text class="qa-label">小票记账</text>
+        </view>
+      </view>
+      <view class="qa anim-slide d3">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="recognize" data-kind="meal">
+          <view class="qa-icon i-pink"><image class="qa-img" src="/assets/px/meal.svg" /></view><text class="qa-label">餐后复盘</text>
+        </view>
+      </view>
+      <view class="qa anim-slide d4">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="go" data-url="/pages/planner/planner">
+          <view class="qa-icon i-purple"><image class="qa-img" src="/assets/px/magic.svg" /></view><text class="qa-label">AI 周计划</text>
+        </view>
+      </view>
+      <view class="qa anim-slide d5">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="openShopping">
+          <view class="qa-icon i-blue"><image class="qa-img" src="/assets/px/cart.svg" /></view><text class="qa-label">购物清单</text>
+        </view>
+      </view>
+      <view class="qa anim-slide d6">
+        <view class="qa-btn" hover-class="px-pressed" bindtap="go" data-url="/pages/nutrition/nutrition">
+          <view class="qa-icon i-yellow"><image class="qa-img" src="/assets/px/chart.svg" /></view><text class="qa-label">营养分析</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- near-expiry -->
+  <view class="section-title">
+    <text>临期提醒</text>
+    <view class="sec-link" hover-class="px-pressed" bindtap="go" data-url="/pages/inventory/inventory">冰箱<image class="sec-link-icon" src="/assets/px/ui-next.svg" /></view>
+  </view>
+  <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}" wx:if="{{alerts.length}}">
+    <view wx:for="{{alerts}}" wx:key="id" class="chip al-chip {{item.urgent ? 'al-urgent anim-shake' : 'anim-slide'}} {{item.delay}}">
+      <image class="al-icon" src="/assets/px/{{item.icon}}.svg" />
+      <text class="chip-main">{{item.name}}</text>
+      <text class="al-sub al-{{item.tone}}">{{item.sub}}</text>
+    </view>
+  </scroll-view>
+  <view class="card ok-card" wx:else>
+    <view class="mini-icon"><image class="ok-img" src="/assets/px/leaf.svg" /></view>
+    <view class="grow"><view class="bold">冰箱状态良好</view><view class="muted">没有临期或不新鲜的食材</view></view>
+  </view>
+
+  <!-- latest plan -->
+  <view class="section-title">
+    <text>本周计划</text>
+    <view class="sec-link" hover-class="px-pressed" bindtap="go" data-url="/pages/planner/planner">全部<image class="sec-link-icon" src="/assets/px/ui-next.svg" /></view>
+  </view>
+  <view class="anim-slide d2">
+    <view class="card feature plan {{latestPlan && !latestPlan.summary && latestPlan.status === 'failed' ? 'orange' : ''}}" hover-class="px-pressed" bindtap="openPlan">
+      <block wx:if="{{latestPlan && latestPlan.summary}}">
+        <view class="between">
+          <text class="tag glass plan-tag">{{latestPlan.summary.title}}</text>
+          <text class="px-num plan-id">#{{latestPlan.id}}</text>
+        </view>
+        <view class="plan-quote ellipsis">“{{latestPlan.instruction || '按小组设置生成'}}”</view>
+        <view class="plan-money">
+          <image class="plan-coin anim-coin" src="/assets/px/coin.svg" />
+          <view class="grow">
+            <view class="px-num plan-total {{planMeta.totalSize}}">¥{{latestPlan.summary.total_cost}}</view>
+            <view class="lbl">预计采购 · {{latestPlan.days}} 天</view>
+          </view>
+          <view class="plan-pp">
+            <view class="px-num plan-pp-num {{planMeta.ppSize}}">¥{{latestPlan.summary.per_person_cost}}</view>
+            <view class="lbl">人均</view>
+          </view>
+        </view>
+        <view class="plan-budget">
+          <text class="plan-budget-l" wx:if="{{planMeta.budgetPct >= 0}}">预算</text>
+          <view class="grow" wx:if="{{planMeta.budgetPct >= 0}}"><px-meter value="{{planMeta.budgetPct}}" segments="10" color="yellow" height="24" /></view>
+          <view class="grow" wx:else></view>
+          <text class="px-num plan-budget-v" wx:if="{{planMeta.budgetPct >= 0}}">{{planMeta.budgetPct}}%</text>
+          <text class="tag plan-budget-tag {{planMeta.over ? 'danger' : 'glass'}}">{{planMeta.over ? '超预算' : '预算内'}}</text>
+        </view>
+      </block>
+      <block wx:elif="{{latestPlan}}">
+        <view class="plan-wait">
+          <view class="plan-tile" wx:if="{{latestPlan.status !== 'failed'}}"><px-sprite name="sprite-pot" frames="4" size="64" duration="800" /></view>
+          <view class="plan-tile" wx:else><image class="plan-tile-img" src="/assets/px/warn.svg" /></view>
+          <view class="grow">
+            <view class="plan-wait-title">{{latestPlan.status === 'failed' ? '上次生成失败' : '四个智能体正在规划…'}}</view>
+            <view class="lbl">点击查看进度</view>
+          </view>
+          <image class="plan-next" src="/assets/px/ui-next.svg" />
+        </view>
+      </block>
+      <block wx:else>
+        <view class="plan-wait">
+          <view class="plan-tile"><image class="plan-tile-img" src="/assets/px/magic.svg" /></view>
+          <view class="grow">
+            <view class="plan-wait-title">一句话生成一周菜单</view>
+            <view class="lbl">库存、预算、健康、口味，一次兼顾</view>
+          </view>
+          <image class="plan-next anim-bob" src="/assets/px/ui-next.svg" />
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
