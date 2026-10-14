@@ -137,7 +137,7 @@ Page({
           { name: '蛋白质', v: Math.round(day.protein || 0), t: t.protein_g, pct: pct(day.protein, t.protein_g), cls: '', color: 'green' },
           { name: '碳水', v: Math.round(day.carb || 0), t: t.carb_g, pct: pct(day.carb, t.carb_g), cls: 'blue', color: 'blue' },
           { name: '脂肪', v: Math.round(day.fat || 0), t: t.fat_g, pct: pct(day.fat, t.fat_g), cls: 'warn', color: 'orange' }
-        ]
+        ].map((m) => Object.assign(m, { over: !!m.t && m.v > m.t })) // display: value text turns red past target
       };
       const plan = plans.find((p) => p.status === 'done') || plans[0] || null;
       const alerts = inv.alerts.slice(0, 8).map(decorateAlert);

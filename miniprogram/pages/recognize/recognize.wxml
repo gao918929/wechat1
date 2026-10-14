@@ -9,7 +9,7 @@
       <view class="grow">
         <view class="intro-title" wx:if="{{rec && rec.upload_id}}">识别到 <text class="px-num intro-num">{{items.length}}</text> {{kind === 'meal' ? '道菜' : kind === 'receipt' ? '条商品' : '件物品'}}</view>
         <view class="intro-title" wx:else>手动清单</view>
-        <view class="intro-sub">AI 识别 · 点条目可修改</view>
+        <view class="intro-sub">{{rec && rec.upload_id ? 'AI 识别 · 核对后再确认' : '说一句话或拍照来添加'}}</view>
       </view>
       <view class="btn small ghost retake" bindtap="takePhoto" wx:if="{{!done}}" hover-class="px-pressed">
         <image class="btn-icon" src="/assets/px/camera.svg" />{{rec && rec.upload_id ? '重拍' : '拍照'}}
@@ -20,7 +20,7 @@
 
   <!-- chef's RPG reply -->
   <view class="px-dialog say anim-slide-x" wx:if="{{reply}}">
-    <view class="say-face"><px-sprite name="sprite-chef" frames="4" size="72" duration="1000" /></view>
+    <view class="say-face"><px-sprite name="sprite-chef" frames="4" size="72" duration="1000" playing="{{!done}}" /></view>
     <view class="grow">
       <view class="say-who">番茄小厨</view>
       <px-typewriter text="{{reply}}" speed="30" step="2" />
@@ -67,7 +67,7 @@
   </view>
 
   <view wx:for="{{items}}" wx:key="id" class="slot-wrap anim-slide {{index < 6 ? 'd' + (index + 1) : ''}}">
-    <view class="slot {{item.pending ? 'slot-pending' : ''}} {{include[item.id] ? 'slot-on' : ''}}" bindtap="openEdit" data-index="{{index}}" hover-class="px-pressed">
+    <view class="slot {{item.pending ? 'slot-pending' : ''}} {{item.pending && !done ? 'slot-flash' : ''}} {{include[item.id] ? 'slot-on' : ''}}" bindtap="openEdit" data-index="{{index}}" hover-class="px-pressed">
       <view class="slot-cell">
         <image wx:if="{{item.icon}}" class="slot-img" src="/assets/px/{{item.icon}}.svg" />
         <view wx:else class="avatar slot-avatar c-{{item.cat}}">{{item.initial}}</view>
@@ -136,6 +136,7 @@
     <view class="got-head">
       <px-sprite name="sprite-sparkle" frames="4" size="64" duration="800" />
       <view class="got-title">{{kind === 'meal' ? '记录完成!' : kind === 'receipt' ? '记账完成!' : '获得物品!'}}</view>
+      <px-sprite name="sprite-sparkle" frames="4" size="64" duration="800" />
     </view>
 
     <view class="got-grid" wx:if="{{doneItems.length}}">
@@ -152,10 +153,17 @@
       <image class="got-coin anim-coin" src="/assets/px/coin.svg" />
       <text>已记账</text><text class="px-num got-money">¥{{done.total}}</text>
     </view>
-    <view class="got-kcal" wx:if="{{done.nutrition}}">
-      <image class="got-line-icon" src="/assets/px/flame.svg" />
-      <text>本餐摄入约 </text><text class="px-num got-kcal-num">{{done.nutrition.kcal}}</text><text> kcal，蛋白质 {{done.nutrition.protein}} g（估算）</text>
+    <view class="got-stats" wx:if="{{done.nutrition}}">
+      <view class="got-stat">
+        <image class="got-stat-icon" src="/assets/px/flame.svg" />
+        <view><view class="px-num got-stat-num">{{doneNutri.kcal}}</view><view class="got-stat-lbl">kcal 本餐摄入</view></view>
+      </view>
+      <view class="got-stat">
+        <image class="got-stat-icon" src="/assets/px/meat.svg" />
+        <view><view class="px-num got-stat-num">{{doneNutri.protein}}</view><view class="got-stat-lbl">g 蛋白质</view></view>
+      </view>
     </view>
+    <view class="got-est" wx:if="{{done.nutrition}}">以上为估算值，按你吃了 {{myShare}} 份计算</view>
 
     <view class="got-lines">
       <view class="got-line" wx:if="{{done.added}}">已入库：{{doneText.added}}</view>

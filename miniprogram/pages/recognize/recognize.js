@@ -17,18 +17,29 @@ const ICON_RULES = [
   ['chili', ['辣椒']],
   ['meat', ['肉', '排骨', '鸡腿', '鸡翅', '牛排', '五花', '里脊']]
 ];
+// The keyword that appears earliest in the name wins ("番茄炒蛋" → tomato, "鸡蛋" → egg).
 function iconFor(name) {
   const n = name || '';
-  const hit = ICON_RULES.find((r) => r[1].some((k) => n.indexOf(k) >= 0));
-  return hit ? hit[0] : '';
+  let best = ''; let at = Infinity;
+  ICON_RULES.forEach((r) => r[1].forEach((k) => {
+    const p = n.indexOf(k);
+    if (p >= 0 && p < at) { at = p; best = r[0]; }
+  }));
+  return best;
+}
+// Initial for the fallback tile; skip a size prefix so 大白菜 / 大米 do not both read "大".
+function initialOf(name) {
+  const n = name || '?';
+  return n.length > 1 && /^[大小]/.test(n) ? n.charAt(1) : n.charAt(0);
 }
 // Adds display-only fields to a card item; the original fields are untouched.
-function decorate(i) {
+function decorate(i, kind) {
   const q = Number(i.quantity);
   const raw = i.weight_text || (i.needs_weight ? '已识别食材，需补充重量' : '');
   return Object.assign({}, i, {
-    icon: iconFor(i.canonical || i.name),
-    initial: (i.name || '?').slice(0, 1),
+    // dishes without a matching ingredient icon get the rice-bowl icon
+    icon: iconFor(i.canonical || i.name) || (kind === 'meal' ? 'meal' : ''),
+    initial: initialOf(i.name),
     cat: i.category || 'vegetables',
     qtyText: q >= 1 && Math.floor(q) === q ? q + ' 个' : '',   // never "0.34 个"
     weightShort: i.needs_weight ? '需补充重量' : raw.replace(/（估算）|\(估算\)/g, '').trim(),
@@ -66,6 +77,7 @@ Page({
     done: null,
     doneText: {},
     doneItems: [],
+    doneNutri: {},
     pickCount: 0,
     MEAL
   },
@@ -111,7 +123,7 @@ Page({
   setRec(rec) {
     const include = {};
     (rec.card.items || []).forEach((i) => { include[i.id] = i.status !== 'confirm'; });
-    const items = (rec.card.items || []).map(decorate);
+    const items = (rec.card.items || []).map((i) => decorate(i, this.data.kind));
     this.setData({ rec, card: rec.card, items, include, pickCount: countPicked(items, include), reply: rec.card.message || '' });
   },
 
@@ -184,11 +196,16 @@ Page({
     if (this.data.planId) { body.plan_id = this.data.planId; body.plan_day = this.data.planDay; }
     api.post('/api/recognitions/' + this.data.rec.id + '/confirm', body).then((r) => {
       const j = (a) => (a || []).join('、');
-      const got = r.added || r.added_to_inventory || [];
+      // display only: the "获得物品!" slots (stored items, or the dishes just logged) and rounded nutrition
+      const got = r.added || r.added_to_inventory
+        || (r.kind === 'meal' ? this.data.items.filter((i) => this.data.include[i.id]).map((i) => i.name) : []);
+      const n = r.nutrition || {};
+      const num = (v, d) => (typeof v === 'number' ? String(Math.round(v * d) / d) : '–');
       this.setData({ done: r, doneText: { added: j(r.added), skipped: j(r.skipped), deviation: j(r.deviation), toInventory: j(r.added_to_inventory) },
-        doneItems: got.map((n) => {
-          const src = this.data.items.find((i) => i.name === n) || {};
-          return { name: n, icon: src.icon || iconFor(n), initial: String(n).slice(0, 1), cat: src.cat || 'vegetables' };
+        doneNutri: { kcal: num(n.kcal, 1), protein: num(n.protein, 10) },
+        doneItems: got.map((name) => {
+          const src = this.data.items.find((i) => i.name === name) || {};
+          return { name, icon: src.icon || iconFor(name), initial: src.initial || initialOf(name), cat: src.cat || 'vegetables' };
         }) });
       let msg = '已确认';
       if (r.kind === 'ingredients') msg = '已入库 ' + r.added.length + ' 种';

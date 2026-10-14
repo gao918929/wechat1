@@ -33,9 +33,11 @@
 .party-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 28rpx; color: var(--ink); }
 .party-count { flex-shrink: 0; margin-left: 12rpx; color: var(--text-2); }
 .party-sep { flex-shrink: 0; width: 4rpx; height: 24rpx; margin: 0 16rpx; background: var(--paper-3); }
-.party-dot { width: 12rpx; height: 12rpx; margin: 0 12rpx 0 4rpx; background: var(--text-3); box-shadow: 0 0 0 4rpx var(--ink); flex-shrink: 0; }
-.party-dot.on { background: var(--green); }
-.party-meta { flex-shrink: 0; color: var(--text-3); }
+/* status LED: the ink frame stays put, only the lit core blinks */
+.party-led { width: 12rpx; height: 12rpx; margin: 0 14rpx 0 4rpx; flex-shrink: 0; background: var(--ink-2); box-shadow: 0 0 0 4rpx var(--ink); }
+.party-led-core { width: 12rpx; height: 12rpx; background: var(--text-3); }
+.party-led.on .party-led-core { background: var(--green-l); }
+.party-meta { flex-shrink: 0; color: var(--text-2); }
 .party-caret { width: 16rpx; height: 16rpx; margin-left: 16rpx; transform: rotate(90deg); flex-shrink: 0; }
 
 /* ---------------------------------------------------------------- mascot dialogue (RPG text box + name plate) */
@@ -75,6 +77,7 @@
 .mac-name { width: 104rpx; flex-shrink: 0; font-size: 24rpx; color: var(--text-2); }
 .mac-meter { flex: 1; min-width: 0; }
 .mac-val { width: 184rpx; flex-shrink: 0; text-align: right; font-size: 20rpx; color: var(--text); }
+.mac-val.is-over { color: var(--red); }
 
 /* ---------------------------------------------------------------- quick actions */
 .qa-card { padding: 16rpx 8rpx 8rpx; }
@@ -140,7 +143,13 @@
 .plan-budget-v { margin: 0 4rpx 0 12rpx; font-size: 20rpx; }
 .plan-budget-tag { margin: 4rpx 4rpx 4rpx 16rpx; text-shadow: none; }
 .plan-wait { display: flex; align-items: center; }
-.plan-wait-art { width: 96rpx; height: 96rpx; margin-right: 20rpx; flex-shrink: 0; }
-.plan-wait-icon { width: 64rpx; height: 64rpx; margin-right: 20rpx; flex-shrink: 0; }
+/* framed paper tile so the icon reads on the coloured window */
+.plan-tile {
+  display: flex; align-items: center; justify-content: center; width: 88rpx; height: 88rpx; margin: 4rpx 24rpx 4rpx 4rpx; flex-shrink: 0;
+  background: var(--paper);
+  box-shadow: 0 -4rpx 0 0 var(--ink), 0 4rpx 0 0 var(--ink), -4rpx 0 0 0 var(--ink), 4rpx 0 0 0 var(--ink),
+    inset -4rpx -4rpx 0 0 var(--paper-3), inset 4rpx 4rpx 0 0 #fff;
+}
+.plan-tile-img { width: 64rpx; height: 64rpx; }
 .plan-wait-title { font-size: 32rpx; color: #fff; }
 .plan-next { width: 32rpx; height: 32rpx; margin-left: 16rpx; flex-shrink: 0; }
