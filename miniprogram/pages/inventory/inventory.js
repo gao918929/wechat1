@@ -13,10 +13,20 @@ const ICON_RULES = [
   ['chili', ['辣椒']],
   ['meat', ['肉', '排骨', '鸡腿', '鸡翅', '牛排', '五花', '里脊']]
 ];
+// The keyword that appears earliest in the name wins ("番茄炒蛋" → tomato, "鸡蛋" → egg).
 function iconFor(name) {
   const n = name || '';
-  const hit = ICON_RULES.find((r) => r[1].some((k) => n.indexOf(k) >= 0));
-  return hit ? hit[0] : '';
+  let best = ''; let at = Infinity;
+  ICON_RULES.forEach((r) => r[1].forEach((k) => {
+    const p = n.indexOf(k);
+    if (p >= 0 && p < at) { at = p; best = r[0]; }
+  }));
+  return best;
+}
+// Initial for the fallback tile; skip a size prefix so 大白菜 / 大米 do not both read "大".
+function initialOf(name) {
+  const n = name || '?';
+  return n.length > 1 && /^[大小]/.test(n) ? n.charAt(1) : n.charAt(0);
 }
 // Freshness meter tone by level (8-cell HP bar).
 const METER_TONE = { ok: 'green', near_expiry: 'orange', expired: 'red', not_fresh: 'red' };
@@ -36,7 +46,7 @@ function decorate(it) {
   const amount = [qtyText, weightText].filter(Boolean).join(' · ');
   const urgent = f.level !== 'ok' || f.days_left === 0;
   return Object.assign(it, {
-    initial: it.name.slice(0, 1), cat: it.category || 'vegetables', pct, daysText,
+    initial: initialOf(it.name), cat: it.category || 'vegetables', pct, daysText,
     barCls: f.level === 'ok' ? '' : f.level === 'near_expiry' ? 'warn' : 'danger',
     amount: amount || (it.needs_weight ? '需补充重量' : ''),
     // pixel display fields
