@@ -10,7 +10,7 @@
 ..KwwwqwwwwwqK..
 .KKKKKKKKKKKKKK.
 .KWcccccccccbbK.
-..KbbbbbbbbbBK..
+..KbbbbbbbbbbK..
 ..KcccccccccbK..
 ...KcccccccbK...
 ....KKbbbbKK....

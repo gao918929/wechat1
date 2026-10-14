@@ -5,10 +5,10 @@
 ...KKKK.........
 ..KeEEkK........
 .KKKKKKKKKKKKKK.
-.KeeeeKKKKeeprK.
+.KeeeeKKKKeerrK.
 .KeEEKBBBBKEEkK.
-.KEEKBWcbbBKEkK.
-.KEEKBcbbbBKEkK.
+.KEEKBWWbbBKEkK.
+.KEEKBWbbbBKEkK.
 .KEEKBbbbBBKEkK.
 .KEEKBbbBBBKEkK.
 .KEEEKBBBBKEEkK.
