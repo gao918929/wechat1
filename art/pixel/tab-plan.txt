@@ -1,0 +1,19 @@
+# name: tab-plan
+# kind: icon
+# variants: off
+................
+...........K....
+..........KyK...
+.........KKyKK..
+........KyyWyyK.
+.........KKyKK..
+..........KyK...
+...KKKK..KKKK...
+..KwwwwKKwwwwK..
+.KvwEEwqqwEEwvK.
+.KvwwwwqqwwwwvK.
+.KvwEEwqqwEEwvK.
+.KvwwwwqqwwwwvK.
+.KvvvvvKKvvvvVK.
+..KKKKKKKKKKKK..
+................
